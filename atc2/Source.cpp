@@ -119,24 +119,6 @@ bool unit(int x, int y) {
 	return true;
 }
 
-ll bit[200010];
-int max_n = 200000;
-int pm = 0;
-void add(int x) {
-
-	while (max_n >= x)
-	{
-		bit[x]++;
-		x += x & -x;
-	}
-}
-void sub(int x) {
-	while (max_n >= x)
-	{
-		bit[x]--;
-		x += x & -x;
-	}
-}
 ll merge(ll* a, int left, int mid, int right) {
 	ll n1 = mid - left;
 	ll n2 = right - mid;
@@ -875,6 +857,9 @@ public:
 
 		return l;
 	}
+	void get_cin() {
+		cin >> x >> y;
+	}
 };
 
 class Segment {
@@ -882,6 +867,9 @@ public:
 	Point p1, p2;
 	Segment() {}
 	Segment(Point p1, Point p2) :p1(p1), p2(p2) {}
+	void get_cin() {
+		cin >> p1.x >> p1.y >> p2.x >> p2.y;
+	}
 	Point p1tp2() {
 		return p2 - p1;
 	}
@@ -948,6 +936,9 @@ public:
 	Point c;
 	double r;
 	Circle(Point c = Point(), double r = 0.0) : c(c), r(r) {}
+	void get_cin() {
+		cin >> c.x >> c.y >> r;
+	}
 	static pair<Point, Point> getCrossPoints(Circle c1, Circle c2) {
 		double d = (c1.c - c2.c).abs(); // íÜêSì_Ç«Ç§ÇµÇÃãóó£
 		double a = acos((c1.r * c1.r + d * d - c2.r * c2.r) / (2 * c1.r * d));
@@ -969,7 +960,7 @@ pair<Point, Point> Point::crossPoints(Circle c, Segment s) {
 ll divRm(string s, ll x) {
 
 	ll r = 0;
-	for (size_t i = 0; i < s.size(); i++)
+	for (ll i = 0; i < s.size(); i++)
 	{
 		r *= 10;
 		r += s[i] - '0';
@@ -1000,19 +991,53 @@ double digsum(ll x) {
 	return res;
 }
 
-bool maching(char a, char b) {
-	return (a == b || a == '?' || b == '?');
-}
-int getArea(ll x, ll v) {
-	for (ll i = 1; i <= 3; i++)
-	{
-		if (x < v * i) return i - 1;
-	}
-}
 
 void solv() {
+	ll k;
+	cin >> n >> k;
+	priority_queue<pll> q;
+	ll ta[100010], da[100010];
+	ll kind[100010]; all0(kind);
+	ll kv = 0;
+	ll res = 0;
+	rep(i, n) {
+		ll t, d;
+		cin >> t >> d;
+		ta[i] = t; da[i] = d;
+		q.push(make_pair(d,i));
+		kind[t]++;
+		if (kind[t] == 1) kv++;
+		res += da[i];
+	}
+	priority_queue<ll> qo;
+	res += kv * kv;
+	rep(i,n - k){
+		ll v1 = INF* INF;
+		while (q.empty()) {
+			auto p = q.top();
+			if (kind[ta[p.second]] == 1) {
+				qo.push(p.first);
+				continue;
+			}
+			v1 = p.first;
 
-	
+			break;
+		}
+		ll v2 = INF * INF;
+		if (!qo.empty()) {
+			auto p = qo.top();
+			v2 = p + ((kv * kv) - (kv-1) * (kv - 1));
+		}
+		res -= min(v1, v2);
+		if (v1 < v2) {
+			auto p = q.top();
+			q.pop();
+			kind[ta[p.second]]--;
+		}else{
+			qo.pop();
+		}
+	}
+	cout << res << endl;
 }
 int main() {
 	//COMinit();
