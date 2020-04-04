@@ -55,7 +55,7 @@ int dy[] = { 0,-1,0,1 };
 #define all0(a) memset(a,0,sizeof(a))
 #define alm1(a) memset(a,-1,sizeof(a))
 #define put_float(v) 	cout << fixed << setprecision(10); \
-						cout << res << endl
+						cout << v << endl
 
 const ll INF = 1000000007;
 const int MAX = 2000010;
@@ -80,6 +80,29 @@ long long COM(int n, int k) {
 	return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
 }
 
+ll getpow(ll b, ll x, ll md) {
+
+	ll t = b;
+	ll res = 1;
+	while (x > 0)
+	{
+		if (x & 1) {
+			res *= t;
+			res %= md;
+		}
+		x >>= 1;
+		t *= t;
+		t %= md;
+	}
+	return res;
+}
+ll getpow(ll b, ll x) {
+
+	return getpow(b, x, INF);
+}
+ll modinv(ll x) {
+	return getpow(x, INF - 2);
+}
 ll gcd(ll a, ll b) {
 	if (b == 0) return a;
 	return gcd(b, a % b);
@@ -635,26 +658,6 @@ bool isPrime(ll v) {
 	return true;
 }
 
-ll getpow(ll b, ll x, ll md) {
-
-	ll t = b;
-	ll res = 1;
-	while (x > 0)
-	{
-		if (x & 1) {
-			res *= t;
-			res %= md;
-		}
-		x >>= 1;
-		t *= t;
-		t %= md;
-	}
-	return res;
-}
-ll getpow(ll b, ll x) {
-
-	return getpow(b, x, INF);
-}
 
 class SegTree {
 
@@ -990,57 +993,40 @@ double digsum(ll x) {
 	}
 	return res;
 }
+vector<ll> es[200010];
+ll dp[200010];
+ll t[200010];
+void dfs1(ll x, ll f) {
 
+	dp[x] = 1;
+	for (auto v : es[x]) {
+		if (f == v) continue;
 
+		dfs1(v, x);
+		t[x] += t[v];
+		dp[x] *= (COM(t[x], t[v]) * dp[v]) %INF;
+		dp[x] %= INF;
+	}
+	t[x]++;
+}
+void dfs2(ll x, ll f) {
+
+	for (auto v : es[x]) {
+		if (f == v) continue;
+		ll d = dp[x] * modinv( (COM(t[x] - 1, t[v]) * dp[v]) %INF);
+		d %= INF;
+		dp[v] *= (COM(t[x] - 1,t[x] - t[v]) * d) % INF;
+		dp[v] %= INF;
+		t[v] = t[x];
+		dfs2(v, x);
+ 	}
+}
 void solv() {
-	ll k;
-	cin >> n >> k;
-	priority_queue<pll> q;
-	ll ta[100010], da[100010];
-	ll kind[100010]; all0(kind);
-	ll kv = 0;
-	ll res = 0;
-	rep(i, n) {
-		ll t, d;
-		cin >> t >> d;
-		ta[i] = t; da[i] = d;
-		q.push(make_pair(d,i));
-		kind[t]++;
-		if (kind[t] == 1) kv++;
-		res += da[i];
-	}
-	priority_queue<ll> qo;
-	res += kv * kv;
-	rep(i,n - k){
-		ll v1 = INF* INF;
-		while (q.empty()) {
-			auto p = q.top();
-			if (kind[ta[p.second]] == 1) {
-				qo.push(p.first);
-				continue;
-			}
-			v1 = p.first;
+	
 
-			break;
-		}
-		ll v2 = INF * INF;
-		if (!qo.empty()) {
-			auto p = qo.top();
-			v2 = p + ((kv * kv) - (kv-1) * (kv - 1));
-		}
-		res -= min(v1, v2);
-		if (v1 < v2) {
-			auto p = q.top();
-			q.pop();
-			kind[ta[p.second]]--;
-		}else{
-			qo.pop();
-		}
-	}
-	cout << res << endl;
 }
 int main() {
-	//COMinit();
+	COMinit();
 	solv();
 	return 0;
 }
