@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "atc2", "atc2\atc2.vcxproj", "{A415340D-9642-4B63-8AC0-C3B6B7AC0BE5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "texts", "texts", "{A2E98992-CCB3-44B1-9E39-2B367454C6B7}"
+	ProjectSection(SolutionItems) = preProject
+		repeat.txt = repeat.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

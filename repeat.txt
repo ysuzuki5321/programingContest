@@ -1,0 +1,89 @@
+たまにやり直したい問題集
+  https://atcoder.jp/contests/arc076/tasks/arc076_c 範囲を考える
+
+週間課題(ノータイムで実装までたどり着けるようになったら入れ替える)
+月曜日
+  https://yukicoder.me/problems/no/75 期待値dp
+  https://yukicoder.me/problems/no/241 貪欲
+  https://yukicoder.me/problems/no/238 文字列操作
+  https://yukicoder.me/problems/no/233 文字列操作
+  https://atcoder.jp/contests/abc149/tasks/abc149_e 二分探索
+  https://atcoder.jp/contests/abc155/tasks/abc155_d 二分探索
+  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/3/CGL_3_C
+  https://atcoder.jp/contests/abc160/tasks/abc160_d
+  https://atcoder.jp/contests/abc156/tasks/abc156_e
+
+火曜日
+  https://atcoder.jp/contests/m-solutions2019/tasks/m_solutions2019_c 確率と期待値のプラクティス  
+  https://yukicoder.me/problems/no/247 dp
+  https://yukicoder.me/problems/no/251 整数
+  https://yukicoder.me/problems/no/145 貪欲 実装が重くなってしまう、整理出来ないか？
+  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_1_A 幾何
+  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_B 
+  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_C
+  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_3_A
+  http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_A
+  https://atcoder.jp/contests/abc024/tasks/abc024_d
+  
+水曜日
+  https://atcoder.jp/contests/arc034/tasks/arc034_3 素因数分解と約数の合計のプラクティス
+  https://atcoder.jp/contests/abc150/tasks/abc150_d 最小公倍数の計算
+  https://yukicoder.me/problems/no/220 桁dp
+  https://yukicoder.me/problems/no/225 レーベンシュタイン距離(忘れやすいため)
+  https://yukicoder.me/problems/no/165 座圧、累積
+  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_A 幾何
+  https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_D
+  https://atcoder.jp/contests/abc108/tasks/arc102_b
+
+木曜日
+  https://atcoder.jp/contests/arc036/tasks/arc036_c 難易度の高いdp 
+  https://atcoder.jp/contests/abc148/tasks/abc148_e 解けなかった素因数分解系の問題
+  https://yukicoder.me/problems/no/17 ワーシャルフロイド
+  https://yukicoder.me/problems/no/242 期待値の問題
+    https://mathtrain.jp/expectation ここも読む
+  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_1_B 幾何
+  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/7/CGL_7_E
+  https://atcoder.jp/contests/abc076/tasks/abc076_d
+  
+
+金曜日
+  https://atcoder.jp/contests/sumitrust2019/tasks/sumitb2019_e 数え上げ
+  https://atcoder.jp/contests/abc154/tasks/abc154_f 数え上げ
+  https://atcoder.jp/contests/agc037/tasks/agc037_c 貪欲？
+  https://atcoder.jp/contests/jsc2019-qual/tasks/jsc2019_qual_c 数え上げ
+  https://atcoder.jp/contests/abc152/tasks/abc152_f 数え上げ
+  https://atcoder.jp/contests/abc117/tasks/abc117_d 桁dp
+  https://atcoder.jp/contests/abc098/tasks/arc098_b xor
+  https://atcoder.jp/contests/abc095/tasks/arc096_b
+  https://atcoder.jp/contests/abc034/tasks/abc034_d
+  https://atcoder.jp/contests/abc158/tasks/abc158_e
+  https://yukicoder.me/problems/no/727
+
+土曜日
+  https://atcoder.jp/contests/agc026/tasks/agc026_c 半分全列挙
+  https://atcoder.jp/contests/dp/tasks/dp_i 確率dp
+  https://atcoder.jp/contests/agc026/tasks/agc026_b 整数問題
+  http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_D&lang=jp 
+  https://atcoder.jp/contests/abc116/tasks/abc116_d
+  数学問題集
+  https://atcoder.jp/contests/abc144/tasks/abc144_d
+  https://atcoder.jp/contests/abc112/tasks/abc112_c
+  https://atcoder.jp/contests/abc105/tasks/abc105_c
+  
+日曜日
+  https://atcoder.jp/contests/abc078/tasks/arc085_a
+  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_d
+  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_e
+  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_f
+  https://atcoder.jp/contests/abc160/submissions/11336238
+
+毎日
+  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_c
+  
+
+スタサプは確認テストを繰り返す
+  やはり一度やったところを何度かやり直さないと、同じようなミスをするし、応用が効かない
+    暗記で大体分かっているのは7度程度繰り返すということである。
+      まずは実直にミスした点を繰り返して頭に刻み込む
+        知識は積み上げである
+          基準としてはふわっとしているときや、解くのにひっかかりがある場合はやりなおす
