@@ -995,38 +995,7 @@ double digsum(ll x) {
 }
 
 void solv() {
-	
-	cin >> n;
-	ll c[200010];
-	rep(i, n)  cin >> c[i];
-	ll pc[200010];
-	ll su[200010];
-	pc[0] = 0;
-	su[0] = 0;
 
-	rep2(i, 1, n + 1) {
-		pc[i] = pc[i - 1] * 2 + 1;
-		pc[i] %= INF;
-		su[i] = su[i - 1] * 2 + pc[i - 1] + 1;
-		su[i] %= INF;
-	}
-
-	sort(c, c + n);
-	ll res = 0;
-	rep(i, n) {
-		// 自分の右側の総和
-		ll cn = su[n - i - 1];
-		ll vr = (cn + (pc[n - i - 1] + 1)) % INF;
-		vr %= INF;
-		// 自分の左側のパターン数
-		ll cl = pc[i] + 1;
-		res += (((vr * cl)%INF) * c[i]) % INF;
-		res %= INF;
-	}
-	ll b = getpow(2, n);
-	res *= b;
-	res %= INF;
-	cout << res << endl;
 }
 int main() {
 	//COMinit();
