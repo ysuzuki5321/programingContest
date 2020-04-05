@@ -69,14 +69,14 @@
   https://atcoder.jp/contests/abc144/tasks/abc144_d
   https://atcoder.jp/contests/abc112/tasks/abc112_c
   https://atcoder.jp/contests/abc105/tasks/abc105_c
-  https://atcoder.jp/contests/abc160  
+  https://atcoder.jp/contests/abc160/tasks/abc160_f
+  https://atcoder.jp/contests/abc161/tasks/abc161_e
 
 “ú—j“ú
   https://atcoder.jp/contests/abc078/tasks/arc085_a
   https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_d
   https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_e
   https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_f
-  https://atcoder.jp/contests/abc160/submissions/11336238
 
 –ˆ“ú
   https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_c
