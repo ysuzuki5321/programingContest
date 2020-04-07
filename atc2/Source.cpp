@@ -43,8 +43,8 @@ typedef priority_queue<vl, vector<vl>, greater<vl >> vlgreaterq;
 int dx[] = { -1,0,1,0 };
 int dy[] = { 0,-1,0,1 };
 #define bit(x,v) ((ll)x << v)
-#define rep(x,n) for(int x = 0;x < n;x++)
-#define rep2(x,f,v) for(int x=f;x<v;x++)
+#define rep(x,n) for(ll x = 0;x < n;x++)
+#define rep2(x,f,v) for(ll x=f;x<v;x++)
 // 許容する誤差ε
 #define EPS (1e-10)
 // 2つのスカラーが等しいかどうか
@@ -53,10 +53,10 @@ int dy[] = { 0,-1,0,1 };
 #define EQV(a,b) ( EQ((a).real(), (b).real()) && EQ((a).imag(), (b).imag()) )
 #define all(a) a.begin(),a.end()
 #define all0(a) memset(a,0,sizeof(a))
-#define alm1(a) memset(a,-1,sizeof(a))
+#define allm1(a) memset(a,-1,sizeof(a))
 #define put_float(v) 	cout << fixed << setprecision(10); \
 						cout << v << endl
-
+#define vinsert(v,p,x) v.insert(v.begin() + p,x)
 const ll INF = 1000000007;
 const int MAX = 2000010;
 const int MOD = 1000000007;
@@ -993,9 +993,9 @@ double digsum(ll x) {
 	}
 	return res;
 }
-
 void solv() {
-	//tes 
+	
+	
 }
 int main() {
 	//COMinit();

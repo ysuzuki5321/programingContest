@@ -9,21 +9,21 @@
   https://yukicoder.me/problems/no/233 文字列操作
   https://atcoder.jp/contests/abc149/tasks/abc149_e 二分探索
   https://atcoder.jp/contests/abc155/tasks/abc155_d 二分探索
-  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/3/CGL_3_C
   https://atcoder.jp/contests/abc160/tasks/abc160_d
   https://atcoder.jp/contests/abc156/tasks/abc156_e
-
+  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/3/CGL_3_C
+ 
 火曜日
   https://atcoder.jp/contests/m-solutions2019/tasks/m_solutions2019_c 確率と期待値のプラクティス  
   https://yukicoder.me/problems/no/247 dp
   https://yukicoder.me/problems/no/251 整数
   https://yukicoder.me/problems/no/145 貪欲 実装が重くなってしまう、整理出来ないか？
+  https://atcoder.jp/contests/abc024/tasks/abc024_d
   https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_1_A 幾何
   https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_B 
   https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_C
   https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_3_A
   http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_A
-  https://atcoder.jp/contests/abc024/tasks/abc024_d
   
 水曜日
   https://atcoder.jp/contests/arc034/tasks/arc034_3 素因数分解と約数の合計のプラクティス
