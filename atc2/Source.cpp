@@ -995,7 +995,6 @@ double digsum(ll x) {
 }
 void solv() {
 	
-	
 }
 int main() {
 	//COMinit();

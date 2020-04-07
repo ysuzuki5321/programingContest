@@ -19,6 +19,7 @@
   https://yukicoder.me/problems/no/251 整数
   https://yukicoder.me/problems/no/145 貪欲 実装が重くなってしまう、整理出来ないか？
   https://atcoder.jp/contests/abc024/tasks/abc024_d
+  https://atcoder.jp/contests/abc132/tasks/abc132_f
   https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_1_A 幾何
   https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_B 
   https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_C
