@@ -994,7 +994,6 @@ double digsum(ll x) {
 	return res;
 }
 void solv() {
-
 	
 }
 int main() {
