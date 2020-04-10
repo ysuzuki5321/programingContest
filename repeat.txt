@@ -42,9 +42,9 @@
   https://yukicoder.me/problems/no/17 ワーシャルフロイド
   https://yukicoder.me/problems/no/242 期待値の問題
     https://mathtrain.jp/expectation ここも読む
+  https://atcoder.jp/contests/abc076/tasks/abc076_d
   https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_1_B 幾何
   https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/7/CGL_7_E
-  https://atcoder.jp/contests/abc076/tasks/abc076_d
   
 
 金曜日
