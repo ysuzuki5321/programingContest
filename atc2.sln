@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "texts", "texts", "{A2E98992-CCB3-44B1-9E39-2B367454C6B7}"
 	ProjectSection(SolutionItems) = preProject
 		abc161.txt = abc161.txt
+		abc162.txt = abc162.txt
 		memo.txt = memo.txt
 		repeat.txt = repeat.txt
 	EndProjectSection
