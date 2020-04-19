@@ -994,8 +994,17 @@ double digsum(ll x) {
 	}
 	return res;
 }
+bool check_parindrome(string s) {
+	int n = s.size();
+	rep(i, n / 2) {
+		if (s[i] != s[n - i - 1]) {
+			return false;
+		}
+	}
+	return true;
+}
 void solv() {
-	
+
 }
 int main() {
 	//COMinit();
