@@ -60,6 +60,7 @@ int dy[] = { 0,-1,0,1 };
 #define vsort(v) sort(all(v));
 #define ion(i,j) ((i & (1LL << j)) > 0)
 #define next(i) i++;i%=2
+#define Len size()
 const ll INF = 1000000007;
 const int MAX = 2000010;
 const int MOD = 1000000007;
@@ -1005,8 +1006,10 @@ bool check_parindrome(string s) {
 	}
 	return true;
 }
+
 void solv() {
-	
+
+
 }
 int main() {
 	//COMinit();
