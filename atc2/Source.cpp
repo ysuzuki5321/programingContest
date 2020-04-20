@@ -57,7 +57,10 @@ int dy[] = { 0,-1,0,1 };
 #define put_float(v) 	cout << fixed << setprecision(10); \
 						cout << v << endl
 #define vinsert(v,p,x) v.insert(v.begin() + p,x)
+#define vsort(v) sort(all(v));
 #define ion(i,j) ((i & (1LL << j)) > 0)
+#define next(i) i++;i%=2
+#define Len size()
 const ll INF = 1000000007;
 const int MAX = 2000010;
 const int MOD = 1000000007;
@@ -994,8 +997,19 @@ double digsum(ll x) {
 	}
 	return res;
 }
+bool check_parindrome(string s) {
+	int n = s.size();
+	rep(i, n / 2) {
+		if (s[i] != s[n - i - 1]) {
+			return false;
+		}
+	}
+	return true;
+}
+
 void solv() {
-	
+
+
 }
 int main() {
 	//COMinit();
