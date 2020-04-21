@@ -58,6 +58,7 @@ int dy[] = { 0,-1,0,1 };
 						cout << v << endl
 #define vinsert(v,p,x) v.insert(v.begin() + p,x)
 #define vsort(v) sort(all(v));
+#define dup(v) v.erase(unique(all(v)),v.end())
 #define ion(i,j) ((i & (1LL << j)) > 0)
 #define next(i) i++;i%=2
 #define Len size()
@@ -1008,7 +1009,6 @@ bool check_parindrome(string s) {
 }
 
 void solv() {
-
 
 }
 int main() {
