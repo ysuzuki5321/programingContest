@@ -45,6 +45,7 @@ int dy[] = { 0,-1,0,1 };
 #define bit(x,v) ((ll)x << v)
 #define rep(x,n) for(ll x = 0;x < n;x++)
 #define rep2(x,f,v) for(ll x=f;x<v;x++)
+#define repe(v,x) for(auto v : x)
 // 許容する誤差ε
 #define EPS (1e-10)
 // 2つのスカラーが等しいかどうか
@@ -62,6 +63,8 @@ int dy[] = { 0,-1,0,1 };
 #define ion(i,j) ((i & (1LL << j)) > 0)
 #define next(i) i++;i%=2
 #define Len size()
+#define ull unsignd long long;
+
 const ll INF = 1000000007;
 const int MAX = 2000010;
 const int MOD = 1000000007;
@@ -86,7 +89,6 @@ long long COM(int n, int k) {
 }
 
 ll getpow(ll b, ll x, ll md) {
-
 	ll t = b;
 	ll res = 1;
 	while (x > 0)
@@ -132,6 +134,7 @@ int same(int x, int y) {
 }
 
 bool unit(int x, int y) {
+
 	int px = parent(x);
 	int py = parent(y);
 
@@ -1008,8 +1011,66 @@ bool check_parindrome(string s) {
 	return true;
 }
 
-void solv() {
+ll ds[55][5010];
+ll m, s;
+vector<tuple<ll, ll, ll>> es[55];
+ll c[55], d[55];
+ll maxa = 0;
+void dij() {
 
+	priority_queue<tuple<ll, ll, ll>, vector<tuple<ll, ll, ll>>, greater<tuple<ll, ll, ll>> >q;
+	q.push(make_tuple(0, s, 1));
+	while (!q.empty())
+	{
+		auto p = q.top();
+		q.pop();
+		ll ti = get<0>(p);
+		ll rm = get<1>(p);
+		int cu = get<2>(p);
+
+		if (ds[cu][rm] != -1 && ds[cu][rm] <= ti) continue;
+		ds[cu][rm] = ti;
+		for (auto v : es[cu]) {
+			ll to = get<0>(v);
+			ll pa = get<1>(v);
+			ll t2 = get<2>(v);
+			if (rm < pa) continue;
+			ll pas = rm - pa;
+			if (pas > maxa) 
+				continue;
+			if (ds[to][pas] == -1 || ds[to][pas] > t2 + ti) {
+				q.push(make_tuple(t2 + ti, pas, to));
+			}
+
+		}
+	}
+
+}
+void solv() {
+	cin >> n >> m >> s;
+
+	rep(i, m) {
+		ll u, v, a, b;
+		cin >> u >> v >> a >> b;
+		es[u].push_back(make_tuple(v, a, b));
+		es[v].push_back(make_tuple(u, a, b));
+		maxa = max(maxa, a * m);
+	}
+	s = min(s, maxa);
+	rep2(i, 1, n + 1) {
+		cin >> c[i] >> d[i];
+		es[i].push_back(make_tuple(i, -c[i], d[i]));
+	}
+	allm1(ds);
+	dij();
+	rep2(i, 2, n + 1) {
+		ll mi = INF * INF;
+		rep(j, maxa + 1) {
+			if (ds[i][j] == -1) continue;
+			mi = min(mi, ds[i][j]);
+		}
+		cout << mi << endl;
+	}
 }
 int main() {
 	//COMinit();
