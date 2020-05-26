@@ -1,89 +1,145 @@
-たまにやり直したい問題集
+まだ足りていない基礎知識系
+セグ木
+ダブリング
+Nim系
+強連結成分分解
+接尾辞配列
+フロー
   https://atcoder.jp/contests/arc076/tasks/arc076_c 範囲を考える
 
-週間課題(ノータイムで実装までたどり着けるようになったら入れ替える)
-月曜日
-  https://yukicoder.me/problems/no/75 期待値dp
-  https://yukicoder.me/problems/no/241 貪欲
-  https://yukicoder.me/problems/no/238 文字列操作
-  https://yukicoder.me/problems/no/233 文字列操作
-  https://atcoder.jp/contests/abc149/tasks/abc149_e 二分探索
-  https://atcoder.jp/contests/abc155/tasks/abc155_d 二分探索
-  https://atcoder.jp/contests/abc160/tasks/abc160_d
-  https://atcoder.jp/contests/abc156/tasks/abc156_e
-  https://atcoder.jp/contests/abc156/tasks/abc156_f
-  https://atcoder.jp/contests/abc164/tasks/abc164_e
-  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/3/CGL_3_C
+週間課題(ノータイムで実装までたどり着けるようになったら期間を延ばす)
+毎週
+	月曜日
+	  https://atcoder.jp/contests/abc149/tasks/abc149_e 二分探索
+	  https://atcoder.jp/contests/abc155/tasks/abc155_d 二分探索
+	  https://atcoder.jp/contests/abc156/tasks/abc156_e
+	  https://atcoder.jp/contests/abc156/tasks/abc156_f
+	  https://atcoder.jp/contests/abc164/tasks/abc164_e
+	  https://atcoder.jp/contests/AGC044/tasks/agc044_b
+
+	火曜日
+	  https://atcoder.jp/contests/m-solutions2019/tasks/m_solutions2019_c 確率と期待値のプラクティス  
+	  https://atcoder.jp/contests/abc024/tasks/abc024_d
+	  https://atcoder.jp/contests/abc132/tasks/abc132_f
+	  https://atcoder.jp/contests/abc128/tasks/abc128_f
+	  https://atcoder.jp/contests/abc168/tasks/abc168_e
+	　
+	水曜日
+	  https://atcoder.jp/contests/abc150/tasks/abc150_d 最小公倍数の計算
+	  https://atcoder.jp/contests/abc108/tasks/arc102_b
+	  https://atcoder.jp/contests/joi2020yo2/tasks/joi2020_yo2_d
+	  lcaを実装する(慣れるため) https://atcoder.jp/contests/abc014/tasks/abc014_4 ダブリング
+	  lcaクラスを使用する https://atcoder.jp/contests/abc133/tasks/abc133_f
+
+	木曜日
+	  https://atcoder.jp/contests/arc036/tasks/arc036_c 難易度の高いdp 
+	  https://atcoder.jp/contests/donuts-2015/tasks/donuts_2015_3
+	  https://atcoder.jp/contests/abc076/tasks/abc076_d
+	  https://atcoder.jp/contests/abc093/tasks/arc094_b
+ 	  https://atcoder.jp/contests/nikkei2019-2-qual/tasks/nikkei2019_2_qual_d
+
+	金曜日
+	  https://atcoder.jp/contests/sumitrust2019/tasks/sumitb2019_e 数え上げ
+	  https://atcoder.jp/contests/abc154/tasks/abc154_f 数え上げ
+	  https://atcoder.jp/contests/abc152/tasks/abc152_f 数え上げ
+	  https://atcoder.jp/contests/code-festival-2014-qualb/tasks/code_festival_qualB_d
+
+	土曜日
+	  https://atcoder.jp/contests/agc026/tasks/agc026_b 整数問題
+	  https://atcoder.jp/contests/abc160/tasks/abc160_f
+	  https://atcoder.jp/contests/abc162/tasks/abc162_e
+	  https://atcoder.jp/contests/abc115/tasks/abc115_d
+	  https://atcoder.jp/contests/abc130/tasks/abc130_f
+	  https://atcoder.jp/contests/abc129/tasks/abc129_f
+	  数学問題集
+	  https://atcoder.jp/contests/abc144/tasks/abc144_d
+	  http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_D&lang=jp 
+		
+	日曜日
+	  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_e
+	  https://atcoder.jp/contests/abc150/tasks/abc150_e
+	  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_f
+	  https://atcoder.jp/contests/abc157/tasks/abc157_f
+
+1週目
+	月曜日
+	  https://yukicoder.me/problems/no/75 期待値dp
+	  https://yukicoder.me/problems/no/241 貪欲
+	  https://yukicoder.me/problems/no/238 文字列操作
+	  https://atcoder.jp/contests/abc160/tasks/abc160_d
+	  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/3/CGL_3_C
  
-火曜日
-  https://atcoder.jp/contests/m-solutions2019/tasks/m_solutions2019_c 確率と期待値のプラクティス  
-  https://yukicoder.me/problems/no/247 dp
-  https://yukicoder.me/problems/no/251 整数
-  https://yukicoder.me/problems/no/145 貪欲 実装が重くなってしまう、整理出来ないか？
-  https://atcoder.jp/contests/abc024/tasks/abc024_d
-  https://atcoder.jp/contests/abc132/tasks/abc132_f
-  https://atcoder.jp/contests/abc128/tasks/abc128_f
-  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_1_A 幾何
-  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_B 
-  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_C
-  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_3_A
-  http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_A
-  
-水曜日
-  https://atcoder.jp/contests/arc034/tasks/arc034_3 素因数分解と約数の合計のプラクティス
-  https://atcoder.jp/contests/abc150/tasks/abc150_d 最小公倍数の計算
-  https://yukicoder.me/problems/no/220 桁dp
-  https://yukicoder.me/problems/no/225 レーベンシュタイン距離(忘れやすいため)
-  https://yukicoder.me/problems/no/165 座圧、累積
-  https://atcoder.jp/contests/abc108/tasks/arc102_b
-  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_A 幾何
-  https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_D
+	火曜日
+	  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_1_A 幾何
+	  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_B 
+	  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_C
+	  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_3_A
+	  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_4_A  
 
-木曜日
-  https://atcoder.jp/contests/arc036/tasks/arc036_c 難易度の高いdp 
-  https://atcoder.jp/contests/abc148/tasks/abc148_e 解けなかった素因数分解系の問題
-  https://yukicoder.me/problems/no/17 ワーシャルフロイド
-  https://yukicoder.me/problems/no/242 期待値の問題
-    https://mathtrain.jp/expectation ここも読む
-  https://atcoder.jp/contests/abc076/tasks/abc076_d
-  https://atcoder.jp/contests/abc093/tasks/arc094_b
-  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_1_B 幾何
-  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/7/CGL_7_E
+	水曜日
+	  https://atcoder.jp/contests/arc034/tasks/arc034_3 素因数分解と約数の合計のプラクティス
+	  https://yukicoder.me/problems/no/225 レーベンシュタイン距離(忘れやすいため)
+	  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_2_A 幾何
+	  https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_D
 
-金曜日
-  https://atcoder.jp/contests/sumitrust2019/tasks/sumitb2019_e 数え上げ
-  https://atcoder.jp/contests/abc154/tasks/abc154_f 数え上げ
-  https://atcoder.jp/contests/agc037/tasks/agc037_c 貪欲？
-  https://atcoder.jp/contests/jsc2019-qual/tasks/jsc2019_qual_c 数え上げ
-  https://atcoder.jp/contests/abc152/tasks/abc152_f 数え上げ
-  https://atcoder.jp/contests/abc117/tasks/abc117_d 桁dp
-  https://atcoder.jp/contests/abc098/tasks/arc098_b xor
-  https://atcoder.jp/contests/abc095/tasks/arc096_b
-  https://atcoder.jp/contests/abc034/tasks/abc034_d
-  https://atcoder.jp/contests/abc158/tasks/abc158_e
-  https://yukicoder.me/problems/no/727
+	木曜日
+	  https://atcoder.jp/contests/abc148/tasks/abc148_e 解けなかった素因数分解系の問題
+	  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/all/CGL_1_B 幾何
+	  https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/7/CGL_7_E
 
-土曜日
-  https://atcoder.jp/contests/agc026/tasks/agc026_c 半分全列挙
-  https://atcoder.jp/contests/dp/tasks/dp_i 確率dp
-  https://atcoder.jp/contests/agc026/tasks/agc026_b 整数問題
-  https://atcoder.jp/contests/abc116/tasks/abc116_d
-  https://atcoder.jp/contests/abc160/tasks/abc160_f
-  https://atcoder.jp/contests/abc161/tasks/abc161_e
-  https://atcoder.jp/contests/abc162/tasks/abc162_e
-  数学問題集
-  https://atcoder.jp/contests/abc144/tasks/abc144_d
-  https://atcoder.jp/contests/abc112/tasks/abc112_c
-  https://atcoder.jp/contests/abc105/tasks/abc105_c
-  http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_D&lang=jp 
+	金曜日
+	  https://atcoder.jp/contests/abc117/tasks/abc117_d 桁dp
+	  https://atcoder.jp/contests/abc098/tasks/arc098_b xor
+	  https://atcoder.jp/contests/abc034/tasks/abc034_d
+	  https://yukicoder.me/problems/no/727
 
-日曜日
-  https://atcoder.jp/contests/abc078/tasks/arc085_a
-  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_d
-  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_e
-  https://atcoder.jp/contests/abc150/tasks/abc150_e
-  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_f
-  https://atcoder.jp/contests/abc157/tasks/abc157_f
+	土曜日
+	  https://atcoder.jp/contests/dp/tasks/dp_i 確率dp
+	  https://atcoder.jp/contests/abc161/tasks/abc161_e
+	  https://atcoder.jp/contests/abc105/tasks/abc105_c
+
+	日曜日
+	  https://atcoder.jp/contests/abc078/tasks/arc085_a
+
+2週目
+	月曜日
+	  https://yukicoder.me/problems/no/233 文字列操作
+
+
+	火曜日
+	  https://yukicoder.me/problems/no/247 dp
+	  https://yukicoder.me/problems/no/251 整数
+	  https://yukicoder.me/problems/no/145 貪欲 実装が重くなってしまう、整理出来ないか？
+
+
+	水曜日
+	  https://yukicoder.me/problems/no/220 桁dp
+	  https://yukicoder.me/problems/no/165 座圧、累積
+
+
+	木曜日
+	  https://yukicoder.me/problems/no/17 ワーシャルフロイド
+	  https://yukicoder.me/problems/no/242 期待値の問題
+		https://mathtrain.jp/expectation ここも読む
+
+	
+	金曜日
+	  https://atcoder.jp/contests/agc037/tasks/agc037_c 貪欲？
+	  https://atcoder.jp/contests/jsc2019-qual/tasks/jsc2019_qual_c 数え上げ
+	  https://atcoder.jp/contests/abc095/tasks/arc096_b
+	  https://atcoder.jp/contests/abc158/tasks/abc158_e
+
+	土曜日
+	  https://atcoder.jp/contests/agc026/tasks/agc026_c 半分全列挙
+	  https://atcoder.jp/contests/abc116/tasks/abc116_d
+	  https://atcoder.jp/contests/abc112/tasks/abc112_c
+
+
+	日曜日
+	  https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_d
+	  https://atcoder.jp/contests/dp/tasks/dp_u
+
+
 
 毎日
   https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_c
@@ -99,4 +155,4 @@
 500*a+100*b+50*c=50*d
 10*a+2*b+c=d
 10a+2b=d-c
-5a=(d-c)/2-b
+5a=(d-c)/2-b 

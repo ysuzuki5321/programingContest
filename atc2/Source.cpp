@@ -40,6 +40,10 @@ typedef priority_queue<pll, vector<pll>, greater<pll>> pllgreaterq;
 typedef priority_queue<pair<ll, pll>, vector<pair<ll, pll>>, greater<pair<ll, pll>>> plpllgreaterq;
 typedef priority_queue<vi, vector<vi>, greater<vi>> vigreaterq;
 typedef priority_queue<vl, vector<vl>, greater<vl >> vlgreaterq;
+template <class o,class p,class q>
+using tuple3q = priority_queue<tuple<o, p, q>, vector<tuple<o, p, q>>, greater<tuple<o,p,q>>> ;
+template <class o, class p, class q, class r>
+using tuple4q = priority_queue<tuple<o, p, q,r>, vector<tuple<o, p, q,r>>, greater<tuple<o, p, q,r>>>;
 int dx[] = { -1,0,1,0 };
 int dy[] = { 0,-1,0,1 };
 #define bit(x,v) ((ll)x << v)
@@ -57,14 +61,29 @@ int dy[] = { 0,-1,0,1 };
 #define allm1(a) memset(a,-1,sizeof(a))
 #define put_float(v) 	cout << fixed << setprecision(10); \
 						cout << v << endl
+#define put(v) cout << v << endl
 #define vinsert(v,p,x) v.insert(v.begin() + p,x)
 #define vsort(v) sort(all(v));
 #define dup(v) v.erase(unique(all(v)),v.end())
 #define ion(i,j) ((i & (1LL << j)) > 0)
 #define next(i) i++;i%=2
 #define Len size()
-#define ull unsignd long long;
-
+#define ull unsignd long long
+#define psp(a,b) push_back(make_pair(a,b))
+#define psp2(a,b) push(make_pair(a,b))
+#define cini(a) a; cin >> a
+#define infa(a,b) (a + b) % INF
+#define infm(a,b) (a * b) % INF
+#define infd(a,b) (a * modinv(b)) % INF
+#define infs(a,b) (a + INF - b) % INF
+#define inf(a) (a) %= INF
+#define inff(a) ((a) % INF)
+#define No cout << "No" << endl
+#define Yes cout << "Yes" << endl
+#define NO cout << "NO" << endl
+#define YES cout << "YES" << endl
+#define smal -INF*INF
+#define big INF*INF
 const ll INF = 1000000007;
 const int MAX = 2000010;
 const int MOD = 1000000007;
@@ -114,6 +133,68 @@ ll gcd(ll a, ll b) {
 	if (b == 0) return a;
 	return gcd(b, a % b);
 }
+
+class mint {
+	int md = 1000000007;
+public:
+	long long x;
+	mint(ll x, ll md) {
+		this->md = md;
+		this->x = (x % md + md) % md;
+	}
+	mint(long long x = 0) : x((x% md + md) % md) {}
+	mint operator-() const {
+		return mint(-x);
+	}
+	mint& operator+=(const mint& a) {
+		if ((x += a.x) >= md) x -= md;
+		return *this;
+	}
+	mint& operator-=(const mint& a) {
+		if ((x += md - a.x) >= md) x -= md;
+		return *this;
+	}
+	mint& operator*=(const  mint& a) {
+		(x *= a.x) %= md;
+		return *this;
+	}
+	mint operator+(const mint& a) const {
+		mint res(*this);
+		return res += a;
+	}
+	mint operator-(const mint& a) const {
+		mint res(*this);
+		return res -= a;
+	}
+	mint operator*(const mint& a) const {
+		mint res(*this);
+		return res *= a;
+	}
+	mint pow(ll t) const {
+		if (!t) return 1;
+		mint a = pow(t >> 1);
+		a *= a;
+		if (t & 1) a *= *this;
+		return a;
+	}
+	// for prime mod
+	mint inv() const {
+		return pow(md - 2);
+	}
+	mint& operator/=(const mint& a) {
+		return (*this) *= a.inv();
+	}
+	mint operator/(const mint& a) const {
+		mint res(*this);
+		return res /= a;
+	}
+
+	friend ostream& operator<<(ostream& os, const mint& m) {
+		os << m.x;
+		return os;
+	}
+};
+
 int pr[100010];
 int lank[100010];
 void uini(int n) {
@@ -444,10 +525,56 @@ int left(int i) {
 int right(int i) {
 	return i * 2 + 2;
 }
-struct edge {
-	int from, to;
+class edge {
+public:
+	int from, to,i;
 	ll val;
-	edge(int from, int to, ll val) : from(from), to(to), val(val) {}
+	edge() {}
+	edge(ll to) : to(to) {}
+	edge(ll to,ll i) : to(to),i(i) {}
+	edge(ll from, ll to, ll val) : from(from), to(to), val(val) {}
+};
+
+class LCA {
+private:
+	vector<vector<edge>> v;
+	vector<vector<int>> parent;
+	vector<int> depth;
+	void dfs(int n, int m, int d) {
+		parent[0][n] = m;
+		depth[n] = d;
+		for (auto x : v[n]) {
+			if (x.to != m) dfs(x.to, n, d + 1);
+		}
+	}
+public:
+	LCA(ll N, ll root, vector<vector<edge>>& tree) {
+		v = tree;
+		parent = vector<vector<int>>(21, vector<int>(N + 1, 0));
+		depth = vector<int>(N + 1, 0);
+		dfs(root, -1, 0);
+		for (int j = 0; j + 1 < 20; j++) {
+			for (int i = 1; i <= N; i++) {
+				if (parent[j][i] < 0) parent[j + 1][i] = -1;
+				else parent[j + 1][i] = parent[j][parent[j][i]];
+			}
+		}
+	}
+	int lca(int n, int m) {
+		if (depth[n] > depth[m]) swap(n, m);
+		for (int j = 0; j < 20; j++) {
+			if ((depth[m] - depth[n]) >> j & 1) m = parent[j][m];
+		}
+		if (n == m) return n;
+		for (int j = 19; j >= 0; j--) {
+			if (parent[j][n] != parent[j][m]) {
+				n = parent[j][n];
+				m = parent[j][m];
+			}
+		}
+		return parent[0][n];
+	}
+	int dep(int n) { return depth[n]; }
 };
 ll k;
 int _rank[1010];
@@ -787,6 +914,7 @@ public:
 	static const int ONLINE_FRONT = -2;
 	static const int ON_SEGMENT = 0;
 	static int ccw(Point p0, Point p1, Point p2) {
+		// 線分はp0とp1でp2がどこにあるかを探る
 		Point a = p1 - p0;
 		Point b = p2 - p0;
 		if (cross(a, b) > EPS) return COUNTER_CLOCKWISE;
@@ -1007,73 +1135,23 @@ bool check_parindrome(string s) {
 		if (s[i] != s[n - i - 1]) {
 			return false;
 		}
+
 	}
 	return true;
 }
 
-ll ds[55][5010];
-ll m, s;
-vector<tuple<ll, ll, ll>> es[55];
-ll c[55], d[55];
-ll maxa = 0;
-void dij() {
+//　ここまでライブラリ
+// ここからコード
 
-	priority_queue<tuple<ll, ll, ll>, vector<tuple<ll, ll, ll>>, greater<tuple<ll, ll, ll>> >q;
-	q.push(make_tuple(0, s, 1));
-	while (!q.empty())
-	{
-		auto p = q.top();
-		q.pop();
-		ll ti = get<0>(p);
-		ll rm = get<1>(p);
-		int cu = get<2>(p);
-
-		if (ds[cu][rm] != -1 && ds[cu][rm] <= ti) continue;
-		ds[cu][rm] = ti;
-		for (auto v : es[cu]) {
-			ll to = get<0>(v);
-			ll pa = get<1>(v);
-			ll t2 = get<2>(v);
-			if (rm < pa) continue;
-			ll pas = rm - pa;
-			if (pas > maxa) 
-				continue;
-			if (ds[to][pas] == -1 || ds[to][pas] > t2 + ti) {
-				q.push(make_tuple(t2 + ti, pas, to));
-			}
-
-		}
-	}
-
-}
 void solv() {
-	cin >> n >> m >> s;
+	
 
-	rep(i, m) {
-		ll u, v, a, b;
-		cin >> u >> v >> a >> b;
-		es[u].push_back(make_tuple(v, a, b));
-		es[v].push_back(make_tuple(u, a, b));
-		maxa = max(maxa, a * m);
-	}
-	s = min(s, maxa);
-	rep2(i, 1, n + 1) {
-		cin >> c[i] >> d[i];
-		es[i].push_back(make_tuple(i, -c[i], d[i]));
-	}
-	allm1(ds);
-	dij();
-	rep2(i, 2, n + 1) {
-		ll mi = INF * INF;
-		rep(j, maxa + 1) {
-			if (ds[i][j] == -1) continue;
-			mi = min(mi, ds[i][j]);
-		}
-		cout << mi << endl;
-	}
 }
-int main() {
-	//COMinit();
+
+
+int main()
+{
+	COMinit();
 	solv();
 	return 0;
 }
