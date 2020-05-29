@@ -30,7 +30,7 @@ namespace Remainder
                 from
                     Schedule
                 where
-                    ((@interval / interval) * interval + start) =@interval
+                    (((@interval - start) / interval) * interval + start) =@interval
                 ";
             var param = new DynamicParameters();
             param.AddDynamicParams(new { interval = interval });
