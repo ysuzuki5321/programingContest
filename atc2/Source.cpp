@@ -1145,7 +1145,14 @@ bool check_parindrome(string s) {
 
 void solv() {
 	
-
+	cin >> n;
+	ll res = 1;
+	rep(i, n) {
+		inf(res *= COM(n * 2 - (i * 2), 2));
+	}
+	inf(res *= fac[n]);
+	cout << res << endl;
+		
 }
 
 
