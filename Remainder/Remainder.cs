@@ -24,14 +24,7 @@ namespace Remainder
         private void Remainder_Load(object sender, EventArgs e)
         {
             var interval = Interval();
-            var sql = @"
-                select
-                    *    
-                from
-                    Schedule
-                where
-                    (((@interval - start) / interval) * interval + start) =@interval
-                ";
+            var sql = DataSql();
             var param = new DynamicParameters();
             param.AddDynamicParams(new { interval = interval });
 
@@ -39,6 +32,20 @@ namespace Remainder
             TodayGrid.DataSource = data;
             
             if (data == null) { }
+        }
+
+        private string DataSql()
+        {
+            return @"
+                select
+                    *    
+                from
+                    Schedule
+                where
+                    (((@interval - start) / interval) * interval + start) =@interval
+                order by
+                    priority,id
+                ";
         }
 
         private int Interval()

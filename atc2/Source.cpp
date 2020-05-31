@@ -1032,157 +1032,28 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-
-
-
 void solv() {
 	cin >> n;
-	ll ki[100010];
-	vector<ll> t[100010];
-	vector<bool> use[100010];
-	rep(i, n) {
-		cin >> ki[i];
-		rep(j, ki[i]) {
-			ll v;
-			cin >> v;
-			t[i].push_back(v);
-			use[i].push_back(false);
-		}
-	}
-
-	ll m;
-	cin >> m;
-	ll a[300010];
-	rep(i, m) {
+	ll a[100010];
+	rep(i, n + 1)
 		cin >> a[i];
+
+	ll res = a[n];
+	for (int i = n - 1; i >= 0; i--)
+	{
+		ll u = (a[i+ 1] / 2) + a[i+1] % 2;
+		
+		if (i < 64) {
+			unsigned long long p = pow(2, i);
+
+			if (p < u + a[i]) {
+				cout << -1 << endl;
+				return;
+			}
+		}
+		res += u + a[i];
 	}
-	priority_queue<tuple<ll,ll,ll>> q1;
-	priority_queue<tuple<ll, ll, ll>> q2;
-
-	deque<pll> ot[100010];
-
-	rep(i, n) {
-		rep(j, min(ki[i],2LL)) {
-			if (j == 0) {
-				q1.push(make_tuple(t[i][j], i,j));
-				q2.push(make_tuple(t[i][j], i, j));
-			}
-			else {
-				q2.push(make_tuple( t[i][j], i,j));
-			}
-		}
-		ot[i].psp(t[i][0],0);
-		if (ki[i] > 1) {
-			ot[i].psp(t[i][1],1);
-		}
-	}
-	// 次はどれを取るか？
-	rep(i, m) {
-		ll v = a[i];
-		ll val = 0;
-		cout << endl;
-		cout << v << endl;
-		rep(j, n) {
-			if (ot[j].size() == 0)
-			{
-				cout << endl;
-				continue;
-			}
-			if(ot[j].size() == 2)
-				cout << ot[j].front().first << " " << ot[j].back().first << endl;
-			else 
-				cout << ot[j].front().first << endl;
-		}
-
-		if (v == 1) {
-
-			while (!q1.empty())
-			{
-				auto p = q1.top();
-				q1.pop();
-				auto cost = get<0>(p);
-				auto col = get<1>(p);
-				auto r = get<2>(p);
-				if (use[col][r]) {
-					// 既に取られている
-					continue;
-				}
-
-				val = cost;
-				use[col][r] = true;
-
-				// 取れるのなし
-
-				//q1,q2に足す
-				ot[col].pop_front();
-				if (ot[col].empty())
-					break;
-				q1.push(make_tuple(ot[col].front().first, col, ot[col].front().second));
-				int next = ot[col].back().second + 1;
-				if (next >= ki[col])
-					break;
-				ot[col].psp(t[col][next], next);
-
-				q2.push(make_tuple(ot[col].back().first, col, ot[col].back().second));
-				break;
-			}
-		}
-		else {	
-			while (!q2.empty())
-			{
-				auto p = q2.top();
-				q2.pop();
-				auto cost = get<0>(p);
-				auto col = get<1>(p);
-				auto r = get<2>(p);
-				if (use[col][r]) {
-					// 既に取られている
-					continue;
-				}
-
-				val = cost;
-				use[col][r] = true;
-				// 取れるのなし
-				int next = ot[col].back().second + 1;
-
-				//q1,q2に足す
-				if (ot[col].front().first == cost) {
-
-					ot[col].pop_front();
-					if (ot[col].empty())
-						break;
-
-					//1列目を取った場合
-					q1.push(make_tuple(ot[col].front().first, col, ot[col].front().second));
-					if (next >= ki[col])
-						break;
-					ot[col].psp(t[col][next], next);
-
-				}
-				else {
-
-					//2列目を取った場合
-					ot[col].pop_back();
-					if (ot[col].empty())
-						break;
-
-					if (next >= ki[col])
-						break;
-
-					ot[col].psp(t[col][next],next);
-				}
-				if (next >= ki[col])
-					break;
-
-				q2.push(make_tuple(ot[col].back().first, col, next));
-				break;
-			}
-
-		}
-		cout << val << endl;
-	}
-
-
+	cout << res << endl;
 }
 
 
