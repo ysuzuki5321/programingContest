@@ -40,10 +40,10 @@ typedef priority_queue<pll, vector<pll>, greater<pll>> pllgreaterq;
 typedef priority_queue<pair<ll, pll>, vector<pair<ll, pll>>, greater<pair<ll, pll>>> plpllgreaterq;
 typedef priority_queue<vi, vector<vi>, greater<vi>> vigreaterq;
 typedef priority_queue<vl, vector<vl>, greater<vl >> vlgreaterq;
-template <class o,class p,class q>
-using tuple3q = priority_queue<tuple<o, p, q>, vector<tuple<o, p, q>>, greater<tuple<o,p,q>>> ;
+template <class o, class p, class q>
+using tuple3q = priority_queue<tuple<o, p, q>, vector<tuple<o, p, q>>, greater<tuple<o, p, q>>>;
 template <class o, class p, class q, class r>
-using tuple4q = priority_queue<tuple<o, p, q,r>, vector<tuple<o, p, q,r>>, greater<tuple<o, p, q,r>>>;
+using tuple4q = priority_queue<tuple<o, p, q, r>, vector<tuple<o, p, q, r>>, greater<tuple<o, p, q, r>>>;
 int dx[] = { -1,0,1,0 };
 int dy[] = { 0,-1,0,1 };
 #define bit(x,v) ((ll)x << v)
@@ -231,116 +231,8 @@ bool unit(int x, int y) {
 	return true;
 }
 
-ll merge(ll* a, int left, int mid, int right) {
-	ll n1 = mid - left;
-	ll n2 = right - mid;
-	vector<int> L(n1 + 1);
-	vector<int> R(n2 + 1);
-	for (size_t i = 0; i < n1; i++)
-	{
-		L[i] = a[left + i];
-	}
-	for (size_t i = 0; i < n2; i++)
-	{
-		R[i] = a[mid + i];
-	}
-
-	L[n1] = INF;
-	R[n2] = INF;
-	ll i = 0;
-	ll j = 0;
-	ll r = 0;
-	for (size_t k = left; k < right; k++)
-	{
-		if (L[i] <= R[j]) {
-			a[k] = L[i];
-			i++;
-		}
-		else {
-			a[k] = R[j];
-			r += n1 - i;
-			j++;
-		}
-	}
-	return r;
-}
-ll merge2(pair<int, char>* a, int left, int mid, int right) {
-	ll n1 = mid - left;
-	ll n2 = right - mid;
-	vector<pair<int, char>> L(n1 + 1);
-	vector<pair<int, char>> R(n2 + 1);
-	for (size_t i = 0; i < n1; i++)
-	{
-		L[i] = a[left + i];
-	}
-	for (size_t i = 0; i < n2; i++)
-	{
-		R[i] = a[mid + i];
-	}
-
-	L[n1] = make_pair(INF, ' ');
-	R[n2] = make_pair(INF, ' ');
-	ll i = 0;
-	ll j = 0;
-	ll r = 0;
-	for (size_t k = left; k < right; k++)
-	{
-		if (L[i].first <= R[j].first) {
-			a[k] = L[i];
-			i++;
-		}
-		else {
-			a[k] = R[j];
-			r += n1 - i;
-			j++;
-		}
-	}
-	return r;
-}
-ll mergeSort2(pair<int, char>* a, int left, int right) {
-	ll res = 0;
-	if (left + 1 < right) {
-		int mid = (left + right) / 2;
-		res = mergeSort2(a, left, mid);
-		res += mergeSort2(a, mid, right);
-		res += merge2(a, left, mid, right);
-	}
-	return res;
-}
-ll mergeSort(ll* a, int left, int right) {
-	ll res = 0;
-	if (left + 1 < right) {
-		int mid = (left + right) / 2;
-		res = mergeSort(a, left, mid);
-		res += mergeSort(a, mid, right);
-		res += merge(a, left, mid, right);
-	}
-	return res;
-}
-int partition(pair<int, char>* a, int p, int r) {
-	pair<int, char> x = a[r];
-	int i = p - 1;
-	for (size_t j = p; j < r; j++)
-	{
-		if (a[j].first <= x.first) {
-			i++;
-			swap(a[i], a[j]);
-		}
-	}
-	swap(a[i + 1], a[r]);
-	return i + 1;
-}
-void quick(pair<int, char>* a, int p, int r) {
-	if (p < r) {
-		int q = partition(a, p, r);
-		quick(a, p, q - 1);
-		quick(a, q + 1, r);
-	}
-}
-
 ll n;
 int ci = 0;
-ll P[1000010];
 struct Node {
 	int key;
 	int priority;
@@ -527,11 +419,11 @@ int right(int i) {
 }
 class edge {
 public:
-	int from, to,i;
+	int from, to, i;
 	ll val;
 	edge() {}
 	edge(ll to) : to(to) {}
-	edge(ll to,ll i) : to(to),i(i) {}
+	edge(ll to, ll i) : to(to), i(i) {}
 	edge(ll from, ll to, ll val) : from(from), to(to), val(val) {}
 };
 
@@ -673,8 +565,6 @@ struct UnionFind {
 		return ans;
 	}
 };
-void yes() { cout << "Yes\n"; exit(0); }
-void no() { cout << "No\n"; exit(0); }
 vector<ll> getp(ll n) {
 
 	vector<ll> res;
@@ -1143,22 +1033,162 @@ bool check_parindrome(string s) {
 //　ここまでライブラリ
 // ここからコード
 
+
+
 void solv() {
-	
 	cin >> n;
-	ll res = 1;
+	ll ki[100010];
+	vector<ll> t[100010];
+	vector<bool> use[100010];
 	rep(i, n) {
-		inf(res *= COM(n * 2 - (i * 2), 2));
+		cin >> ki[i];
+		rep(j, ki[i]) {
+			ll v;
+			cin >> v;
+			t[i].push_back(v);
+			use[i].push_back(false);
+		}
 	}
-	inf(res *= fac[n]);
-	cout << res << endl;
-		
+
+	ll m;
+	cin >> m;
+	ll a[300010];
+	rep(i, m) {
+		cin >> a[i];
+	}
+	priority_queue<tuple<ll,ll,ll>> q1;
+	priority_queue<tuple<ll, ll, ll>> q2;
+
+	deque<pll> ot[100010];
+
+	rep(i, n) {
+		rep(j, min(ki[i],2LL)) {
+			if (j == 0) {
+				q1.push(make_tuple(t[i][j], i,j));
+				q2.push(make_tuple(t[i][j], i, j));
+			}
+			else {
+				q2.push(make_tuple( t[i][j], i,j));
+			}
+		}
+		ot[i].psp(t[i][0],0);
+		if (ki[i] > 1) {
+			ot[i].psp(t[i][1],1);
+		}
+	}
+	// 次はどれを取るか？
+	rep(i, m) {
+		ll v = a[i];
+		ll val = 0;
+		cout << endl;
+		cout << v << endl;
+		rep(j, n) {
+			if (ot[j].size() == 0)
+			{
+				cout << endl;
+				continue;
+			}
+			if(ot[j].size() == 2)
+				cout << ot[j].front().first << " " << ot[j].back().first << endl;
+			else 
+				cout << ot[j].front().first << endl;
+		}
+
+		if (v == 1) {
+
+			while (!q1.empty())
+			{
+				auto p = q1.top();
+				q1.pop();
+				auto cost = get<0>(p);
+				auto col = get<1>(p);
+				auto r = get<2>(p);
+				if (use[col][r]) {
+					// 既に取られている
+					continue;
+				}
+
+				val = cost;
+				use[col][r] = true;
+
+				// 取れるのなし
+
+				//q1,q2に足す
+				ot[col].pop_front();
+				if (ot[col].empty())
+					break;
+				q1.push(make_tuple(ot[col].front().first, col, ot[col].front().second));
+				int next = ot[col].back().second + 1;
+				if (next >= ki[col])
+					break;
+				ot[col].psp(t[col][next], next);
+
+				q2.push(make_tuple(ot[col].back().first, col, ot[col].back().second));
+				break;
+			}
+		}
+		else {	
+			while (!q2.empty())
+			{
+				auto p = q2.top();
+				q2.pop();
+				auto cost = get<0>(p);
+				auto col = get<1>(p);
+				auto r = get<2>(p);
+				if (use[col][r]) {
+					// 既に取られている
+					continue;
+				}
+
+				val = cost;
+				use[col][r] = true;
+				// 取れるのなし
+				int next = ot[col].back().second + 1;
+
+				//q1,q2に足す
+				if (ot[col].front().first == cost) {
+
+					ot[col].pop_front();
+					if (ot[col].empty())
+						break;
+
+					//1列目を取った場合
+					q1.push(make_tuple(ot[col].front().first, col, ot[col].front().second));
+					if (next >= ki[col])
+						break;
+					ot[col].psp(t[col][next], next);
+
+				}
+				else {
+
+					//2列目を取った場合
+					ot[col].pop_back();
+					if (ot[col].empty())
+						break;
+
+					if (next >= ki[col])
+						break;
+
+					ot[col].psp(t[col][next],next);
+				}
+				if (next >= ki[col])
+					break;
+
+				q2.push(make_tuple(ot[col].back().first, col, next));
+				break;
+			}
+
+		}
+		cout << val << endl;
+	}
+
+
 }
 
 
 int main()
 {
-	COMinit();
+	//COMinit();
 	solv();
 	return 0;
 }

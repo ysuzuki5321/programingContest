@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "texts", "texts", "{A2E98992
 		AGC044.txt = AGC044.txt
 		master_of_integer.txt = master_of_integer.txt
 		memo.txt = memo.txt
+		past3.txt = past3.txt
 		repeat.txt = repeat.txt
 		repeat_english.txt = repeat_english.txt
 		repeat_master_of_integer.txt = repeat_master_of_integer.txt
