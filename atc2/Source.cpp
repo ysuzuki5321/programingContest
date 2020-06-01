@@ -1034,37 +1034,7 @@ bool check_parindrome(string s) {
 // ‚±‚±‚©‚çƒR[ƒh
 
 void solv() {
-
-	cin >> n >> k; 
-	ll a[30010],
-	b[30010];
-	rep(i, n) {
-		cin >> a[i];
-	}
-	rep(i, n)
-		cin >> b[i];
-
-	sort(a, a + n);
-	sort(b, b + n);
-	ll hi = big;
-	ll lo = 0;
-	while (lo + 1 < hi)
-	{
-		ll mid = (hi + lo) / 2;
-		ll cnt = 0;
-		rep(i, n) {
-			ll p = lower_bound(a, a + n, mid / b[i]
-				+ (mid % b[i] > 0)) - a;
-			cnt += p;
-		}
-		if (cnt >= k) {
-			hi = mid;
-		}
-		else {
-			lo = mid;
-		}
-	}
-	cout << lo << endl;
+	
 }
 
 
