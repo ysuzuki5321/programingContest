@@ -1032,34 +1032,45 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
+
 void solv() {
-	cin >> n;
-	ll a[100010];
-	rep(i, n + 1)
+
+	cin >> n >> k; 
+	ll a[30010],
+	b[30010];
+	rep(i, n) {
 		cin >> a[i];
-
-	ll res = a[n];
-	for (int i = n - 1; i >= 0; i--)
-	{
-		ll u = (a[i+ 1] / 2) + a[i+1] % 2;
-		
-		if (i < 64) {
-			unsigned long long p = pow(2, i);
-
-			if (p < u + a[i]) {
-				cout << -1 << endl;
-				return;
-			}
-		}
-		res += u + a[i];
 	}
-	cout << res << endl;
+	rep(i, n)
+		cin >> b[i];
+
+	sort(a, a + n);
+	sort(b, b + n);
+	ll hi = big;
+	ll lo = 0;
+	while (lo + 1 < hi)
+	{
+		ll mid = (hi + lo) / 2;
+		ll cnt = 0;
+		rep(i, n) {
+			ll p = lower_bound(a, a + n, mid / b[i]
+				+ (mid % b[i] > 0)) - a;
+			cnt += p;
+		}
+		if (cnt >= k) {
+			hi = mid;
+		}
+		else {
+			lo = mid;
+		}
+	}
+	cout << lo << endl;
 }
 
 
 int main()
 {
-	//COMinit();
+	COMinit();
 	solv();
 	return 0;
 }
