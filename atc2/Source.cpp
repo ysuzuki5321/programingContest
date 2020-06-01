@@ -1034,26 +1034,79 @@ bool check_parindrome(string s) {
 // ‚±‚±‚©‚çƒR[ƒh
 void solv() {
 	cin >> n;
-	ll a[100010];
-	rep(i, n + 1)
-		cin >> a[i];
+	pll lr[100010];
+	ll lmax = 0;
+	ll rmin = INF;
+	tuple3q<ll,ll,ll> q;
+	pllgreaterq q2;
+	ll res = 0;
+	ll resp = 0;
+	rep(i, n) {
+		cin >> lr[i].first >> lr[i].second;
+		if (res < lr[i].second - lr[i].first + 1) {
+			res = lr[i].second - lr[i].first + 1;
+			resp = i;
+		}
+		lmax = max(lr[i].first, lmax);
+		rmin = min(lr[i].second, rmin);
+		q2.psp2(lr[i].second, i);
+		q.push(make_tuple(lr[i].first, -lr[i].second, i));
+	}
+	ll lma = 0;
+	ll rmi = INF;
+	rep(i, n) {
+		if (resp == i) {
+			continue;
+		}
+		lma = max(lr[i].first, lma);
+		rmi = min(lr[i].second, rmi);
+	}
+	res += max(0LL, rmi - lma + 1);
+	auto p = q.top();
+	q.pop();
+	auto p2 = q2.top();
 
-	ll res = a[n];
-	for (int i = n - 1; i >= 0; i--)
+	ll glm = get<0>(p);
+	ll grm = -get<1>(p);
+	ll i = get<2>(p);
+	if (i == p2.second) {
+		q2.pop();
+	}
+	rmin = q2.top().first;
+
+	ll v = max(0LL, (rmin - lmax) + 1);
+	v += grm - glm + 1;
+	res = max(res, v);
+	bool use[100010];
+	all0(use);
+	use[i] = true;
+	while (q.size() > 1)
 	{
-		ll u = (a[i+ 1] / 2) + a[i+1] % 2;
-		
-		if (i < 64) {
-			unsigned long long p = pow(2, i);
-
-			if (p < u + a[i]) {
-				cout << -1 << endl;
-				return;
+		p = q.top();
+		q.pop();
+		glm = max(glm, get<0>(p));
+		grm = min(grm, -get<1>(p));
+		i = get<2>(p);
+		use[i] = true;
+		while (!q2.empty())
+		{
+			if (use[q2.top().second]) {
+				q2.pop();
+			}
+			else {
+				break;
 			}
 		}
-		res += u + a[i];
+		p2 = q2.top();
+		rmin = p2.first;
+
+		res = max(res,
+			max(0LL, grm - glm + 1) +
+			max(0LL, rmin - lmax + 1));
 	}
+
 	cout << res << endl;
+
 }
 
 
