@@ -1032,89 +1032,12 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-
 void solv() {
-	//ll t;
-	//cin >> t;
-	//rep(i, t) {
-	//	cin >> n;
-	//	ll a[210];
-	//	rep(j, n)
-	//		cin >> a[j];
-	//	string s;
-	//	cin >> s;
-	//	ll r = 0;
-	//	rep(j, 63) {
-	//		//cout << (1LL << j) << endl;
-	//		rep(k, n) {
-	//			if (s[k] == '0') {
-	//				if (a[k] & (1LL << j)) {
-	//					r = r & ~(1LL << j);
-	//				}
-	//			}
-	//			else {
-	//				if (a[k] & (1LL << j))  {
-	//					r |= (1LL << j);
-	//				}
-	//			}
-	//		}
-	//		if (r != 0) {
-	//			cout << 1 << endl;
-	//			break;
-	//		}
-	//	}
-	//	if (r == 0){
-	//		cout << 0 << endl;
-	//	}
-	//}
-	string s;
-	cin >> s;
-	n = s.size();
-	ll res = 0;
-	ll now = 0;
-	ll q = 0;
-	ll pos = 0;
-	ll ma = 0;
-	ll bp = 0;
-	rep(i, n) {
-		if (s[i] != '?') {
-			if (s[i] == '1') {
-				now++;
-				if (now > ma) {
-					ma = now;
-					pos = 1;
-				}
-			}
-			else {
-				now--;
-				if (abs(now) > ma) {
-					ma = -now;
-					pos = -1;
-				}
-			}
-			q = 0;
-		} else{
-			if (q == 0) {
-				// ?に入る前の位置bpと?の数で
-				if (pos > 0) {
-					// 上方向にmaxが進んでいる
+	
+	cin >> n;
 
-				}
-				else {
-					// 下方向にmaxが進んでいる
-
-				}
-			}
-
-			q++;
-			ma = 0;
-			pos = 0;
-			now = 0;
-		}
-
-	}
-	cout << res << endl;
 }
+
 
 
 int main()
