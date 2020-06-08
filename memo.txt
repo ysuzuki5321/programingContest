@@ -780,8 +780,6 @@ B - Two Contests
 				どのようにグループを分けても片方のLiMaxはこの値を取り続ける
 					ついでに
 
-			
-
 C - 億マス計算
 	https://atcoder.jp/contests/arc037/tasks/arc037_c
 	長さnのaとbの配列のそれぞれを掛け合わせ、昇順に並べる。
@@ -805,7 +803,51 @@ E - Tr/ee
 		s2=0の時、2頂点を結び、片方から2本以上の辺が伸びている状態
 		1111111,......,0に関しては簡単で、全ての頂点が直線でつながっている状態
 		
-		
+D - 壊れた電車
+	https://atcoder.jp/contests/code-festival-2015-quala/tasks/codefestival_2015_qualA_d
+	最短で何分で直せるか
+		車両の移動に1分かかる
+			1<=m<=10^5
+			1<=n<=10^9
+	ある整備士の隣どちらかが終点か、他の整備士がいるとき
+		その逆方向に向かう
+			単純に見るのであれば
+				xxxxoxxxxxoxxxxx
+				となっている場合
+					o1が最初左に向かい
+					o2が最初右に行く
+					そのあと真ん中に戻っていきo1<x<o2を点検するとき
+				4321o9(10)(11)(12)(11)o12345
+				かかるので12が最大？
+				4321o9(10)(11)321o789(10)(11)
+				で11が最大
+					外側に向かうのが最善ではなく、最初は短い方に向かうのが最善
+				xxxxxxxoxxoxxx
+					上のような場合はo1は左に進み、o1は左右の順番に進むのが最善
+						それぞれが受け持つ量のバランスを取る
+				xxxxxoxxx/xxxoxxxx/xxxxxoxxx
+				11
+				xxxxxoxxx/xxxoxxxx/xxxxxoxxxo
+				11/10/11
+				xxxxxo/xxxxxxox/xxxxxxxxo/xxxo
+				5/8/8/3
+					あるところでどちらかに行けない整備士があらわれると片側に思い切りのばすことが出来るようになる
+				xxxxxoxxx/xxxoxxxx/xxxxxoxxxo
+				xxxxxox/xxxxxox/xxxxxxxxo/xxxxo
+				7/7/8/4
+					しかしその量は隣が受け持っていた分を減らすことしかできない
+						しかしこれで貪欲出来そうな気がする
+				xxxxxxoxxxxxx
+				18
+					初期状態はこのようにする
+				xxxxxxo/xxxxxxo
+				6
+				xxxxxxox/xxxxxox
+				9
+					受け持つ量の最大を計算していき、バランスが崩れたらリセット？
+						厳しそうな気がする
+
+					
 			
 
 

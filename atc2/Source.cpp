@@ -1033,78 +1033,16 @@ bool check_parindrome(string s) {
 //　ここまでライブラリ
 // ここからコード
 void solv() {
-	ll b;
-	cin >> n >> b;
-	map<ll, vector<pll>> mp;
-	vl yv;
+	
+	cin >> n;
 
-	rep(i, n) {
-		ll x, y, p;
-		cin >> x >> y >> p;
-		yv.push_back(y);
-		mp[x].psp(y, p);
-	}
-	vsort(yv);
-	dup(yv);
-	ll xi = 0;
-	ll tb[410][410]; all0(tb);
-	ll cn[410][410]; all0(cn);
-	ll yi = yv.size() + 1;
-	for (auto v : mp) {
-		for (auto t : v.second) {
-			ll p = lower_bound(all(yv), t.first) - yv.begin();
-			tb[xi][p + 1] = t.second;
-			cn[xi][p + 1]++;
-		}
-
-		xi++;
-	}
-	rep(i, xi) {
-		rep2(j, 1, yi) {
-			tb[i][j] += tb[i][j - 1];
-			cn[i][j] += cn[i][j - 1];
-		}
-	}
-
-	ll res = 0;
-	rep2(i, 1, yi) {
-		rep2(j, i, yi) {
-			ll t = 0;
-			bool use[410];
-			all0(use);
-			ll sum = 0;
-			ll cnt = 0;
-			rep(k, xi) {
-				if (k > t)
-					t = k;
-				if (k > 0) {
-					if (use[k - 1]) {
-						sum -= tb[k - 1][j] - tb[k - 1][i - 1];
-						cnt -= cn[k - 1][j] - cn[k - 1][i - 1];
-					}
-				}
-
-				for (; t < xi; t++) {
-					ll v = tb[t][j] - tb[t][i - 1];
-					if (sum + v > b)
-						break;
-					cnt += cn[t][j] - cn[t][i - 1];
-					use[t] = true;
-					sum += v;
-				}
-
-				res = max(cnt, res);
-			}
-		}
-	}
-
-	cout << res << endl;
 }
+
 
 
 int main()
 {
-	COMinit();
+	//COMinit();
 	solv();
 	return 0;
 }
