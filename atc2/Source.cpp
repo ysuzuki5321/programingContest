@@ -1032,10 +1032,55 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
+ll x[100010];
 void solv() {
-	
-	cin >> n;
+	ll m;
+	cin >> n >> m;
+	rep2(i,1, m+1) {
+		cin >> x[i];
+	}
 
+	ll hi = big;
+	ll lo = -1;
+	x[m + 1] = n + 1;
+	while (lo + 1 < hi)
+	{
+		ll mid = (hi + lo) / 2;
+		ll bef = 1;
+		// midでbefまで到達可能か？
+		// x[i] - bef
+		// 可能であれば残りの時間でどこまで行けるか？
+		// mid - (x[i] - bef)
+		rep2(i,1, m + 1 ) {
+			
+			if (mid < x[i] - bef) {
+				break;
+			}
+
+			ll rm = mid - (x[i] - bef);
+			// 右から行くか左から行くか？
+			// rm だけ動ける
+			// 左からの場合、(x[i]-bef)*2の移動を行う
+			// つまり残りはrm - (x[i] - bef)
+			ll left = max(0LL, rm - (x[i] - bef));
+			// 右からはrm/2だけ右側に行って戻ってきている
+			ll ri = rm / 2;
+			// 限界はx[i+1]
+			ll to = x[i] + max({ left,ri });
+			if (to + 1 >= x[i + 1])
+				bef = x[i + 1];
+			else
+				bef = to + 1;
+		}
+
+		if (bef == n + 1) {
+			hi = mid;
+		}
+		else {
+			lo = mid;
+		}
+	}
+	cout << hi << endl;
 }
 
 
