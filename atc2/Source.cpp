@@ -1032,79 +1032,94 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
+
 void solv() {
-	ll b;
-	cin >> n >> b;
-	map<ll, vector<pll>> mp;
-	vl yv;
-
-	rep(i, n) {
-		ll x, y, p;
-		cin >> x >> y >> p;
-		yv.push_back(y);
-		mp[x].psp(y, p);
-	}
-	vsort(yv);
-	dup(yv);
-	ll xi = 0;
-	ll tb[410][410]; all0(tb);
-	ll cn[410][410]; all0(cn);
-	ll yi = yv.size() + 1;
-	for (auto v : mp) {
-		for (auto t : v.second) {
-			ll p = lower_bound(all(yv), t.first) - yv.begin();
-			tb[xi][p + 1] = t.second;
-			cn[xi][p + 1]++;
-		}
-
-		xi++;
-	}
-	rep(i, xi) {
-		rep2(j, 1, yi) {
-			tb[i][j] += tb[i][j - 1];
-			cn[i][j] += cn[i][j - 1];
-		}
-	}
-
+	//ll t;
+	//cin >> t;
+	//rep(i, t) {
+	//	cin >> n;
+	//	ll a[210];
+	//	rep(j, n)
+	//		cin >> a[j];
+	//	string s;
+	//	cin >> s;
+	//	ll r = 0;
+	//	rep(j, 63) {
+	//		//cout << (1LL << j) << endl;
+	//		rep(k, n) {
+	//			if (s[k] == '0') {
+	//				if (a[k] & (1LL << j)) {
+	//					r = r & ~(1LL << j);
+	//				}
+	//			}
+	//			else {
+	//				if (a[k] & (1LL << j))  {
+	//					r |= (1LL << j);
+	//				}
+	//			}
+	//		}
+	//		if (r != 0) {
+	//			cout << 1 << endl;
+	//			break;
+	//		}
+	//	}
+	//	if (r == 0){
+	//		cout << 0 << endl;
+	//	}
+	//}
+	string s;
+	cin >> s;
+	n = s.size();
 	ll res = 0;
-	rep2(i, 1, yi) {
-		rep2(j, i, yi) {
-			ll t = 0;
-			bool use[410];
-			all0(use);
-			ll sum = 0;
-			ll cnt = 0;
-			rep(k, xi) {
-				if (k > t)
-					t = k;
-				if (k > 0) {
-					if (use[k - 1]) {
-						sum -= tb[k - 1][j] - tb[k - 1][i - 1];
-						cnt -= cn[k - 1][j] - cn[k - 1][i - 1];
-					}
+	ll now = 0;
+	ll q = 0;
+	ll pos = 0;
+	ll ma = 0;
+	ll bp = 0;
+	rep(i, n) {
+		if (s[i] != '?') {
+			if (s[i] == '1') {
+				now++;
+				if (now > ma) {
+					ma = now;
+					pos = 1;
 				}
-
-				for (; t < xi; t++) {
-					ll v = tb[t][j] - tb[t][i - 1];
-					if (sum + v > b)
-						break;
-					cnt += cn[t][j] - cn[t][i - 1];
-					use[t] = true;
-					sum += v;
-				}
-
-				res = max(cnt, res);
 			}
-		}
-	}
+			else {
+				now--;
+				if (abs(now) > ma) {
+					ma = -now;
+					pos = -1;
+				}
+			}
+			q = 0;
+		} else{
+			if (q == 0) {
+				// ?に入る前の位置bpと?の数で
+				if (pos > 0) {
+					// 上方向にmaxが進んでいる
 
+				}
+				else {
+					// 下方向にmaxが進んでいる
+
+				}
+			}
+
+			q++;
+			ma = 0;
+			pos = 0;
+			now = 0;
+		}
+
+	}
 	cout << res << endl;
 }
 
 
 int main()
 {
-	COMinit();
+	//COMinit();
 	solv();
 	return 0;
 }
