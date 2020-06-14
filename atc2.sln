@@ -13,8 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "texts", "texts", "{A2E98992
 		abc165.txt = abc165.txt
 		abc166.txt = abc166.txt
 		abc168.txt = abc168.txt
+		abc170.txt = abc170.txt
 		AGC044.txt = AGC044.txt
 		AGC045.txt = AGC045.txt
+		engrish_.ods = engrish_.ods
 		master_of_integer.txt = master_of_integer.txt
 		memo.txt = memo.txt
 		past3.txt = past3.txt
@@ -22,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "texts", "texts", "{A2E98992
 		repeat_english.txt = repeat_english.txt
 		repeat_master_of_integer.txt = repeat_master_of_integer.txt
 		st_repeat.txt = st_repeat.txt
+		tokiomarine2020.txt = tokiomarine2020.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Remainder", "Remainder\Remainder.csproj", "{62FF7078-F024-483E-AC61-211CD4F22124}"

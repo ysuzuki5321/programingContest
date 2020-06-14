@@ -1032,62 +1032,65 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-ll x[100010];
+vector<string> tb;
 void solv() {
-	ll m;
-	cin >> n >> m;
-	rep2(i,1, m+1) {
-		cin >> x[i];
+	ll H, W, K;
+	cin >> H >> W >> K;
+	ll x1, y1, x2, y2;
+	cin >> x1 >> y1 >> x2 >> y2;
+	x1--; y1--; x2--; y2--;
+	tb = vector<string>(H);
+	rep(i,H){
+		cin >> tb[i];
 	}
 
-	ll hi = big;
-	ll lo = -1;
-	x[m + 1] = n + 1;
-	while (lo + 1 < hi)
+	tuple3q<ll, ll, ll> q;
+	vector<vector<ll>> d(H, vector<ll>(W));
+	rep(i,H)
+		rep(j, W) {
+		d[i][j] = -1;
+	}
+	q.push(make_tuple(0, x1, y1));
+
+	while (!q.empty())
 	{
-		ll mid = (hi + lo) / 2;
-		ll bef = 1;
-		// midでbefまで到達可能か？
-		// x[i] - bef
-		// 可能であれば残りの時間でどこまで行けるか？
-		// mid - (x[i] - bef)
-		rep2(i,1, m + 1 ) {
-			
-			if (mid < x[i] - bef) {
-				break;
+		auto p = q.top();
+		q.pop();
+		ll co = get<0>(p);
+		ll x = get<1>(p);
+		ll y = get<2>(p);
+		if (d[x][y] != -1 && d[x][y] <= co)
+			continue;
+		d[x][y] = co;
+		for (int i = 0; i < 4; i++) {
+
+			ll tx = x;
+			ll ty = y;
+			rep(j, K) {
+				tx += dx[i];
+				ty += dy[i];
+				if (tx < 0 || ty < 0 || tx >= H || ty >= W)
+					break;
+				if (tb[tx][ty] == '@')
+					break;
+
+				if (d[tx][ty] == -1 || d[tx][ty] > co + 1)
+				{
+					q.push(make_tuple(co + 1, tx, ty));
+				}
 			}
-
-			ll rm = mid - (x[i] - bef);
-			// 右から行くか左から行くか？
-			// rm だけ動ける
-			// 左からの場合、(x[i]-bef)*2の移動を行う
-			// つまり残りはrm - (x[i] - bef)
-			ll left = max(0LL, rm - (x[i] - bef));
-			// 右からはrm/2だけ右側に行って戻ってきている
-			ll ri = rm / 2;
-			// 限界はx[i+1]
-			ll to = x[i] + max({ left,ri });
-			if (to + 1 >= x[i + 1])
-				bef = x[i + 1];
-			else
-				bef = to + 1;
-		}
-
-		if (bef == n + 1) {
-			hi = mid;
-		}
-		else {
-			lo = mid;
 		}
 	}
-	cout << hi << endl;
+	cout << d[x2][y2] << endl;
 }
+
+
 
 
 
 int main()
 {
-	//COMinit();
+	COMinit();
 	solv();
 	return 0;
 }
