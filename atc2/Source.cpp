@@ -44,6 +44,8 @@ template <class o, class p, class q>
 using tuple3q = priority_queue<tuple<o, p, q>, vector<tuple<o, p, q>>, greater<tuple<o, p, q>>>;
 template <class o, class p, class q, class r>
 using tuple4q = priority_queue<tuple<o, p, q, r>, vector<tuple<o, p, q, r>>, greater<tuple<o, p, q, r>>>;
+template <class o, class p, class q, class r,class s>
+using tuple5q = priority_queue<tuple<o, p, q, r,s>, vector<tuple<o, p, q, r,s>>, greater<tuple<o, p, q, r,s>>>;
 int dx[] = { -1,0,1,0 };
 int dy[] = { 0,-1,0,1 };
 #define bit(x,v) ((ll)x << v)
@@ -1032,61 +1034,30 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-vector<string> tb;
+
 void solv() {
-	ll H, W, K;
-	cin >> H >> W >> K;
-	ll x1, y1, x2, y2;
-	cin >> x1 >> y1 >> x2 >> y2;
-	x1--; y1--; x2--; y2--;
-	tb = vector<string>(H);
-	rep(i,H){
-		cin >> tb[i];
+
+	ll m;
+	cin >> n >> m;
+	ll a[3010];
+	rep(i, n) {
+		cin >> a[i];
 	}
 
-	tuple3q<ll, ll, ll> q;
-	vector<vector<ll>> d(H, vector<ll>(W));
-	rep(i,H)
-		rep(j, W) {
-		d[i][j] = -1;
-	}
-	q.push(make_tuple(0, x1, y1));
+	ll dp[3010][3010];
+	all0(dp);
+	dp[0][0] = 1;
+	rep(i, n) {
 
-	while (!q.empty())
-	{
-		auto p = q.top();
-		q.pop();
-		ll co = get<0>(p);
-		ll x = get<1>(p);
-		ll y = get<2>(p);
-		if (d[x][y] != -1 && d[x][y] <= co)
-			continue;
-		d[x][y] = co;
-		for (int i = 0; i < 4; i++) {
-
-			ll tx = x;
-			ll ty = y;
-			rep(j, K) {
-				tx += dx[i];
-				ty += dy[i];
-				if (tx < 0 || ty < 0 || tx >= H || ty >= W)
-					break;
-				if (tb[tx][ty] == '@')
-					break;
-
-				if (d[tx][ty] == -1 || d[tx][ty] > co + 1)
-				{
-					q.push(make_tuple(co + 1, tx, ty));
-				}
+		rep(j, m + 1) {
+			(dp[i + 1][j] += 2 * dp[i][j]) %= 998244353;
+			if (j + a[i] <= m) {
+				(dp[i + 1][j + a[i]] += dp[i][j]) %= 998244353;
 			}
 		}
 	}
-	cout << d[x2][y2] << endl;
+	cout << dp[n][m] << endl;
 }
-
-
-
-
 
 int main()
 {
