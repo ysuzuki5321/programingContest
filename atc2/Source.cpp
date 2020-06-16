@@ -1034,81 +1034,29 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-ll W, K;
-vector<string> tb;
-vector<vector<vector<pll>>> d;
-void dij(ll x, ll y,ll x2,ll y2) {
 
-	tuple5q<ll,ll, ll, ll,ll> q;
-	q.push(make_tuple(0,0, 0, x, y));
-	// dx ,dy の+1,-1に移動するような動き
-	while (!q.empty())
-	{
-		auto p = q.top();
-		q.pop();
-		auto cs = get<0>(p);
-		auto st = get<1>(p);
-		auto dr = get<2>(p);
-		auto cx = get<3>(p);
-		auto cy = get<4>(p);
-
-
-		if (d[cx][cy][dr].first != -1 && d[cx][cy][dr] <= make_pair(cs,st))
-			continue;
-		d[cx][cy][dr] = make_pair(cs,st);
-
-		ll ad = ((st % K) > 0)?1:0;
-		ll cst = cs + ad;
-
-		ll nd1 = (dr + 1) % 4;
-		ll nd2 = (dr + 3) % 4;
-		if (d[cx][cy][nd1].first == -1 || d[cx][cy][nd1] > make_pair(cst, 0LL)) {
-			q.push(make_tuple(cst ,0, nd1, cx, cy));
-		}
-		if (d[cx][cy][nd2].first == -1 || d[cx][cy][nd2] > make_pair(cst, 0LL)) {
-			q.push(make_tuple(cst, 0, nd2, cx, cy));
-		}
-
-		ll tx = cx + dx[dr];
-		ll ty = cy + dy[dr];
-		if (tx < 0 || ty < 0 || tx >= H || ty >= W)
-			continue;
-		if (tb[tx][ty] == '@')
-			continue;
-		cst = cs + ((st + 1) / K);
-
-		ll cur = d[tx][ty][dr].first + ((d[tx][ty][dr].second % K) > 0);
-		ll ns = (st + 1) % K;
-		if (d[tx][ty][dr].first == -1 || cur > cst + ns) {
-			q.push(make_tuple(cst,ns, dr, tx, ty));
-		}
-
-	}
-}
 void solv() {
-	cin >> H >> W >> K;
-	ll x1, y1, x2, y2;
-	cin >> x1 >> y1 >> x2 >> y2;
-	x1--; y1--; x2--; y2--;
-	tb = vector<string>(H);
-	d = vector<vector<vector<pll>>>(H, vector<vector<pll>>(W,vector<pll>(4,make_pair(-1,-1))));
-	rep(i, H)
-		cin >> tb[i];
-	dij(x1, y1,x2,y2);
-	ll res = big;
-	rep(i, 4) {
-		if (d[x2][y2][i].first != -1) {
-			ll st = d[x2][y2][i].second;
-			ll ad = (st % K) > 0 ? 1 : 0;
-			res = min(d[x2][y2][i].first + ad, res);
+
+	ll m;
+	cin >> n >> m;
+	ll a[3010];
+	rep(i, n) {
+		cin >> a[i];
+	}
+
+	ll dp[3010][3010];
+	all0(dp);
+	dp[0][0] = 1;
+	rep(i, n) {
+
+		rep(j, m + 1) {
+			(dp[i + 1][j] += 2 * dp[i][j]) %= 998244353;
+			if (j + a[i] <= m) {
+				(dp[i + 1][j + a[i]] += dp[i][j]) %= 998244353;
+			}
 		}
 	}
-	if (res == big) {
-		cout << -1 << endl;	
-	}
-	else {
-		cout << res << endl;
-	}
+	cout << dp[n][m] << endl;
 }
 
 int main()
