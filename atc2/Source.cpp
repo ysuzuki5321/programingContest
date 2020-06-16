@@ -1037,26 +1037,70 @@ bool check_parindrome(string s) {
 
 void solv() {
 
-	ll m;
-	cin >> n >> m;
-	ll a[3010];
+	ll b;
+	cin >> n >> b;
+	map<ll, vector<pll>> mp;
+	vl vy;
+
 	rep(i, n) {
-		cin >> a[i];
+		ll x, y, p;
+		cin >> x >> y >> p;
+		vy.push_back(y);
+		mp[x].psp(y, p);
+	}
+	vsort(vy);
+	dup(vy);
+	ll xi = 0;
+	ll yi = vy.size() + 1;
+	ll tb[410][410]; all0(tb);
+	ll cn[410][410]; all0(cn);
+	for (auto v : mp) {
+		for (auto itm : v.second) {
+			auto p = lower_bound(all(vy), itm.first) - vy.begin();
+			tb[xi][p + 1] = itm.second;
+			cn[xi][p + 1]++;
+		}
+		xi++;
 	}
 
-	ll dp[3010][3010];
-	all0(dp);
-	dp[0][0] = 1;
-	rep(i, n) {
-
-		rep(j, m + 1) {
-			(dp[i + 1][j] += 2 * dp[i][j]) %= 998244353;
-			if (j + a[i] <= m) {
-				(dp[i + 1][j + a[i]] += dp[i][j]) %= 998244353;
-			}
+	rep(i, xi) {
+		rep2(j, 1, yi) {
+			tb[i][j] += tb[i][j - 1];
+			cn[i][j] += cn[i][j - 1];
 		}
 	}
-	cout << dp[n][m] << endl;
+
+	ll res = 0;
+	rep2(i,1,yi)
+		rep2(j, i, yi) {
+		ll t = 0;
+		bool use[410]; all0(use);
+		ll sum = 0;
+		ll cnt = 0;
+		rep(k, xi) {
+			if (k > t)
+				t = k;
+			if (k > 0)
+			{
+				if (use[k - 1]) {
+					sum -= tb[k - 1][j] - tb[k - 1][i - 1];
+					cnt -= cn[k - 1][j] - cn[k - 1][i - 1];
+				}
+			}
+
+			for (; t < xi; t++) {
+				ll v = tb[t][j] - tb[t][i - 1];
+				if (sum + v > b)
+					break;
+				sum += v;
+				use[t] = true;
+				cnt += cn[t][j] - cn[t][i - 1];
+			}
+			res = max(res, cnt);
+		}
+	}
+
+	cout << res << endl;
 }
 
 int main()
