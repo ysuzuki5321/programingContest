@@ -1035,28 +1035,67 @@ bool check_parindrome(string s) {
 //　ここまでライブラリ
 // ここからコード
 
-void solv() {
+struct query
+{
+	ll col, d,i;
+	bool lca;
+};
+struct color
+{
+	ll c, d;
+};
+vector<vector<edge>> es;
+ll c[100010], d[100010];
+vector<query> Q[100010];
+color co[100010];
+ll ans[100010];
+void eul(ll x, ll f, ll dis) {
+	for (auto v : Q[x]) {
+		ll val = dis - co[v.col].d + co[v.col].c * v.d;
+		if (v.lca) {
+			ans[v.i] -= val * 2;
 
-	ll m;
-	cin >> n >> m;
-	ll a[3010];
-	rep(i, n) {
-		cin >> a[i];
-	}
-
-	ll dp[3010][3010];
-	all0(dp);
-	dp[0][0] = 1;
-	rep(i, n) {
-
-		rep(j, m + 1) {
-			(dp[i + 1][j] += 2 * dp[i][j]) %= 998244353;
-			if (j + a[i] <= m) {
-				(dp[i + 1][j + a[i]] += dp[i][j]) %= 998244353;
-			}
+		}
+		else {
+			ans[v.i] += val;
 		}
 	}
-	cout << dp[n][m] << endl;
+	for (auto v : es[x]) {
+		if (v.to == f)
+			continue;
+		ll col = c[v.i];
+		ll di = d[v.i];
+		co[col].c++;
+		co[col].d += di;
+		eul(v.to, x, dis + di);
+		co[col].c--;
+		co[col].d -= di;
+	}
+}
+void solv() {
+	ll q;
+	cin >> n >> q;
+	es = vector<vector<edge>>(n + 1);
+	rep(i, n - 1) {
+		ll a, b;
+		cin >> a >> b >> c[i] >> d[i];
+		es[a].push_back({ b,i });
+		es[b].push_back({ a,i });
+	}
+
+	LCA lca(n, 1, es);
+	rep(i, q) {
+		ll x, y, u, v;
+		cin >> x >> y >> u >> v;
+		Q[u].push_back({ x,y,i,false });
+		Q[v].push_back({ x,y,i,false });
+		Q[lca.lca(u, v)].push_back({ x,y,i,true });
+	}
+
+	eul(1, 0, 0);
+	rep(i, q) {
+		cout << ans[i] << endl;
+	}
 }
 
 int main()
