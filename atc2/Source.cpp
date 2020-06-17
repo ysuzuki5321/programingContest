@@ -1034,184 +1034,68 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-ll calc3(string s,bool p) {
 
-	ll dp[2][2][2][3];
-	all0(dp);
-	// 空の桁があると考える
-	// tite = false は存在していない
-	dp[0][1][0][0] = 1;
-	int si = s.size();
-	ll di = 1;
-	bool t3 = false;
-	vl dig;
+struct query
+{
+	ll col, d,i;
+	bool lca;
+};
+struct color
+{
+	ll c, d;
+};
+vector<vector<edge>> es;
+ll c[100010], d[100010];
+vector<query> Q[100010];
+color co[100010];
+ll ans[100010];
+void eul(ll x, ll f, ll dis) {
+	for (auto v : Q[x]) {
+		ll val = dis - co[v.col].d + co[v.col].c * v.d;
+		if (v.lca) {
+			ans[v.i] -= val * 2;
 
-	rep(i, si) {
-		dig.push_back(di);
-		(di *= 10) %= 3;
-	}
-	reverse(all(dig));
-	int cu = 0;
-
-	rep(i, si) {
-		int nx = (cu + 1) % 2;
-		all0(dp[nx]);
-
-		di = dig[i];
-		ll v = s[i] - '0';
-		// titeの処理 0~3のまたは3が入っているかいないか
-		// のどれかにしかtiteは入っていないはず
-		if (v == 3)t3 = 1;
-		rep(j, 3) {
-			ll o = v * di + j;
-			inf(dp[nx][1][t3][o % 3] +=
-				dp[cu][1][1][j] + dp[cu][1][0][j]
-			);
 		}
-
-		rep(k, 3) {
-			ll o = di * k;
-			// tite true→falseの場合
-			rep(j, v) {
-				ll ko = k + j * di;
-				if (j == 3) {
-					inf(dp[nx][0][1][ko % 3] +=
-						dp[cu][1][0][k]);
-				}
-				else {
-					// j != 3はそのまま
-					inf(dp[nx][0][0][ko % 3] +=
-						dp[cu][1][0][k]);
-				}
-
-				// 3がいるのはそのまま
-				inf(dp[nx][0][1][ko % 3] += dp[cu][1][1][k]);
-			}
-
-			// tite fa;se→falseの場合
-			rep(j, 10) {
-				ll ko = k + j * di;
-				if (j == 3) {
-					inf(dp[nx][0][1][ko % 3] +=
-						dp[cu][0][0][k]);
-				}
-				else {
-					// j != 3はそのまま
-					inf(dp[nx][0][0][ko % 3] +=
-						dp[cu][0][0][k]);
-				}
-
-				inf(dp[nx][0][1][ko % 3] +=
-					dp[cu][0][1][k]);
-			}
+		else {
+			ans[v.i] += val;
 		}
-		swap(nx, cu);
 	}
-	ll res = 0;
-	rep(i, 3) {
-		inf(res += (p ? dp[cu][1][1][i] : 0) + dp[cu][0][1][i]);
+	for (auto v : es[x]) {
+		if (v.to == f)
+			continue;
+		ll col = c[v.i];
+		ll di = d[v.i];
+		co[col].c++;
+		co[col].d += di;
+		eul(v.to, x, dis + di);
+		co[col].c--;
+		co[col].d -= di;
 	}
-	inf(res += (p ? dp[cu][1][0][0] : 0) + dp[cu][0][0][0]);
-	return infs(res,1);
 }
-ll calc8(string s, bool p) {
-
-	const ll ma = 24;
-	ll dp[2][2][2][ma];
-	all0(dp);
-	// 空の桁があると考える
-	// tite = false は存在していない
-	dp[0][1][0][0] = 1;
-	int si = s.size();
-	ll di = 1;
-	vl dig;
-	
-	rep(i, si) {
-		dig.push_back(di);
-		(di *= 10) %= ma;
-	}
-	reverse(all(dig));
-	bool t3 = false;
-	int cu = 0;
-	rep(i, si) {
-
-		int nx = (cu + 1) % 2;
-		all0(dp[nx]);
-		di = dig[i];
-		ll v = s[i] - '0';
-		// titeの処理 0~3のまたは3が入っているかいないか
-		// のどれかにしかtiteは入っていないはず
-		if (v == 3) {
-			t3 = true;
-		}
-		
-		rep(j, ma) {
-			ll o = v * di + j;
-			ll val = o % ma;
-			inf(dp[nx][1][t3][o % ma] +=
-				dp[cu][1][1][j] + dp[cu][1][0][j]
-			);
-		}
-
-		rep(k, ma) {
-			// tite true→falseの場合
-			rep(j, v) {
-			
-				ll ko = k + di * j;
-				if (j == 3) {
-					inf(dp[nx][0][1][ko % ma] +=
-						dp[cu][1][0][k]);
-				}
-				else {
-					// j != 3はそのまま
-					inf(dp[nx][0][0][ko % ma] +=
-						dp[cu][1][0][k]);
-				}
-
-				// 3がいるのはそのまま
-				inf(dp[nx][0][1][ko % ma] += 
-					dp[cu][1][1][k]);
-			}
-
-			// tite fa;se→falseの場合
-			rep(j, 10) {
-				ll ko = k + di * j;
-				if (j == 3) {
-					inf(dp[nx][0][1][ko % ma] +=
-						dp[cu][0][0][k]);
-				}
-				else {
-					// j != 3はそのまま
-					inf(dp[nx][0][0][ko % ma] +=
-						dp[cu][0][0][k]);
-				}
-
-				inf(dp[nx][0][1][ko % ma] +=
-					dp[cu][0][1][k]);
-			}
-		}
-		swap(cu, nx);
-	}
-	ll res = 0;
-	// 3の倍数かつ8の倍数を取る
-	for (int i = 0; i < ma;i += 8) {
-		inf(res += (p ? dp[cu][1][1][i] : 0) + dp[cu][0][1][i]);
-	}
-
-	// 3がないときは24の倍数 
-	inf(res += (p ? dp[cu][1][0][0] : 0) + dp[cu][0][0][0]);
-	return infs(res,1);
-}
-
 void solv() {
-	string A, B;
-	cin >> A >> B;
-	ll a3 = calc3(A,false);
-	ll b3 = calc3(B, true);
-	ll a8 = calc8(A, false);
-	ll b8 = calc8(B,true);
-	ll res = infs(infs(b3,b8),infs(a3,a8));
-	cout << res << endl;
+	ll q;
+	cin >> n >> q;
+	es = vector<vector<edge>>(n + 1);
+	rep(i, n - 1) {
+		ll a, b;
+		cin >> a >> b >> c[i] >> d[i];
+		es[a].push_back({ b,i });
+		es[b].push_back({ a,i });
+	}
+
+	LCA lca(n, 1, es);
+	rep(i, q) {
+		ll x, y, u, v;
+		cin >> x >> y >> u >> v;
+		Q[u].push_back({ x,y,i,false });
+		Q[v].push_back({ x,y,i,false });
+		Q[lca.lca(u, v)].push_back({ x,y,i,true });
+	}
+
+	eul(1, 0, 0);
+	rep(i, q) {
+		cout << ans[i] << endl;
+	}
 }
 
 int main()
