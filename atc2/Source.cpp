@@ -1034,72 +1034,183 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
+ll calc3(string s,bool p) {
+
+	ll dp[2][2][2][3];
+	all0(dp);
+	// 空の桁があると考える
+	// tite = false は存在していない
+	dp[0][1][0][0] = 1;
+	int si = s.size();
+	ll di = 1;
+	bool t3 = false;
+	vl dig;
+
+	rep(i, si) {
+		dig.push_back(di);
+		(di *= 10) %= 3;
+	}
+	reverse(all(dig));
+	int cu = 0;
+
+	rep(i, si) {
+		int nx = (cu + 1) % 2;
+		all0(dp[nx]);
+
+		di = dig[i];
+		ll v = s[i] - '0';
+		// titeの処理 0~3のまたは3が入っているかいないか
+		// のどれかにしかtiteは入っていないはず
+		if (v == 3)t3 = 1;
+		rep(j, 3) {
+			ll o = v * di + j;
+			inf(dp[nx][1][t3][o % 3] +=
+				dp[cu][1][1][j] + dp[cu][1][0][j]
+			);
+		}
+
+		rep(k, 3) {
+			ll o = di * k;
+			// tite true→falseの場合
+			rep(j, v) {
+				ll ko = k + j * di;
+				if (j == 3) {
+					inf(dp[nx][0][1][ko % 3] +=
+						dp[cu][1][0][k]);
+				}
+				else {
+					// j != 3はそのまま
+					inf(dp[nx][0][0][ko % 3] +=
+						dp[cu][1][0][k]);
+				}
+
+				// 3がいるのはそのまま
+				inf(dp[nx][0][1][ko % 3] += dp[cu][1][1][k]);
+			}
+
+			// tite fa;se→falseの場合
+			rep(j, 10) {
+				ll ko = k + j * di;
+				if (j == 3) {
+					inf(dp[nx][0][1][ko % 3] +=
+						dp[cu][0][0][k]);
+				}
+				else {
+					// j != 3はそのまま
+					inf(dp[nx][0][0][ko % 3] +=
+						dp[cu][0][0][k]);
+				}
+
+				inf(dp[nx][0][1][ko % 3] +=
+					dp[cu][0][1][k]);
+			}
+		}
+		swap(nx, cu);
+	}
+	ll res = 0;
+	rep(i, 3) {
+		inf(res += (p ? dp[cu][1][1][i] : 0) + dp[cu][0][1][i]);
+	}
+	inf(res += (p ? dp[cu][1][0][0] : 0) + dp[cu][0][0][0]);
+	return infs(res,1);
+}
+ll calc8(string s, bool p) {
+
+	const ll ma = 24;
+	ll dp[2][2][2][ma];
+	all0(dp);
+	// 空の桁があると考える
+	// tite = false は存在していない
+	dp[0][1][0][0] = 1;
+	int si = s.size();
+	ll di = 1;
+	vl dig;
+	
+	rep(i, si) {
+		dig.push_back(di);
+		(di *= 10) %= ma;
+	}
+	reverse(all(dig));
+	bool t3 = false;
+	int cu = 0;
+	rep(i, si) {
+
+		int nx = (cu + 1) % 2;
+		all0(dp[nx]);
+		di = dig[i];
+		ll v = s[i] - '0';
+		// titeの処理 0~3のまたは3が入っているかいないか
+		// のどれかにしかtiteは入っていないはず
+		if (v == 3) {
+			t3 = true;
+		}
+		
+		rep(j, ma) {
+			ll o = v * di + j;
+			ll val = o % ma;
+			inf(dp[nx][1][t3][o % ma] +=
+				dp[cu][1][1][j] + dp[cu][1][0][j]
+			);
+		}
+
+		rep(k, ma) {
+			// tite true→falseの場合
+			rep(j, v) {
+			
+				ll ko = k + di * j;
+				if (j == 3) {
+					inf(dp[nx][0][1][ko % ma] +=
+						dp[cu][1][0][k]);
+				}
+				else {
+					// j != 3はそのまま
+					inf(dp[nx][0][0][ko % ma] +=
+						dp[cu][1][0][k]);
+				}
+
+				// 3がいるのはそのまま
+				inf(dp[nx][0][1][ko % ma] += 
+					dp[cu][1][1][k]);
+			}
+
+			// tite fa;se→falseの場合
+			rep(j, 10) {
+				ll ko = k + di * j;
+				if (j == 3) {
+					inf(dp[nx][0][1][ko % ma] +=
+						dp[cu][0][0][k]);
+				}
+				else {
+					// j != 3はそのまま
+					inf(dp[nx][0][0][ko % ma] +=
+						dp[cu][0][0][k]);
+				}
+
+				inf(dp[nx][0][1][ko % ma] +=
+					dp[cu][0][1][k]);
+			}
+		}
+		swap(cu, nx);
+	}
+	ll res = 0;
+	// 3の倍数かつ8の倍数を取る
+	for (int i = 0; i < ma;i += 8) {
+		inf(res += (p ? dp[cu][1][1][i] : 0) + dp[cu][0][1][i]);
+	}
+
+	// 3がないときは24の倍数 
+	inf(res += (p ? dp[cu][1][0][0] : 0) + dp[cu][0][0][0]);
+	return infs(res,1);
+}
 
 void solv() {
-
-	ll b;
-	cin >> n >> b;
-	map<ll, vector<pll>> mp;
-	vl vy;
-
-	rep(i, n) {
-		ll x, y, p;
-		cin >> x >> y >> p;
-		vy.push_back(y);
-		mp[x].psp(y, p);
-	}
-	vsort(vy);
-	dup(vy);
-	ll xi = 0;
-	ll yi = vy.size() + 1;
-	ll tb[410][410]; all0(tb);
-	ll cn[410][410]; all0(cn);
-	for (auto v : mp) {
-		for (auto itm : v.second) {
-			auto p = lower_bound(all(vy), itm.first) - vy.begin();
-			tb[xi][p + 1] = itm.second;
-			cn[xi][p + 1]++;
-		}
-		xi++;
-	}
-
-	rep(i, xi) {
-		rep2(j, 1, yi) {
-			tb[i][j] += tb[i][j - 1];
-			cn[i][j] += cn[i][j - 1];
-		}
-	}
-
-	ll res = 0;
-	rep2(i,1,yi)
-		rep2(j, i, yi) {
-		ll t = 0;
-		bool use[410]; all0(use);
-		ll sum = 0;
-		ll cnt = 0;
-		rep(k, xi) {
-			if (k > t)
-				t = k;
-			if (k > 0)
-			{
-				if (use[k - 1]) {
-					sum -= tb[k - 1][j] - tb[k - 1][i - 1];
-					cnt -= cn[k - 1][j] - cn[k - 1][i - 1];
-				}
-			}
-
-			for (; t < xi; t++) {
-				ll v = tb[t][j] - tb[t][i - 1];
-				if (sum + v > b)
-					break;
-				sum += v;
-				use[t] = true;
-				cnt += cn[t][j] - cn[t][i - 1];
-			}
-			res = max(res, cnt);
-		}
-	}
-
+	string A, B;
+	cin >> A >> B;
+	ll a3 = calc3(A,false);
+	ll b3 = calc3(B, true);
+	ll a8 = calc8(A, false);
+	ll b8 = calc8(B,true);
+	ll res = infs(infs(b3,b8),infs(a3,a8));
 	cout << res << endl;
 }
 

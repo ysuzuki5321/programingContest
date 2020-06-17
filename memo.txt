@@ -894,9 +894,35 @@ No.260 世界のなんとか3
 		世界の何とか2は幅を3で持っていたが、こっちは24で持つ必要がありそう？
 			24で持った場合、8の倍数は8,16で判定出来る？
 				3が出てきた場合は8,16を見て、3が出てこない場合は24=0を見るようにする
-		memo化再帰で
+		桁DPなのでメモ化再帰で処理した方が楽な気はするが、配るDPなので、普通に上の桁から処理出来ないだろうか？
+			遷移先さえ決まれば普通にループでも出来そうなもんだが
 
-
+		iからi+1に遷移する時
+			titeからtite dp[i][tite]→dp[i+1][tite]
+			titeからnot tite dp[i][tite]→dp[i+1][not tite]
+			への遷移
+			dp[i][tite]は その桁の数字jに対してt=0～j-1はnot titeにjはtiteに進むように処理する
+			元の数字はkとして(kはaを見る時0~3)、②を見る時0~24))
+			dp[i][tite][(k + j) % m]
+			3が追加されたかf=0,1
+				追加されない場合
+				dp[i][tite][0][k] → dp[i+1][tite][0][(k+j)%m]
+				初めて追加される場合は
+				dp[i][tite][0][k] → dp[i+1][tite][1][(k+j)%m]
+				既に追加されている場合
+				dp[i][tite][1][k] → dp[i+1][tite][1][(k+j)%m]
+				titeの場合も合わせると、遷移は
+					dp[i][tite][0][k] → dp[i+1][tite][0][(k+j)%m]
+					dp[i][tite][0][k] → dp[i+1][false][0][(k+j)%m]
+					dp[i][false][0][k] → dp[i+1][false][0][(k+j)%m]
+					dp[i][tite][0][k] → dp[i+1][tite][1][(k+j)%m]
+					dp[i][tite][0][k] → dp[i+1][false][1][(k+j)%m]
+					dp[i][false][0][k] → dp[i+1][false][1][(k+j)%m]
+					dp[i][tite][1][k] → dp[i+1][tite][1][(k+j)%m]
+					dp[i][tite][1][k] → dp[i+1][false][1][(k+j)%m]
+					dp[i][false][1][k] → dp[i+1][false][1][(k+j)%m]
+				あとは全て0のパターンだが、これはtiteでもなく3が付いていないのでdp[n][0][0][0]から1減らす
+					組んでみよう
 
 
 
