@@ -1034,68 +1034,62 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-
-struct query
-{
-	ll col, d,i;
-	bool lca;
-};
-struct color
-{
-	ll c, d;
-};
-vector<vector<edge>> es;
-ll c[100010], d[100010];
-vector<query> Q[100010];
-color co[100010];
-ll ans[100010];
-void eul(ll x, ll f, ll dis) {
-	for (auto v : Q[x]) {
-		ll val = dis - co[v.col].d + co[v.col].c * v.d;
-		if (v.lca) {
-			ans[v.i] -= val * 2;
-
-		}
-		else {
-			ans[v.i] += val;
-		}
-	}
+vector<pll> es[55];
+ll pt[30];
+ll cu;
+bool cnst(ll x, ll f, ll t) {
+	if (x == t)
+		return true;
 	for (auto v : es[x]) {
-		if (v.to == f)
+		if (v.first == f)
 			continue;
-		ll col = c[v.i];
-		ll di = d[v.i];
-		co[col].c++;
-		co[col].d += di;
-		eul(v.to, x, dis + di);
-		co[col].c--;
-		co[col].d -= di;
+		if (cnst(v.first, x, t)) {
+			pt[cu] |= (1LL << v.second);
+			return true;
+		}
 	}
+	return false;
 }
 void solv() {
-	ll q;
-	cin >> n >> q;
-	es = vector<vector<edge>>(n + 1);
-	rep(i, n - 1) {
-		ll a, b;
-		cin >> a >> b >> c[i] >> d[i];
-		es[a].push_back({ b,i });
-		es[b].push_back({ a,i });
+	cin >> n;
+	ll a[200010];
+	ll b[200010];
+	rep(i, n)
+		cin >> a[i];
+	priority_queue<pll> q;
+	rep(i, n) {
+		cin >> b[i];
+		q.psp2(b[i], i);
 	}
 
-	LCA lca(n, 1, es);
-	rep(i, q) {
-		ll x, y, u, v;
-		cin >> x >> y >> u >> v;
-		Q[u].push_back({ x,y,i,false });
-		Q[v].push_back({ x,y,i,false });
-		Q[lca.lca(u, v)].push_back({ x,y,i,true });
-	}
+	ll res = 0;
+	while (!q.empty())
+	{
+		auto p = q.top();
+		q.pop();
+		ll val = p.first;
+		ll i = p.second;
+		ll nx = (p.second + 1) % n;
+		ll bf = (p.second + n - 1) % n;
+		ll v = b[nx] + b[bf];
+		ll inter = val - max({ a[i],b[nx],b[bf] });
+		ll d = inter / v;
+		if (inter % v > 0) {
+			d++;
+		}
 
-	eul(1, 0, 0);
-	rep(i, q) {
-		cout << ans[i] << endl;
+		res += d;
+		b[i] -= d * v;
+		if (b[i] < a[i]) {
+			cout << -1 << endl;
+			return;
+		}
+
+		if (b[i] > a[i]) {
+			q.psp2(b[i], i);
+		}
 	}
+	cout << res << endl;
 }
 
 int main()
