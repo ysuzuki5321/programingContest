@@ -1034,63 +1034,9 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-vector<pll> es[55];
-ll pt[30];
-ll cu;
-bool cnst(ll x, ll f, ll t) {
-	if (x == t)
-		return true;
-	for (auto v : es[x]) {
-		if (v.first == f)
-			continue;
-		if (cnst(v.first, x, t)) {
-			pt[cu] |= (1LL << v.second);
-			return true;
-		}
-	}
-	return false;
-}
 void solv() {
-	cin >> n;
-	ll a[200010];
-	ll b[200010];
-	rep(i, n)
-		cin >> a[i];
-	priority_queue<pll> q;
-	rep(i, n) {
-		cin >> b[i];
-		q.psp2(b[i], i);
-	}
-
-	ll res = 0;
-	while (!q.empty())
-	{
-		auto p = q.top();
-		q.pop();
-		ll val = p.first;
-		ll i = p.second;
-		ll nx = (p.second + 1) % n;
-		ll bf = (p.second + n - 1) % n;
-		ll v = b[nx] + b[bf];
-		ll inter = val - max({ a[i],b[nx],b[bf] });
-		ll d = inter / v;
-		if (inter % v > 0) {
-			d++;
-		}
-
-		res += d;
-		b[i] -= d * v;
-		if (b[i] < a[i]) {
-			cout << -1 << endl;
-			return;
-		}
-
-		if (b[i] > a[i]) {
-			q.psp2(b[i], i);
-		}
-	}
-	cout << res << endl;
-}
+	
+ }
 
 int main()
 {
