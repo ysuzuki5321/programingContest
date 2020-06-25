@@ -1034,62 +1034,116 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-vector<pll> es[55];
-ll pt[30];
-ll cu;
-bool cnst(ll x, ll f, ll t) {
-	if (x == t)
-		return true;
-	for (auto v : es[x]) {
-		if (v.first == f)
-			continue;
-		if (cnst(v.first, x, t)) {
-			pt[cu] |= (1LL << v.second);
-			return true;
-		}
+ll count(string s) {
+	// now,titeか,3が付いたか、3で割った余り、8で割った余り
+	ll dp[2][2][2][3][8];
+	all0(dp);
+	// 先頭のtite=trueの0にのみ1が入る
+	dp[0][1][0][0][0] = 1; 
+
+	vl d3; d3.push_back(1);
+	vl d8; d8.push_back(1);
+	n = s.size();
+	rep2(i,1, n) {
+		d3.push_back((d3[i - 1] * 10) % 3);
+		d8.push_back((d8[i - 1] * 10) % 8); // たいていの数字は割り切れる
 	}
-	return false;
-}
-void solv() {
-	cin >> n;
-	ll a[200010];
-	ll b[200010];
-	rep(i, n)
-		cin >> a[i];
-	priority_queue<pll> q;
+	int cu = 0;
+	int t3 = 0;
 	rep(i, n) {
-		cin >> b[i];
-		q.psp2(b[i], i);
+		ll di3 = d3[n - i - 1];
+		ll di8 = d8[n - i - 1];
+		int nx = (cu + 1) % 2;
+		all0(dp[nx]);
+		// titeからtiteへ
+		int c = s[i] - '0';
+		rep(j, 3) {
+			rep(t, 8) {
+				if (c == 3)
+					t3 = 1;
+				inf(dp[nx][1][t3][(j + c * di3) % 3][(t + c * di8) % 8]
+					+=inff( dp[cu][1][0][j][t] + dp[cu][1][1][j][t]));
+			}
+		}
+
+		// titeからnot へ
+
+		rep(o,c){
+			rep(j, 3) {
+				rep(t, 8) {
+					if (o == 3) {
+						inf(dp[nx][0][1][(j + o * di3) % 3][(t + o * di8) % 8]
+							+= inff(dp[cu][1][0][j][t]));
+					}
+					else {
+						inf(dp[nx][0][0][(j + o * di3) % 3][(t + o * di8) % 8]
+							+= inff(dp[cu][1][0][j][t]));
+					}
+					inf(dp[nx][0][1][(j + o * di3) % 3][(t + o * di8) % 8]
+						+= inff(dp[cu][1][1][j][t]));
+
+				}
+			}
+		}
+
+		// not to not
+		rep(o, 10) {
+			rep(j, 3) {
+				rep(t, 8) {
+					if (o == 3) {
+						inf(dp[nx][0][1][(j + o * di3) % 3][(t + o * di8) % 8]
+							+= inff(dp[cu][0][0][j][t]));
+					}
+					else {
+						inf(dp[nx][0][0][(j + o * di3) % 3][(t + o * di8) % 8]
+							+= inff(dp[cu][0][0][j][t]));
+					}
+					inf(dp[nx][0][1][(j + o * di3) % 3][(t + o * di8) % 8]
+						+= inff(dp[cu][0][1][j][t]));
+				}
+			}
+		}
+
+		swap(nx, cu);
 	}
 
 	ll res = 0;
-	while (!q.empty())
-	{
-		auto p = q.top();
-		q.pop();
-		ll val = p.first;
-		ll i = p.second;
-		ll nx = (p.second + 1) % n;
-		ll bf = (p.second + n - 1) % n;
-		ll v = b[nx] + b[bf];
-		ll inter = val - max({ a[i],b[nx],b[bf] });
-		ll d = inter / v;
-		if (inter % v > 0) {
-			d++;
-		}
+	//8の倍数でない
+	rep2(i,1, 8) {
+		
+		rep(j, 2) {
+			
+			rep(k, 3) {
+				inf(res += dp[cu][j][1][k][i]);
+			}
 
-		res += d;
-		b[i] -= d * v;
-		if (b[i] < a[i]) {
-			cout << -1 << endl;
-			return;
-		}
-
-		if (b[i] > a[i]) {
-			q.psp2(b[i], i);
+			inf(res += dp[cu][j][0][0][i]);
 		}
 	}
-	cout << res << endl;
+
+	return res;
+
+}
+string sub(string s) {
+
+	for (int i = s.size() - 1; i >= 0; i--)
+	{
+		if (s[i] == '0') {
+			s[i] = '9';
+			continue;
+		}
+		s[i] = s[i] - 1;
+		break;
+	}
+	return s;
+}
+void solv() {
+	string a, b;
+	cin >> a >> b;
+	a = sub(a);
+	ll v1 = count(a);
+	ll v2 = count(b);
+	cout << infs(v2,v1) << endl;
 }
 
 int main()
