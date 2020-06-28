@@ -1034,10 +1034,19 @@ bool check_parindrome(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-void solv() {
-	
- }
 
+void solv() {
+	ll m;
+	cin >> n >> m;
+	ll mn = 1;
+	ll r = m - n;
+	ll res = 0;
+	ll p1 = 
+	for (ll i = n; i > 0; i--) {
+		ll v = inff()
+	}
+	cout << res << endl;
+}
 int main()
 {
 	COMinit();
