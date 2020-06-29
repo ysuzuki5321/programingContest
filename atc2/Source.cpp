@@ -1036,15 +1036,37 @@ bool check_parindrome(string s) {
 // ‚±‚±‚©‚çƒR[ƒh
 
 void solv() {
-	ll m;
-	cin >> n >> m;
-	ll mn = 1;
-	ll r = m - n;
-	ll res = 0;
-	ll p1 = 
-	for (ll i = n; i > 0; i--) {
-		ll v = inff()
+	cin >> n >> k;
+	vl v; v.push_back(0);
+	for (ll i = 1; i * i <= n; i++) {
+		v.push_back(i);
+		v.push_back(n / i) ;
 	}
+	vsort(v);
+	dup(v);
+	ll dp[110][100010];
+	all0(dp);
+	ll s = v.size() - 1;
+	rep(i, s) {
+		dp[0][i] = v[i + 1] - v[i];
+	}
+
+	rep2(i, 1, k) {
+		vl r;
+		rep(j, s) {
+			r.push_back(dp[i - 1][j]);
+			if (j > 0)
+				inf(r[j] += r[j - 1]);
+		}
+		rep(j, s) {
+			inf(dp[i][j] = inff(r[s - j - 1] * (v[j + 1] - v[j])));
+		}
+	}
+	ll res = 0;
+	rep(j, s) {
+		inf(res += dp[k - 1][j]);
+	}
+
 	cout << res << endl;
 }
 int main()
