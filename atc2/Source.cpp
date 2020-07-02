@@ -1036,38 +1036,31 @@ bool check_parindrome(string s) {
 // ‚±‚±‚©‚çƒR[ƒh
 
 void solv() {
-	cin >> n >> k;
-	vl v; v.push_back(0);
-	for (ll i = 1; i * i <= n; i++) {
-		v.push_back(i);
-		v.push_back(n / i) ;
+	cin >> n;
+	ll h[100010];
+	rep(i, n) {
+		cin >> h[i];
 	}
-	vsort(v);
-	dup(v);
-	ll dp[110][100010];
+
+	ll res[100010];
+	all0(res);
+	ll dp[100010];
 	all0(dp);
-	ll s = v.size() - 1;
-	rep(i, s) {
-		dp[0][i] = v[i + 1] - v[i];
-	}
-
-	rep2(i, 1, k) {
-		vl r;
-		rep(j, s) {
-			r.push_back(dp[i - 1][j]);
-			if (j > 0)
-				inf(r[j] += r[j - 1]);
+	ll hi[100010];
+	all0(hi);
+	rep2(i, 1, n) {
+		ll t = i - 1;
+		while (t > 0 && h[t] <= h[i])
+		{
+			t = dp[t];
 		}
-		rep(j, s) {
-			inf(dp[i][j] = inff(r[s - j - 1] * (v[j + 1] - v[j])));
-		}
+		dp[i] = t;
+		hi[i] = hi[t] + (h[t] > h[i] > 0 ? 1 : 0);
+		res[i] = hi[i - 1] + 1;
 	}
-	ll res = 0;
-	rep(j, s) {
-		inf(res += dp[k - 1][j]);
+	rep(i,n){
+		cout << res[i] << endl;
 	}
-
-	cout << res << endl;
 }
 int main()
 {
