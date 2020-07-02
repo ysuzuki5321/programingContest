@@ -1031,36 +1031,59 @@ bool check_parindrome(string s) {
 	}
 	return true;
 }
-
+ll npr(ll n, ll r) {
+	ll res = 1;
+	rep(ll i = 0; i < r; i++) {
+		inf(res *= n - i);
+		inf(res *= modinv(r - i));
+	}
+	return res;
+}
 //　ここまでライブラリ
 // ここからコード
-
 void solv() {
-	cin >> n;
-	ll h[100010];
+	ll c;
+	cin >> n >> c;
+	ll x[100010], v[100010];
 	rep(i, n) {
-		cin >> h[i];
+		cin >> x[i] >> v[i];
 	}
 
-	ll res[100010];
-	all0(res);
-	ll dp[100010];
-	all0(dp);
-	ll hi[100010];
-	all0(hi);
-	rep2(i, 1, n) {
-		ll t = i - 1;
-		while (t > 0 && h[t] <= h[i])
-		{
-			t = dp[t];
+	ll l = 0,lv[100010],ls[100010];
+	ll r = 0, rv[100010], rs[100010];
+	all0(lv); all0(ls);
+	all0(rv); all0(rs);
+	rep(i, n)
+	{
+		l += v[i];
+		if (l - x[i] > lv[i]) {
+			lv[i + 1] = l - x[i];
+			ls[i + 1] = x[i];
 		}
-		dp[i] = t;
-		hi[i] = hi[t] + (h[t] > h[i] > 0 ? 1 : 0);
-		res[i] = hi[i - 1] + 1;
+		else {
+			lv[i + 1] = lv[i];
+			ls[i + 1] = ls[i];
+		}
+
+		r += v[n - i - 1];
+		ll s = c - x[n - i - 1];
+		if (r - s > rv[n - i]) {
+			rv[n - i - 1] = r - s;
+			rs[n - i - 1] = s;
+
+		}
+		else {
+			rv[n - i - 1] = rv[n - i];
+			rs[n - i - 1] = rs[n - i];
+		}
 	}
-	rep(i,n){
-		cout << res[i] << endl;
+
+	ll res = 0;
+	rep(i, n + 1) {
+		res = max(res, lv[i] + rv[i] - min(rs[i],ls[i]));
 	}
+
+	cout << res << endl;
 }
 int main()
 {
