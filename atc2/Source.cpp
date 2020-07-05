@@ -1032,57 +1032,54 @@ bool check_parindrome(string s) {
 	return true;
 }
 ll npr(ll n, ll r) {
-	ll res = 1;
-	rep(ll i = 0; i < r; i++) {
-		inf(res *= n - i);
-		inf(res *= modinv(r - i));
+	if (r == 0)
+		return 1;
+	return inff(fac[n] * modinv(fac[n - r]));
+}
+
+vl zalgo(string s) {
+	ll c = 0;
+	vl a(s.size());
+	ll si = s.size();
+	rep2(i,1, s.size()) {
+		if (i + a[i - c] < c + a[c])
+		{
+			a[i] = a[i - c];
+		}
+		else {
+			ll j = max(0LL,a[c] - (i - c));
+			while (i + j < si && s[j] == s[i+j])
+			{
+				j++;
+			}
+
+			a[i] = j;
+			c = i;
+		}
+
 	}
-	return res;
+	a[0] = s.size();
+	return a;
 }
 //　ここまでライブラリ
 // ここからコード
 void solv() {
-	ll c;
-	cin >> n >> c;
-	ll x[100010], v[100010];
-	rep(i, n) {
-		cin >> x[i] >> v[i];
-	}
-
-	ll l = 0,lv[100010],ls[100010];
-	ll r = 0, rv[100010], rs[100010];
-	all0(lv); all0(ls);
-	all0(rv); all0(rs);
-	rep(i, n)
-	{
-		l += v[i];
-		if (l - x[i] > lv[i]) {
-			lv[i + 1] = l - x[i];
-			ls[i + 1] = x[i];
-		}
-		else {
-			lv[i + 1] = lv[i];
-			ls[i + 1] = ls[i];
-		}
-
-		r += v[n - i - 1];
-		ll s = c - x[n - i - 1];
-		if (r - s > rv[n - i]) {
-			rv[n - i - 1] = r - s;
-			rs[n - i - 1] = s;
-
-		}
-		else {
-			rv[n - i - 1] = rv[n - i];
-			rs[n - i - 1] = rs[n - i];
-		}
-	}
-
+	ll m;
+	cin >> n >> m;
 	ll res = 0;
-	rep(i, n + 1) {
-		res = max(res, lv[i] + rv[i] - min(rs[i],ls[i]));
-	}
 
+	for(ll s = 0; s <= n;s++) {
+
+		ll v = inff(COM(n,s) * npr(m, s));
+		inf(v *= getpow(npr(m - s, n - s) ,2));
+
+		if (s % 2 == 1) {
+			res = infs(res, v);
+		}
+		else {
+			res = infa(res, v);
+		}
+	}
 	cout << res << endl;
 }
 int main()
