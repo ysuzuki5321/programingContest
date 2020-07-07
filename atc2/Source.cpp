@@ -1032,58 +1032,86 @@ bool check_parindrome(string s) {
 	return true;
 }
 ll npr(ll n, ll r) {
-	ll res = 1;
-	rep(ll i = 0; i < r; i++) {
-		inf(res *= n - i);
-		inf(res *= modinv(r - i));
-	}
-	return res;
+	return inff(fac[n] * modinv(fac[r]));
 }
 //　ここまでライブラリ
 // ここからコード
-void solv() {
-	ll c;
-	cin >> n >> c;
-	ll x[100010], v[100010];
-	rep(i, n) {
-		cin >> x[i] >> v[i];
-	}
+ll h, w;
+vector<string> tb;
+vector<vector<	ll >> d[4];
 
-	ll l = 0,lv[100010],ls[100010];
-	ll r = 0, rv[100010], rs[100010];
-	all0(lv); all0(ls);
-	all0(rv); all0(rs);
-	rep(i, n)
+void dij(ll x1, ll y1)
+{
+	tuple5q<ll, ll, ll, ll, ll> q;
+	q.push(make_tuple(0, 0, 0, x1, y1));
+
+	while (!q.empty())
 	{
-		l += v[i];
-		if (l - x[i] > lv[i]) {
-			lv[i + 1] = l - x[i];
-			ls[i + 1] = x[i];
+		auto p = q.top();
+		q.pop();
+		auto cs = get<0>(p);
+		auto st = get<1>(p);
+		auto di = get<2>(p);
+		auto x = get<3>(p);
+		auto y = get<4>(p);
+		ll val = cs + (st > 0 ? 1 : 0);
+		if (d[di][x][y] <= val)
+			continue;
+		d[di][x][y] = val;
+		ll d1 = (di + 1) % 4;
+		if (d[d1][x][y] > d[di][x][y]) {
+			q.push(make_tuple(val, 0, d1, x, y));
+		}
+		
+		ll d2 = (di + 3) % 4;
+		if (d[d2][x][y] > d[di][x][y]) {
+			q.push(make_tuple(val, 0, d2, x, y));
+		}
+
+		ll tx = x + dx[di];
+		ll ty = y + dy[di];
+		if (tx < 0 || ty < 0 || tx >= h || ty >= w)
+			continue;
+		if (tb[tx][ty] == '@')
+			continue;
+
+		if (st + 1 == k) {
+			cs++;
+			st = 0;
 		}
 		else {
-			lv[i + 1] = lv[i];
-			ls[i + 1] = ls[i];
+			st++;
 		}
 
-		r += v[n - i - 1];
-		ll s = c - x[n - i - 1];
-		if (r - s > rv[n - i]) {
-			rv[n - i - 1] = r - s;
-			rs[n - i - 1] = s;
-
-		}
-		else {
-			rv[n - i - 1] = rv[n - i];
-			rs[n - i - 1] = rs[n - i];
+		if (d[di][tx][ty] > cs) {
+			q.push(make_tuple(cs, st, di, tx, ty));
 		}
 	}
-
-	ll res = 0;
-	rep(i, n + 1) {
-		res = max(res, lv[i] + rv[i] - min(rs[i],ls[i]));
+}
+void solv() {
+	cin >> h >> w >> k;
+	ll x1, y1, x2, y2;
+	cin >> x1 >> y1 >> x2 >> y2;
+	x1--; y1--; x2--; y2--;
+	tb = vector<string>(h);
+	rep(i,4)
+		d[i] = vector<vector<ll>>(h, vector<ll>(w, big));
+	rep(i, h) {
+		cin >> tb[i];
 	}
 
-	cout << res << endl;
+	dij(x1, y1);
+	ll res = big;
+	rep(i, 4) {
+		res = min(d[i][x2][y2], res);
+	}
+	if (res == big) {
+		cout << -1 << endl;
+	}
+	else {
+
+		cout << res << endl;
+	}
 }
 int main()
 {
