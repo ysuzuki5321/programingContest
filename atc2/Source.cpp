@@ -1032,86 +1032,85 @@ bool check_parindrome(string s) {
 	return true;
 }
 ll npr(ll n, ll r) {
-	return inff(fac[n] * modinv(fac[r]));
+	if (r == 0)
+		return 1;
+	return inff(fac[n] * modinv(fac[n - r]));
+}
+
+vl zalgo(string s) {
+	ll c = 0;
+	vl a(s.size());
+	ll si = s.size();
+	rep2(i,1, s.size()) {
+		if (i + a[i - c] < c + a[c])
+		{
+			a[i] = a[i - c];
+		}
+		else {
+			ll j = max(0LL,a[c] - (i - c));
+			while (i + j < si && s[j] == s[i+j])
+			{
+				j++;
+			}
+
+			a[i] = j;
+			c = i;
+		}
+
+	}
+	a[0] = s.size();
+	return a;
 }
 //　ここまでライブラリ
 // ここからコード
-ll h, w;
-vector<string> tb;
-vector<vector<	ll >> d[4];
-
-void dij(ll x1, ll y1)
-{
-	tuple5q<ll, ll, ll, ll, ll> q;
-	q.push(make_tuple(0, 0, 0, x1, y1));
-
-	while (!q.empty())
-	{
-		auto p = q.top();
-		q.pop();
-		auto cs = get<0>(p);
-		auto st = get<1>(p);
-		auto di = get<2>(p);
-		auto x = get<3>(p);
-		auto y = get<4>(p);
-		ll val = cs + (st > 0 ? 1 : 0);
-		if (d[di][x][y] <= val)
+void solv() {
+	
+	cin >> n;
+	map<pll, pll> mp;
+	ll z = 0;
+	rep(i, n) {
+		ll a, b;
+		cin >> a >> b;
+		if (a == 0 && b == 0)
+		{
+			z++;
 			continue;
-		d[di][x][y] = val;
-		ll d1 = (di + 1) % 4;
-		if (d[d1][x][y] > d[di][x][y]) {
-			q.push(make_tuple(val, 0, d1, x, y));
-		}
-		
-		ll d2 = (di + 3) % 4;
-		if (d[d2][x][y] > d[di][x][y]) {
-			q.push(make_tuple(val, 0, d2, x, y));
 		}
 
-		ll tx = x + dx[di];
-		ll ty = y + dy[di];
-		if (tx < 0 || ty < 0 || tx >= h || ty >= w)
-			continue;
-		if (tb[tx][ty] == '@')
-			continue;
+		ll gc = gcd(abs(a), abs(b));
+		a /= gc;
+		b /= gc;
+		if (b < 0) {
+			b = -b;
+			a = -a;
+		}
 
-		if (st + 1 == k) {
-			cs++;
-			st = 0;
+		if (a != 0 && b != 0) {
+			if (a > 0) {
+				mp[make_pair(a, b)].first++;
+			}
+			else {
+				mp[make_pair(b, -a)].second++;
+			}
 		}
 		else {
-			st++;
+			if (a != 0) {
+				mp[make_pair(0, 0)].first++;
+			}
+			else {
+				mp[make_pair(0, 0)].second++;
+			}
 		}
-
-		if (d[di][tx][ty] > cs) {
-			q.push(make_tuple(cs, st, di, tx, ty));
-		}
-	}
-}
-void solv() {
-	cin >> h >> w >> k;
-	ll x1, y1, x2, y2;
-	cin >> x1 >> y1 >> x2 >> y2;
-	x1--; y1--; x2--; y2--;
-	tb = vector<string>(h);
-	rep(i,4)
-		d[i] = vector<vector<ll>>(h, vector<ll>(w, big));
-	rep(i, h) {
-		cin >> tb[i];
 	}
 
-	dij(x1, y1);
-	ll res = big;
-	rep(i, 4) {
-		res = min(d[i][x2][y2], res);
-	}
-	if (res == big) {
-		cout << -1 << endl;
+	ll res = 1;
+	for (auto v : mp) {
+		inf(res *= inff(getpow(2, v.second.first) + getpow(2, v.second.second) - 1));
 	}
 	else {
 
-		cout << res << endl;
-	}
+	res += z;
+	cout << infs(res, 1) << endl;
 }
 int main()
 {
