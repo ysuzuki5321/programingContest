@@ -1064,23 +1064,52 @@ vl zalgo(string s) {
 //　ここまでライブラリ
 // ここからコード
 void solv() {
-	ll m;
-	cin >> n >> m;
-	ll res = 0;
+	
+	cin >> n;
+	map<pll, pll> mp;
+	ll z = 0;
+	rep(i, n) {
+		ll a, b;
+		cin >> a >> b;
+		if (a == 0 && b == 0)
+		{
+			z++;
+			continue;
+		}
 
-	for(ll s = 0; s <= n;s++) {
+		ll gc = gcd(abs(a), abs(b));
+		a /= gc;
+		b /= gc;
+		if (b < 0) {
+			b = -b;
+			a = -a;
+		}
 
-		ll v = inff(COM(n,s) * npr(m, s));
-		inf(v *= getpow(npr(m - s, n - s) ,2));
-
-		if (s % 2 == 1) {
-			res = infs(res, v);
+		if (a != 0 && b != 0) {
+			if (a > 0) {
+				mp[make_pair(a, b)].first++;
+			}
+			else {
+				mp[make_pair(b, -a)].second++;
+			}
 		}
 		else {
-			res = infa(res, v);
+			if (a != 0) {
+				mp[make_pair(0, 0)].first++;
+			}
+			else {
+				mp[make_pair(0, 0)].second++;
+			}
 		}
 	}
-	cout << res << endl;
+
+	ll res = 1;
+	for (auto v : mp) {
+		inf(res *= inff(getpow(2, v.second.first) + getpow(2, v.second.second) - 1));
+	}
+
+	res += z;
+	cout << infs(res, 1) << endl;
 }
 int main()
 {
