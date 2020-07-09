@@ -1063,54 +1063,40 @@ vl zalgo(string s) {
 }
 //　ここまでライブラリ
 // ここからコード
-void solv() {
-	
-	cin >> n;
-	map<pll, pll> mp;
-	ll z = 0;
-	rep(i, n) {
-		ll a, b;
-		cin >> a >> b;
-		if (a == 0 && b == 0)
-		{
-			z++;
-			continue;
-		}
-
-		ll gc = gcd(abs(a), abs(b));
-		a /= gc;
-		b /= gc;
-		if (b < 0) {
-			b = -b;
-			a = -a;
-		}
-
-		if (a != 0 && b != 0) {
-			if (a > 0) {
-				mp[make_pair(a, b)].first++;
-			}
-			else {
-				mp[make_pair(b, -a)].second++;
-			}
+vl za(string s) {
+	ll c = 0;
+	ll si = s.size();
+	vl a(si);
+	rep2(i, 1, si) {
+		if (i + a[i - c] < c + a[c]) {
+			a[i] = a[i - c];
 		}
 		else {
-			if (a != 0) {
-				mp[make_pair(0, 0)].first++;
+			ll j = max(0LL, c +  a[c] - i);
+			while (i + j < si && s[j] == s[i+j])
+			{
+				j++;
 			}
-			else {
-				mp[make_pair(0, 0)].second++;
-			}
+			a[i] = j;
+			c = i;
 		}
 	}
 
-	ll res = 1;
-	for (auto v : mp) {
-		inf(res *= inff(getpow(2, v.second.first) + getpow(2, v.second.second) - 1));
-	}
-	else {
+	a[0] = si;
+	return a;
+}
+void solv() {
+	cin >> n;
 
-	res += z;
-	cout << infs(res, 1) << endl;
+	string s; cin >> s;
+	ll res = 0;
+	rep(i, n - 1) {
+		auto v = za(s.substr(i));
+		rep(j, v.size()) {
+			res = max(res, min(j, v[j]));
+		}
+	}
+	cout << res << endl;
 }
 int main()
 {
