@@ -44,7 +44,7 @@ namespace Remainder
                 where
                     (((@interval - start) / interval) * interval + start) =@interval
                 order by
-                    priority,id
+                    interval,priority,id
                 ";
         }
 
