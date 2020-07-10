@@ -66,6 +66,8 @@ int dy[] = { 0,-1,0,1 };
 #define put(v) cout << v << endl
 #define vinsert(v,p,x) v.insert(v.begin() + p,x)
 #define vsort(v) sort(all(v));
+#define vdesc(v) vsort(v); \
+				 reverse(all(v))
 #define dup(v) v.erase(unique(all(v)),v.end())
 #define ion(i,j) ((i & (1LL << j)) > 0)
 #define next(i) i++;i%=2
@@ -1077,9 +1079,23 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-
 void solv() {
-	
+
+	string s;
+	cin >> s;
+	if (s[0] == '0' || s[n-1] == '1') {
+		cout << -1 << endl;
+		return;
+	}
+	n = s.size();
+	rep(i, n / 2) {
+		if (s[i] != s[n - i - 1]) {
+			cout << -1 << endl;
+			return;
+		}
+	}
+
+
 }
 int main()
 {
