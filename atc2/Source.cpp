@@ -1079,23 +1079,11 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
+
 void solv() {
-
-	string s;
-	cin >> s;
-	if (s[0] == '0' || s[n-1] == '1') {
-		cout << -1 << endl;
-		return;
-	}
-	n = s.size();
-	rep(i, n / 2) {
-		if (s[i] != s[n - i - 1]) {
-			cout << -1 << endl;
-			return;
-		}
-	}
-
-
+	ll m;
+	cin >> n >> m;
+	cout << pow(2, m) * ((n - m) * 100 + m * 1900) << endl;
 }
 int main()
 {
