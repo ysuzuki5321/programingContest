@@ -1081,19 +1081,8 @@ string decStrNum(string s) {
 // ‚±‚±‚©‚çƒR[ƒh
 void solv() {
 
-	string s;
-	cin >> s;
-	if (s[0] == '0' || s[n-1] == '1') {
-		cout << -1 << endl;
-		return;
-	}
-	n = s.size();
-	rep(i, n / 2) {
-		if (s[i] != s[n - i - 1]) {
-			cout << -1 << endl;
-			return;
-		}
-	}
+
+
 
 
 }
