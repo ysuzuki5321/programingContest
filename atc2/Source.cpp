@@ -1079,11 +1079,76 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
+ll h,w;
+vector<string> tb;
+vector<vector<ll>> d[4];
+void dij(ll _x, ll _y) {
+	tuple5q<ll, ll, ll, ll, ll> q;
+	q.push(make_tuple(0, 0, 0, _x, _y));
+
+	while (!q.empty())
+	{
+		auto p = q.top();
+		q.pop();
+		auto cs = get<0>(p);
+		auto st = get<1>(p);
+		auto dir = get<2>(p);
+		auto x = get<3>(p);
+		auto y = get<4>(p);
+		ll s = cs + (st > 0);
+		if (d[dir][x][y] != -1 && d[dir][x][y] <= s)
+			continue;
+		d[dir][x][y] = s;
+		ll d1 = (dir + 1) % 4;
+		if (d[d1][x][y] == -1 || d[d1][x][y] > s) {
+			q.push(make_tuple(s, 0, d1, x, y));
+		}
+		
+		ll d2 = (dir + 3) % 4;
+		if (d[d2][x][y] == -1 || d[d2][x][y] > s) {
+			q.push(make_tuple(s, 0, d2, x, y));
+		}
+
+		ll tx = x + dx[dir];
+		ll ty = y + dy[dir];
+		if (tx < 0 || ty < 0 || tx >= h || ty >= w)
+			continue;
+		if (tb[tx][ty] == '@')
+			continue;
+
+		if (st + 1 == k) {
+			cs++;
+			st = 0;
+		}
+		else
+			st++;
+		if (d[dir][tx][ty] == -1 || d[dir][tx][ty] > cs) {
+			q.push(make_tuple(cs, st, dir, tx, ty));
+		}
+	}
+}
 
 void solv() {
-	cin >> n;
 
-	
+	cin >> h >> w >> k;
+	ll x1, y1, x2, y2;
+	cin >> x1 >> y1 >> x2 >> y2;
+	x1--; y1--; x2--; y2--;
+	tb = vector<string>(h);
+	rep(i, h) {
+		cin >> tb[i];
+	}
+	rep(i,4)
+	d[i] = vector<vector<ll>>(h, vector<ll>(w, -1));
+	dij(x1, y1);
+	ll res = -1;
+	rep(i, 4) {
+		if (d[i][x2][y2] == -1)
+			continue;
+		if (res == -1 || res > d[i][x2][y2])
+			res = d[i][x2][y2];
+	}
+	cout << res << endl;
 }
 int main()
 {
