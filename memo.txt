@@ -1048,8 +1048,43 @@ A - Table Tennis Training
 			2,3の時は
 			1,2、でこの時1を0に置き換えると分かりやすくなる
 
-			
-					
+C - XYZ Triplets
+	https://atcoder.jp/contests/aising2020/tasks/aising2020_c
+	x^2+y^2+z^2+xy+yz+zx=n
+	1<=x,y,z
+	1<=n<=10000
+	あ、nが最大で10000だった
+	x2+y2+xy<=nをまず列挙する
+		大した数にならない
+	x+yが異なるか。。。
+		意外といけちゃうかもしれない
+			やっぱり計算量ギャグであった
+
+D - Anything Goes to Zero
+	https://atcoder.jp/contests/aising2020/tasks/aising2020_d
+	nをpopcount(n)で割った余りに置き換える
+		nが0になるまでの操作回数
+	xが与えられる
+		1<=i<=nを満たす整数iについて
+			xの上からi桁目をビット反転した整数をxiとする
+	f(x1),f(x2),f(x3),...,f(xn)を求めよ
+		1<=n<=2*10^5
+	普通にstringで渡されてくる
+		しかし、すぐ小さくなる
+			あっという間に小さくなる
+		厄介なのは、最初の状態から一度計算するところ
+			xiに対してpopcountは事前計算o(n)からo(1)で求められる
+		初期状態Xに対してf(X+-1)を求める
+			xiにbitが立つというのは1<<iに対してbitが立つということ
+				これをpopcount(xi)で割った数を
+					f(X+-1)にg(1<<i)を足す
+						すると第一段階が終了するこれは2のべき乗
+							2^imodpを高速で計算するには繰り返し2乗法である
+								これで解ける?
+									pと2^iが素でなければいけない
+										
+
+
 
 
 		
