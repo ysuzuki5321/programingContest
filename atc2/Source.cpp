@@ -235,7 +235,7 @@ bool unit(int x, int y) {
 	return true;
 }
 
-ll n;
+ll n,m;
 int ci = 0;
 struct Node {
 	int key;
@@ -1079,77 +1079,91 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-ll h,w;
-vector<string> tb;
-vector<vector<ll>> d[4];
-void dij(ll _x, ll _y) {
-	tuple5q<ll, ll, ll, ll, ll> q;
-	q.push(make_tuple(0, 0, 0, _x, _y));
-
-	while (!q.empty())
-	{
-		auto p = q.top();
-		q.pop();
-		auto cs = get<0>(p);
-		auto st = get<1>(p);
-		auto dir = get<2>(p);
-		auto x = get<3>(p);
-		auto y = get<4>(p);
-		ll s = cs + (st > 0);
-		if (d[dir][x][y] != -1 && d[dir][x][y] <= s)
-			continue;
-		d[dir][x][y] = s;
-		ll d1 = (dir + 1) % 4;
-		if (d[d1][x][y] == -1 || d[d1][x][y] > s) {
-			q.push(make_tuple(s, 0, d1, x, y));
-		}
-		
-		ll d2 = (dir + 3) % 4;
-		if (d[d2][x][y] == -1 || d[d2][x][y] > s) {
-			q.push(make_tuple(s, 0, d2, x, y));
-		}
-
-		ll tx = x + dx[dir];
-		ll ty = y + dy[dir];
-		if (tx < 0 || ty < 0 || tx >= h || ty >= w)
-			continue;
-		if (tb[tx][ty] == '@')
-			continue;
-
-		if (st + 1 == k) {
-			cs++;
-			st = 0;
-		}
-		else
-			st++;
-		if (d[dir][tx][ty] == -1 || d[dir][tx][ty] > cs) {
-			q.push(make_tuple(cs, st, dir, tx, ty));
-		}
-	}
-}
 
 void solv() {
 
-	cin >> h >> w >> k;
-	ll x1, y1, x2, y2;
-	cin >> x1 >> y1 >> x2 >> y2;
-	x1--; y1--; x2--; y2--;
-	tb = vector<string>(h);
-	rep(i, h) {
-		cin >> tb[i];
+	cin >> k >> m >> n;
+	ll dp[62][7][7][7][7]; all0(dp);
+	ll def[7][7][7]; all0(def);
+	ll em[7][7][7]; all0(em);
+	rep(i, m) {
+		ll p, q, r;
+		cin >> p >> q >> r;
+		dp[0][p][q][q][r]++;
+		def[p][q][r]++;
+		em[p][q][r]++;
 	}
-	rep(i,4)
-	d[i] = vector<vector<ll>>(h, vector<ll>(w, -1));
-	dij(x1, y1);
-	ll res = -1;
-	rep(i, 4) {
-		if (d[i][x2][y2] == -1)
-			continue;
-		if (res == -1 || res > d[i][x2][y2])
-			res = d[i][x2][y2];
+	k++;
+
+	rep2(i, 1, 62) {
+		rep2(a,1,k)
+			rep2(j,1,k)
+				rep2(p,1,k)
+					rep2(q,1,k)
+						rep2(t,1,k)
+							rep2(u, 1,k) 
+								rep2(b,1,k){
+			if (em[p][q][t] == 0)
+				continue;
+			inf(dp[i][a][j][u][b] += inff(
+				dp[i - 1][a][j][p][q] * dp[i - 1][q][t][u][b]
+			));
+		}
+	}
+
+	ll sb = n - 3;
+	ll nx[7][7][7]; all0(nx);
+	ll v = 3;
+	if (sb & 1) {
+		rep2(a, 1,k)
+			rep2(j, 1,k)
+				rep2(p, 1,k)
+					rep2(q, 1,k)
+		{
+			inf(nx[a][p][q]
+				+=em[a][j][p] * em[j][p][q]);
+		}
+		v++;
+	}
+	else {
+		rep2(a, 1,k)
+			rep2(j, 1,k)
+				rep2(p, 1,k)
+		{
+			nx[a][j][p] = em[a][j][p];
+		}
+	}
+	sb >>= 1;
+	swap(nx, em);
+	rep(i,62) {
+		all0(nx);
+		if (sb & 1) {
+			rep2(a,1,2)
+				rep2(j, 1,k)
+					rep2(p, 1,k)
+						rep2(q, 1,k)
+							rep2(t, 1,k)
+								rep2(u, 1,k)
+			{
+				// 接続パターンなし
+				if (def[j][p][q] == 0)
+					continue;
+
+				inf(nx[a][t][u]
+					+=inff(em[a][j][p]
+					* dp[i][p][q][t][u]));
+			}
+			swap(nx, em);
+		}
+		sb >>= 1;
+	}
+	ll res = 0;
+	rep2(i, 1, k) {
+		inf(res += em[1][i][1]);
 	}
 	cout << res << endl;
 }
+
 int main()
 {
 	COMinit();
