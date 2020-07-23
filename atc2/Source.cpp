@@ -88,7 +88,7 @@ int dy[] = { 0,-1,0,1 };
 #define YES cout << "YES" << endl
 #define smal -INF*INF
 #define big INF*INF
-const ll INF = 1000000007;
+ll INF = 1000000007;
 const int MAX = 2000010;
 const int MOD = 1000000007;
 
@@ -124,7 +124,7 @@ ll getpow(ll b, ll x, ll md) {
 		t *= t;
 		t %= md;
 	}
-	return res;
+	return res % md;
 }
 ll getpow(ll b, ll x) {
 
@@ -1079,90 +1079,34 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-
 void solv() {
-
-	cin >> k >> m >> n;
-	ll dp[62][7][7][7][7]; all0(dp);
-	ll def[7][7][7]; all0(def);
-	ll em[7][7][7]; all0(em);
-	rep(i, m) {
-		ll p, q, r;
-		cin >> p >> q >> r;
-		dp[0][p][q][q][r]++;
-		def[p][q][r]++;
-		em[p][q][r]++;
-	}
-	k++;
-
-	rep2(i, 1, 62) {
-		rep2(a,1,k)
-			rep2(j,1,k)
-				rep2(p,1,k)
-					rep2(q,1,k)
-						rep2(t,1,k)
-							rep2(u, 1,k) 
-								rep2(b,1,k){
-			if (em[p][q][t] == 0)
-				continue;
-			inf(dp[i][a][j][u][b] += inff(
-				dp[i - 1][a][j][p][q] * dp[i - 1][q][t][u][b]
-			));
-		}
+	cin >> n;
+	ll a[200010], b[200010];
+	rep(i, n) {
+		cin >> a[i] >> b[i];
 	}
 
-	ll sb = n - 3;
-	ll nx[7][7][7]; all0(nx);
-	ll v = 3;
-	if (sb & 1) {
-		rep2(a, 1,k)
-			rep2(j, 1,k)
-				rep2(p, 1,k)
-					rep2(q, 1,k)
-		{
-			inf(nx[a][p][q]
-				+=em[a][j][p] * em[j][p][q]);
-		}
-		v++;
+	sort(a, a + n);
+	sort(b, b + n);
+	if (n % 2 == 0) {
+		ll lo1 = a[n / 2 - 1];
+		ll lo2 = a[n / 2];
+		ll hi1 = b[n / 2 - 1];
+		ll hi2 = b[n / 2];
+		lo1 *= 2; lo2 *= 2;
+		hi1 *= 2; hi2 *= 2;
+		ll lo = (lo2 + lo1) / 2;
+		ll hi = (hi2 + hi1) / 2;
+		cout << hi - lo + 1 << endl;
 	}
 	else {
-		rep2(a, 1,k)
-			rep2(j, 1,k)
-				rep2(p, 1,k)
-		{
-			nx[a][j][p] = em[a][j][p];
-		}
+		ll lo = a[n / 2];
+		ll hi = b[n / 2];
+		cout << hi - lo + 1 << endl;
 	}
-	sb >>= 1;
-	swap(nx, em);
-	rep(i,62) {
-		all0(nx);
-		if (sb & 1) {
-			rep2(a,1,2)
-				rep2(j, 1,k)
-					rep2(p, 1,k)
-						rep2(q, 1,k)
-							rep2(t, 1,k)
-								rep2(u, 1,k)
-			{
-				// 接続パターンなし
-				if (def[j][p][q] == 0)
-					continue;
-
-				inf(nx[a][t][u]
-					+=inff(em[a][j][p]
-					* dp[i][p][q][t][u]));
-			}
-			swap(nx, em);
-		}
-		sb >>= 1;
-	}
-	ll res = 0;
-	rep2(i, 1, k) {
-		inf(res += em[1][i][1]);
-	}
-	cout << res << endl;
 }
+
+
 
 int main()
 {
