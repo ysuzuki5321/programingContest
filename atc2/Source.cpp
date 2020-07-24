@@ -1079,31 +1079,45 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-void solv() {
-	cin >> n;
-	ll a[200010], b[200010];
+ll memo[63][2];
+ll a[100010];
+ll rec(ll x, bool tite) {
+	if (x < 0)
+		return 0;
+	if (~memo[x][tite])
+		return memo[x][tite];
+	ll v = 1LL << x;
+	ll c = 0;
 	rep(i, n) {
-		cin >> a[i] >> b[i];
+		if (a[i] & v) {
+			c++;
+		}
 	}
-
-	sort(a, a + n);
-	sort(b, b + n);
-	if (n % 2 == 0) {
-		ll lo1 = a[n / 2 - 1];
-		ll lo2 = a[n / 2];
-		ll hi1 = b[n / 2 - 1];
-		ll hi2 = b[n / 2];
-		lo1 *= 2; lo2 *= 2;
-		hi1 *= 2; hi2 *= 2;
-		ll lo = (lo2 + lo1) / 2;
-		ll hi = (hi2 + hi1) / 2;
-		cout << hi - lo + 1 << endl;
+	ll res = 0;
+	if (tite) {
+		if (v & k) {
+			res = rec(x - 1, tite) + v * (n - c);
+			res = max(res, rec(x - 1, false) + v * c);
+		}
+		else {
+			res = rec(x - 1, tite) + v * c;
+		}
 	}
 	else {
-		ll lo = a[n / 2];
-		ll hi = b[n / 2];
-		cout << hi - lo + 1 << endl;
+		res = rec(x - 1, false) + max(c, n - c) * v;
 	}
+
+	return memo[x][tite] = res;
+}
+void solv() {
+	cin >> n >> k;
+	rep(i, n) {
+		cin >> a[i];
+	}
+	allm1(memo);
+	cout << rec(62, true) << endl;
+
+
 }
 
 
