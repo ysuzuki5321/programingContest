@@ -1079,44 +1079,84 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-ll memo[63][2];
-ll a[100010];
-ll rec(ll x, bool tite) {
-	if (x < 0)
-		return 0;
-	if (~memo[x][tite])
-		return memo[x][tite];
-	ll v = 1LL << x;
-	ll c = 0;
-	rep(i, n) {
-		if (a[i] & v) {
-			c++;
-		}
+vector<string> tb;
+ll h, w;
+vector<vector<ll>> d[4];
+void dij(ll sx, ll sy) {
+	rep(i, 4) {
+		d[i] = vector<vector<ll>>(h, vector<ll>(w, -1));
 	}
-	ll res = 0;
-	if (tite) {
-		if (v & k) {
-			res = rec(x - 1, tite) + v * (n - c);
-			res = max(res, rec(x - 1, false) + v * c);
+
+	tuple5q<ll, ll, ll, ll, ll> q;
+	q.push({0,0,0,sx,sy});
+	while (!q.empty())
+	{
+		auto p = q.top();
+		q.pop();
+		auto cs = get<0>(p);
+		auto st = get<1>(p);
+		auto di = get<2>(p);
+		auto cx = get<3>(p);
+		auto cy = get<4>(p);
+		ll ss = cs + (st > 0);
+		if (d[di][cx][cy] != -1 && d[di][cx][cy] <= ss) {
+			continue;
+		}
+		d[di][cx][cy] = ss;
+
+		ll d1 = (di + 1) % 4;
+		if (d[d1][cx][cy] == -1 || d[d1][cx][cy] > ss) {
+			q.push({ss,0,d1,cx,cy});
+		}
+		ll d2 = (di + 3) % 4;
+		if (d[d2][cx][cy] == -1 || d[d2][cx][cy] > ss) {
+			q.push({ ss,0,d2,cx,cy });
+		}
+
+		ll tx = cx + dx[di];
+		ll ty = cy + dy[di];
+		if (tx < 0 || ty < 0 || tx >= h || ty >= w)
+			continue;
+		if (tb[tx][ty] == '@')
+			continue;
+		if (st + 1 == k) {
+			cs++;
+			st = 0;
 		}
 		else {
-			res = rec(x - 1, tite) + v * c;
+			st++;
 		}
-	}
-	else {
-		res = rec(x - 1, false) + max(c, n - c) * v;
-	}
 
-	return memo[x][tite] = res;
+		if (d[di][tx][ty] == -1 || d[di][tx][ty] > cs) {
+			q.push({cs,st,di,tx,ty});
+		}
+
+	}
 }
 void solv() {
-	cin >> n >> k;
-	rep(i, n) {
-		cin >> a[i];
-	}
-	allm1(memo);
-	cout << rec(62, true) << endl;
+	cin >> n;
+	ll s[100010];
+	rep(i, n)
+		cin >> s[i];
 
+	ll res = 0;
+	rep2(i, 1, n / 2) {
+		ll t = i;
+		ll sum = 0;
+
+		bool use[100010]; all0(use);
+		for (int j = n - 1 - i; j > i; j -= i)
+		{
+			use[j] = true;
+			if (use[t])
+				break;
+			sum += s[j] + s[t];
+			res = max(res, sum);
+			t += i;
+		}
+	}
+
+	cout << res << endl;
 
 }
 
