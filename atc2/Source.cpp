@@ -25,6 +25,7 @@
 #define _USE_MATH_DEFINES
 #include <iostream>
 #include <math.h>
+#include <bitset>
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -44,8 +45,8 @@ template <class o, class p, class q>
 using tuple3q = priority_queue<tuple<o, p, q>, vector<tuple<o, p, q>>, greater<tuple<o, p, q>>>;
 template <class o, class p, class q, class r>
 using tuple4q = priority_queue<tuple<o, p, q, r>, vector<tuple<o, p, q, r>>, greater<tuple<o, p, q, r>>>;
-template <class o, class p, class q, class r,class s>
-using tuple5q = priority_queue<tuple<o, p, q, r,s>, vector<tuple<o, p, q, r,s>>, greater<tuple<o, p, q, r,s>>>;
+template <class o, class p, class q, class r, class s>
+using tuple5q = priority_queue<tuple<o, p, q, r, s>, vector<tuple<o, p, q, r, s>>, greater<tuple<o, p, q, r, s>>>;
 int dx[] = { -1,0,1,0 };
 int dy[] = { 0,-1,0,1 };
 #define bit(x,v) ((ll)x << v)
@@ -235,7 +236,7 @@ bool unit(int x, int y) {
 	return true;
 }
 
-ll n,m;
+ll n, m;
 int ci = 0;
 struct Node {
 	int key;
@@ -757,6 +758,7 @@ public:
 		return res;
 	}
 };
+
 class Segment;
 class Circle;
 
@@ -1043,14 +1045,14 @@ vl zalgo(string s) {
 	ll c = 0;
 	vl a(s.size());
 	ll si = s.size();
-	rep2(i,1, s.size()) {
+	rep2(i, 1, s.size()) {
 		if (i + a[i - c] < c + a[c])
 		{
 			a[i] = a[i - c];
 		}
 		else {
-			ll j = max(0LL,a[c] - (i - c));
-			while (i + j < si && s[j] == s[i+j])
+			ll j = max(0LL, a[c] - (i - c));
+			while (i + j < si && s[j] == s[i + j])
 			{
 				j++;
 			}
@@ -1079,84 +1081,8 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-vector<string> tb;
-ll h, w;
-vector<vector<ll>> d[4];
-void dij(ll sx, ll sy) {
-	rep(i, 4) {
-		d[i] = vector<vector<ll>>(h, vector<ll>(w, -1));
-	}
 
-	tuple5q<ll, ll, ll, ll, ll> q;
-	q.push({0,0,0,sx,sy});
-	while (!q.empty())
-	{
-		auto p = q.top();
-		q.pop();
-		auto cs = get<0>(p);
-		auto st = get<1>(p);
-		auto di = get<2>(p);
-		auto cx = get<3>(p);
-		auto cy = get<4>(p);
-		ll ss = cs + (st > 0);
-		if (d[di][cx][cy] != -1 && d[di][cx][cy] <= ss) {
-			continue;
-		}
-		d[di][cx][cy] = ss;
-
-		ll d1 = (di + 1) % 4;
-		if (d[d1][cx][cy] == -1 || d[d1][cx][cy] > ss) {
-			q.push({ss,0,d1,cx,cy});
-		}
-		ll d2 = (di + 3) % 4;
-		if (d[d2][cx][cy] == -1 || d[d2][cx][cy] > ss) {
-			q.push({ ss,0,d2,cx,cy });
-		}
-
-		ll tx = cx + dx[di];
-		ll ty = cy + dy[di];
-		if (tx < 0 || ty < 0 || tx >= h || ty >= w)
-			continue;
-		if (tb[tx][ty] == '@')
-			continue;
-		if (st + 1 == k) {
-			cs++;
-			st = 0;
-		}
-		else {
-			st++;
-		}
-
-		if (d[di][tx][ty] == -1 || d[di][tx][ty] > cs) {
-			q.push({cs,st,di,tx,ty});
-		}
-
-	}
-}
 void solv() {
-	cin >> n;
-	ll s[100010];
-	rep(i, n)
-		cin >> s[i];
-
-	ll res = 0;
-	rep2(i, 1, n / 2) {
-		ll t = i;
-		ll sum = 0;
-
-		bool use[100010]; all0(use);
-		for (int j = n - 1 - i; j > i; j -= i)
-		{
-			use[j] = true;
-			if (use[t])
-				break;
-			sum += s[j] + s[t];
-			res = max(res, sum);
-			t += i;
-		}
-	}
-
-	cout << res << endl;
 
 }
 
@@ -1165,6 +1091,8 @@ void solv() {
 int main()
 {
 	COMinit();
+
 	solv();
 	return 0;
 }
+
