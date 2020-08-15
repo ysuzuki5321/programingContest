@@ -79,7 +79,7 @@ int dy[] = { 0,-1,0,1 };
 #define cini(a) a; cin >> a
 #define infa(a,b) (a + b) % INF
 #define infm(a,b) (a * b) % INF
-#define infd(a,b) (a * modinv(b)) % INF
+#define infd(a,b) (a * INFinv(b)) % INF
 #define infs(a,b) (a + INF - b) % INF
 #define inf(a) (a) %= INF
 #define inff(a) ((a) % INF)
@@ -91,7 +91,6 @@ int dy[] = { 0,-1,0,1 };
 #define big INF*INF
 ll INF = 1000000007;
 const int MAX = 2000010;
-const int MOD = 1000000007;
 
 long long fac[MAX], finv[MAX], inv[MAX];
 void COMinit() {
@@ -99,9 +98,9 @@ void COMinit() {
 	finv[0] = finv[1] = 1;
 	inv[1] = 1;
 	for (int i = 2; i < MAX; i++) {
-		fac[i] = fac[i - 1] * i % MOD;
-		inv[i] = MOD - inv[MOD % i] * (MOD / i) % MOD;
-		finv[i] = finv[i - 1] * inv[i] % MOD;
+		fac[i] = fac[i - 1] * i % INF;
+		inv[i] = INF - inv[INF % i] * (INF / i) % INF;
+		finv[i] = finv[i - 1] * inv[i] % INF;
 	}
 }
 
@@ -109,7 +108,7 @@ void COMinit() {
 long long COM(int n, int k) {
 	if (n < k) return 0;
 	if (n < 0 || k < 0) return 0;
-	return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
+	return fac[n] * (finv[k] * finv[n - k] % INF) % INF;
 }
 
 ll getpow(ll b, ll x, ll md) {
@@ -182,7 +181,7 @@ public:
 		if (t & 1) a *= *this;
 		return a;
 	}
-	// for prime mod
+	// for prime INF
 	mint inv() const {
 		return pow(md - 2);
 	}
@@ -1081,9 +1080,42 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-
+ll a[100010];
+ll memo[63][2];
+ll rec(ll x, bool tite) {
+	if (x < 0)
+		return 0;
+	if (~memo[x][tite])
+		return memo[x][tite];
+	ll c = 0;
+	ll v = 1LL << x;
+	rep(i, n) {
+		if (a[i] & v)
+			c++;
+	}
+	ll res = 0;
+	if (tite) {
+		if (v & k) {
+			res = rec(x - 1, true) + (n - c) * v;
+			res = max(res, rec(x - 1, false) + c * v);
+		}
+		else {
+			res = rec(x - 1, true) + c * v;
+		}
+	}
+	else {
+		res = rec(x - 1, false) + max(c, n - c) * v;
+	}
+	return memo[x][tite] = res;
+}
 void solv() {
+	cin >> n >> k;
 
+	rep(i, n) {
+		cin >> a[i];
+	}
+	allm1(memo);
+	cout << rec(62, true) << endl;
 }
 
 
