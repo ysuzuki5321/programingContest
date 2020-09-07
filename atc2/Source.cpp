@@ -1080,51 +1080,66 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-ll a[100010];
-ll memo[63][2];
-ll rec(ll x, bool tite) {
-	if (x < 0)
-		return 0;
-	if (~memo[x][tite])
-		return memo[x][tite];
-	ll c = 0;
-	ll v = 1LL << x;
-	rep(i, n) {
-		if (a[i] & v)
-			c++;
+ll l[100010], r[100010];
+
+bool cmp(pll left,pll right){
+	if (left.first == right.first) {
+		return r[left.second] > r[right.second];
 	}
-	ll res = 0;
-	if (tite) {
-		if (v & k) {
-			res = rec(x - 1, true) + (n - c) * v;
-			res = max(res, rec(x - 1, false) + c * v);
-		}
-		else {
-			res = rec(x - 1, true) + c * v;
-		}
-	}
-	else {
-		res = rec(x - 1, false) + max(c, n - c) * v;
-	}
-	return memo[x][tite] = res;
+	return left.first < right.first;
 }
 void solv() {
-	cin >> n >> k;
-
+	cin >> n;
+	ll ma = 0;
+	ll mi = 0;
+	pllgreaterq rq;
+	pll lr[100010];
+	ll g2l = 0;
 	rep(i, n) {
-		cin >> a[i];
+		cin >> l[i] >> r[i];
+		rq.push({r[i],i});
+		lr[i].first = l[i];
+		g2l = max(g2l, l[i]);
+		lr[i].second = i;
+		if (r[i] - l[i] + 1 > ma) {
+			ma = r[i] - l[i] + 1;
+			mi = i;
+		}
 	}
-	allm1(memo);
-	cout << rec(62, true) << endl;
+	sort(lr, lr + n, cmp);
+	ll lma = 0;
+	ll rmi = big;
+	rep(i,n){
+		if (i == mi)
+			continue;
+		lma = max(lma, l[i]);
+		rmi = min(rmi, r[i]);
+	}
+	ll rs = ma + max(0LL, rmi - lma + 1);
+	ll g1l = 0;
+	ll g1r = big;
+	ll g2r = 0;
+	bool use[100010]; all0(use);
+	rep(i, n - 1) {
+		g1l = lr[i].first;
+		use[lr[i].second] = true;
+		g1r = min(r[lr[i].second], g1r);
+		while (use[rq.top().second])
+		{
+			rq.pop();
+		}
+		g2r = rq.top().first;
+		rs = max(rs, g1r - g1l + 1 + g2r - g2l + 1);
+	}
+	cout << rs << endl;
 }
-
-
 
 int main()
 {
 	COMinit();
-
+	 
 	solv();
 	return 0;
 }
+
 

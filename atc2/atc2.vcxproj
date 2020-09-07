@@ -92,6 +92,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <StackReserveSize>1000000000</StackReserveSize>
+      <HeapReserveSize>1000000000</HeapReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
