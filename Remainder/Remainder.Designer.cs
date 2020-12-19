@@ -73,6 +73,7 @@
             this.Name = "Remainder";
             this.Text = "Remainder";
             this.Load += new System.EventHandler(this.Remainder_Load);
+            this.SizeChanged += new System.EventHandler(this.Remainder_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.TodayGrid)).EndInit();
             this.ResumeLayout(false);
 

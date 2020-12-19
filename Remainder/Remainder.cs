@@ -20,6 +20,8 @@ namespace Remainder
         {
             InitializeComponent();
         }
+        int offsetWidth = 40;
+        int offsetHeight = 120;
 
         private void Remainder_Load(object sender, EventArgs e)
         {
@@ -32,6 +34,8 @@ namespace Remainder
             TodayGrid.DataSource = data;
             
             if (data == null) { }
+
+            SetGridSize();
         }
 
         private string DataSql()
@@ -67,6 +71,17 @@ namespace Remainder
                 System.Diagnostics.Process.Start(TodayGrid.Rows[e.RowIndex]
                     .Cells[e.ColumnIndex].Value as string);
             }
+        }
+
+        private void Remainder_SizeChanged(object sender, EventArgs e)
+        {
+            SetGridSize();
+        }
+
+        private void SetGridSize()
+        {
+            TodayGrid.Size = new Size(Size.Width - offsetWidth, Size.Height - offsetHeight);
+
         }
     }
 }

@@ -199,8 +199,8 @@ public:
 	}
 };
 
-int pr[100010];
-int lank[100010];
+int pr[200010];
+int lank[200010];
 void uini(int n) {
 	for (size_t i = 0; i <= n; i++)
 	{
@@ -1015,7 +1015,7 @@ ll cmbi(ll x, ll b) {
 	return res;
 }
 
-double digsum(ll x) {
+ll digsum(ll x) {
 	ll res = 0;
 	while (x > 0)
 	{
@@ -1073,6 +1073,7 @@ string decStrNum(string s) {
 			continue;
 		}
 		s[i] = s[i] - 1;
+
 		break;
 	}
 	return s;
@@ -1080,64 +1081,57 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-ll l[100010], r[100010];
 
-bool cmp(pll left,pll right){
-	if (left.first == right.first) {
-		return r[left.second] > r[right.second];
-	}
-	return left.first < right.first;
-}
+
+
 void solv() {
+	
 	cin >> n;
-	ll ma = 0;
-	ll mi = 0;
-	pllgreaterq rq;
-	pll lr[100010];
-	ll g2l = 0;
+	ll a[200010];
+	rep(i, n)
+		cin >> a[i];
+	ll b[200010];
+	priority_queue<pll> q;
 	rep(i, n) {
-		cin >> l[i] >> r[i];
-		rq.push({r[i],i});
-		lr[i].first = l[i];
-		g2l = max(g2l, l[i]);
-		lr[i].second = i;
-		if (r[i] - l[i] + 1 > ma) {
-			ma = r[i] - l[i] + 1;
-			mi = i;
+		cin >> b[i];
+		q.push({ b[i],i });
+	}
+
+	ll res = 0;
+	while (!q.empty())
+	{
+		auto p = q.top();
+		q.pop();
+		auto i = p.second;
+		ll bf = (i + n - 1) % n;
+		ll nx = (i + 1) % n;
+		ll val = b[bf] + b[nx];
+		ll ma = max({ b[bf],b[nx],a[i] });
+		ll inter = b[i] - ma;
+		ll d = inter / val;
+		if (inter % val > 0) {
+			d++;
+		}
+		b[i] -= d * val;
+		res += d;
+		if (b[i] < a[i]) {
+			cout << -1 << endl;
+			return;
+		}
+		if (b[i] > a[i]) {
+			q.push({ b[i],i });
 		}
 	}
-	sort(lr, lr + n, cmp);
-	ll lma = 0;
-	ll rmi = big;
-	rep(i,n){
-		if (i == mi)
-			continue;
-		lma = max(lma, l[i]);
-		rmi = min(rmi, r[i]);
-	}
-	ll rs = ma + max(0LL, rmi - lma + 1);
-	ll g1l = 0;
-	ll g1r = big;
-	ll g2r = 0;
-	bool use[100010]; all0(use);
-	rep(i, n - 1) {
-		g1l = lr[i].first;
-		use[lr[i].second] = true;
-		g1r = min(r[lr[i].second], g1r);
-		while (use[rq.top().second])
-		{
-			rq.pop();
-		}
-		g2r = rq.top().first;
-		rs = max(rs, g1r - g1l + 1 + g2r - g2l + 1);
-	}
-	cout << rs << endl;
+
+	cout << res << endl;
 }
+
+
 
 int main()
 {
 	COMinit();
-	 
+
 	solv();
 	return 0;
 }
