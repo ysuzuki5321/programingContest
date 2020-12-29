@@ -1082,51 +1082,9 @@ string decStrNum(string s) {
 //　ここまでライブラリ
 // ここからコード
 
-
-
 void solv() {
 	
-	cin >> n;
-	ll a[200010];
-	rep(i, n)
-		cin >> a[i];
-	ll b[200010];
-	priority_queue<pll> q;
-	rep(i, n) {
-		cin >> b[i];
-		q.push({ b[i],i });
-	}
-
-	ll res = 0;
-	while (!q.empty())
-	{
-		auto p = q.top();
-		q.pop();
-		auto i = p.second;
-		ll bf = (i + n - 1) % n;
-		ll nx = (i + 1) % n;
-		ll val = b[bf] + b[nx];
-		ll ma = max({ b[bf],b[nx],a[i] });
-		ll inter = b[i] - ma;
-		ll d = inter / val;
-		if (inter % val > 0) {
-			d++;
-		}
-		b[i] -= d * val;
-		res += d;
-		if (b[i] < a[i]) {
-			cout << -1 << endl;
-			return;
-		}
-		if (b[i] > a[i]) {
-			q.push({ b[i],i });
-		}
-	}
-
-	cout << res << endl;
 }
-
-
 
 int main()
 {
