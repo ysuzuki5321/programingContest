@@ -1081,9 +1081,30 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-
+bool check(char a, char b) {
+	return a == b || a == '?' || b == '?';
+}
 void solv() {
-	
+	cin >> n;
+	ll c[200010];
+	rep(i, n) {
+		cin >> c[i];
+	}
+	sort(c, c + n);
+	ll pt[200010]; pt[0] = 1;
+	ll cmb[200010]; cmb[0] = 1;
+	rep2(i,1,n){
+		inf(pt[i] = pt[i - 1] * 2);
+		inf(cmb[i] = inff(cmb[i - 1] * 2) + pt[i - 1]);
+	}
+
+	ll r = 0;
+
+	rep(i, n) {
+		inf(r += inff(cmb[n - i - 1] * c[i])*getpow(2,i));
+	}
+	inf(r *= getpow(2, n));
+	cout << r << endl;
 }
 
 int main()
