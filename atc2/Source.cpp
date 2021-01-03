@@ -1081,46 +1081,61 @@ string decStrNum(string s) {
 
 //　ここまでライブラリ
 // ここからコード
-
-
-
-void solv() {
-	
-	cin >> n;
-	ll a[200010];
-	rep(i, n)
-		cin >> a[i];
-	ll b[200010];
-	priority_queue<pll> q;
-	rep(i, n) {
-		cin >> b[i];
-		q.push({ b[i],i });
+vector<ll> es[200010];
+ll dp[200010];
+ll t[200010];
+void dfs1(ll x, ll f) {
+	dp[x] = 1;
+	for (auto v : es[x]) {
+		if (v == f)
+			continue;
+		dfs1(v, x);
+		t[x] += t[v];
+		inf(dp[x] *= inff(COM(t[x], t[v]) * dp[v]));
 	}
-
-	ll res = 0;
-	while (!q.empty())
+	t[x]++;
+}
+void dfs2(ll x, ll f) {
+	for (auto v : es[x]) {
+		if (v == f)
+			continue;
+		ll val = inff(dp[x] * COM(t[x] - 1, t[x] - t[v]));
+		inf(val *= modinv(inff(COM(t[x]-1,t[v])*dp[v])));
+		inf(dp[v] *= val);
+		t[v] = t[x];
+		dfs2(v, x);
+	}
+}
+map<pair<string, string>, ll> create(string s) {
+	ll si = s.size();
+	map<pair<string, string>, ll> mp;
+	for (ll i = 0; i < (1<<si); i++)
 	{
-		auto p = q.top();
-		q.pop();
-		auto i = p.second;
-		ll bf = (i + n - 1) % n;
-		ll nx = (i + 1) % n;
-		ll val = b[bf] + b[nx];
-		ll ma = max({ b[bf],b[nx],a[i] });
-		ll inter = b[i] - ma;
-		ll d = inter / val;
-		if (inter % val > 0) {
-			d++;
+		string s1 = "";
+		string s2 = "";
+		rep(j, si) {
+			if (ion(i, j)) {
+				s1 += s[j];
+			}
+			else {
+				s2 += s[j];
+			}
 		}
-		b[i] -= d * val;
-		res += d;
-		if (b[i] < a[i]) {
-			cout << -1 << endl;
-			return;
-		}
-		if (b[i] > a[i]) {
-			q.push({ b[i],i });
-		}
+		mp[{s1, s2}]++;
+	}
+	return mp;
+}
+void solv() {
+	cin >> n;
+	string s;
+	cin >> s;
+	auto p1 = create(s.substr(0, n));
+	string s2 = s.substr(n);
+	reverse(all(s2));
+	auto p2 = create(s2);
+	ll res = 0;
+	for (auto v : p1) {
+		res += p2[v.first] * v.second;
 	}
 
 	cout << res << endl;
