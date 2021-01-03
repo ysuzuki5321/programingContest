@@ -1,4 +1,4 @@
-#include <stdio.h>
+ï»¿#include <stdio.h>
 #include <sstream>
 #include <string.h>
 #include <vector>
@@ -53,11 +53,11 @@ int dy[] = { 0,-1,0,1 };
 #define rep(x,n) for(ll x = 0;x < n;x++)
 #define rep2(x,f,v) for(ll x=f;x<v;x++)
 #define repe(v,x) for(auto v : x)
-// ‹–—e‚·‚éŒë·ƒÃ
+// ï¿½ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½ë·ï¿½ï¿½
 #define EPS (1e-10)
-// 2‚Â‚ÌƒXƒJƒ‰[‚ª“™‚µ‚¢‚©‚Ç‚¤‚©
+// 2ï¿½Â‚ÌƒXï¿½Jï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½
 #define EQ(a,b) (std::abs(a-b) < EPS)
-// 2‚Â‚ÌƒxƒNƒgƒ‹‚ª“™‚µ‚¢‚©‚Ç‚¤‚©
+// 2ï¿½Â‚Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½
 #define EQV(a,b) ( EQ((a).real(), (b).real()) && EQ((a).imag(), (b).imag()) )
 #define all(a) a.begin(),a.end()
 #define all0(a) memset(a,0,sizeof(a))
@@ -104,7 +104,7 @@ void COMinit() {
 	}
 }
 
-// “ñ€ŒW”ŒvZ
+// ï¿½ñ€ŒWï¿½ï¿½ï¿½vï¿½Z
 long long COM(int n, int k) {
 	if (n < k) return 0;
 	if (n < 0 || k < 0) return 0;
@@ -496,8 +496,8 @@ void construct_sa(string S, int* sa) {
 	{
 		sort(sa, sa + n + 1, compare_sa);
 
-		// sa‚Íƒ\[ƒgŒã‚ÌÚ”ö«‚Ì•À‚Ñ‚É‚È‚Á‚Ä‚¢‚éArank‚ÍŒ³‚ÌˆÊ’u‚Ìindex‚ğ•Û‚µ‚½‚Ü‚ÜAXV‚³‚ê‚Ä‚¢‚éB
-		// ƒsƒ“‚Æ‚±‚È‚©‚Á‚½•”•ª
+		// saï¿½Íƒ\ï¿½[ï¿½gï¿½ï¿½ÌÚ”ï¿½ï¿½ï¿½ï¿½Ì•ï¿½ï¿½Ñ‚É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Arankï¿½ÍŒï¿½ï¿½ÌˆÊ’uï¿½ï¿½indexï¿½ï¿½Ûï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ÜAï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½B
+		// ï¿½sï¿½ï¿½ï¿½Æ‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		temp[sa[0]] = 0;
 		for (size_t i = 1; i <= n; i++)
 		{
@@ -511,7 +511,7 @@ void construct_sa(string S, int* sa) {
 }
 bool contain(string S, int* sa, string T) {
 	int a = 0, b = S.length();
-	// sa ‚Í Ú”ö«‚ª«‘‡‚É•À‚ñ‚Å‚¢‚éA“ü‚Á‚Ä‚¢‚é‚Ì‚Í‚»‚ÌˆÊ’u‚ÌƒCƒ“ƒfƒbƒNƒX
+	// sa ï¿½ï¿½ ï¿½Ú”ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É•ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Ì‚Í‚ï¿½ï¿½ÌˆÊ’uï¿½ÌƒCï¿½ï¿½ï¿½fï¿½bï¿½Nï¿½X
 	while (b - a > 1) {
 		int c = (a + b) / 2;
 		if (S.compare(sa[c], T.length(), T) < 0) a = c;
@@ -809,7 +809,7 @@ public:
 	static const int ONLINE_FRONT = -2;
 	static const int ON_SEGMENT = 0;
 	static int ccw(Point p0, Point p1, Point p2) {
-		// ü•ª‚Íp0‚Æp1‚Åp2‚ª‚Ç‚±‚É‚ ‚é‚©‚ğ’T‚é
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½p0ï¿½ï¿½p1ï¿½ï¿½p2ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½É‚ï¿½ï¿½é‚©ï¿½ï¿½Tï¿½ï¿½
 		Point a = p1 - p0;
 		Point b = p2 - p0;
 		if (cross(a, b) > EPS) return COUNTER_CLOCKWISE;
@@ -847,11 +847,11 @@ public:
 		bool x = false;
 		rep(i, n) {
 			Point a = g[i] - p, b = g[(i + 1) % n] - p;
-			// ü‚Ìã‚ÉÚ‚Á‚Ä‚¢‚é‚©
+			// ï¿½ï¿½ï¿½Ìï¿½ÉÚ‚ï¿½ï¿½Ä‚ï¿½ï¿½é‚©
 			if (std::abs(cross(a, b)) < EPS && dot(a, b) < EPS) return 1;
 
-			// p‚ğŠî€‚Æ‚µ‚Äã‰º‚É‚ ‚é‚©
-			// ‚Ü‚½‚ÍŠOÏ‚ª³‚©?(¨‚É‚ ‚é‚©)
+			// pï¿½ï¿½î€ï¿½Æ‚ï¿½ï¿½Äã‰ºï¿½É‚ï¿½ï¿½é‚©
+			// ï¿½Ü‚ï¿½ï¿½ÍŠOï¿½Ï‚ï¿½ï¿½ï¿½ï¿½ï¿½?(ï¿½ï¿½ï¿½É‚ï¿½ï¿½é‚©)
 			if (a.y > b.y) swap(a, b);
 			if (a.y < EPS && EPS < b.y && cross(a, b) > EPS) x = !x;
 		}
@@ -974,7 +974,7 @@ public:
 		cin >> c.x >> c.y >> r;
 	}
 	static pair<Point, Point> getCrossPoints(Circle c1, Circle c2) {
-		double d = (c1.c - c2.c).abs(); // ’†S“_‚Ç‚¤‚µ‚Ì‹——£
+		double d = (c1.c - c2.c).abs(); // ï¿½ï¿½ï¿½Sï¿½_ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½Ì‹ï¿½ï¿½ï¿½
 		double a = acos((c1.r * c1.r + d * d - c2.r * c2.r) / (2 * c1.r * d));
 		double t = arg(c2.c - c1.c);
 		return make_pair(c1.c + polar(c1.r, t + a), c1.c + polar(c1.r, t - a));
@@ -1079,8 +1079,8 @@ string decStrNum(string s) {
 	return s;
 }
 
-//@‚±‚±‚Ü‚Åƒ‰ƒCƒuƒ‰ƒŠ
-// ‚±‚±‚©‚çƒR[ƒh
+//ã€€ã“ã“ã¾ã§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+// ã“ã“ã‹ã‚‰ã‚³ãƒ¼ãƒ‰
 bool check(char a, char b) {
 	return a == b || a == '?' || b == '?';
 }
