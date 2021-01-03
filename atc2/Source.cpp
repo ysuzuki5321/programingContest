@@ -1079,11 +1079,17 @@ string decStrNum(string s) {
 	return s;
 }
 
-//　ここまでライブラリ
-// ここからコード
+<<<<<<< HEAD
+//�@�����܂Ń��C�u����
+// ��������R�[�h
 bool check(char a, char b) {
 	return a == b || a == '?' || b == '?';
 }
+=======
+//�@�����܂Ń��C�u����
+// ��������R�[�h
+
+>>>>>>> ccd10d8d22c237a167a2ba2cdcce4bda46917a5e
 void solv() {
 	cin >> n;
 	ll c[200010];
