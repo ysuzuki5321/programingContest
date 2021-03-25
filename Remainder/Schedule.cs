@@ -13,5 +13,7 @@ namespace Remainder
         public string Url { get; set; }
         public int Interval { get; set; }
         public int Start { get; set; }
+
+        public int ProblemCount { get; set; }
     }
 }

@@ -28,6 +28,7 @@
 #include <bitset>
 using namespace std;
 typedef long long ll;
+typedef unsigned long long ull;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 typedef pair<ll, double> pld;
@@ -35,6 +36,7 @@ typedef pair<double, double> pdd;
 typedef pair<double, ll> pdl;
 typedef pair<int, char> pic;
 typedef vector<ll> vl;
+typedef vector<pll> vpll;
 typedef vector<int> vi;
 typedef priority_queue<ll, vector<ll>, greater<ll>> llgreaterq;
 typedef priority_queue<pll, vector<pll>, greater<pll>> pllgreaterq;
@@ -53,16 +55,17 @@ int dy[] = { 0,-1,0,1 };
 #define rep(x,n) for(ll x = 0;x < n;x++)
 #define rep2(x,f,v) for(ll x=f;x<v;x++)
 #define repe(v,x) for(auto v : x)
-// ���e����덷��
+// 許容する誤差ε
 #define EPS (1e-10)
-// 2�̃X�J���[�����������ǂ���
+// 2つのスカラーが等しいかどうか
 #define EQ(a,b) (std::abs(a-b) < EPS)
-// 2�̃x�N�g�������������ǂ���
+// 2つのベクトルが等しいかどうか
 #define EQV(a,b) ( EQ((a).real(), (b).real()) && EQ((a).imag(), (b).imag()) )
 #define all(a) a.begin(),a.end()
 #define all0(a) memset(a,0,sizeof(a))
 #define allm1(a) memset(a,-1,sizeof(a))
-#define put_float(v) 	cout << fixed << setprecision(10); \
+#define set_float() cout << fixed << setprecision(10);
+#define put_float(v) 	set_float() \
 						cout << v << endl
 #define put(v) cout << v << endl
 #define vinsert(v,p,x) v.insert(v.begin() + p,x)
@@ -73,7 +76,6 @@ int dy[] = { 0,-1,0,1 };
 #define ion(i,j) ((i & (1LL << j)) > 0)
 #define next(i) i++;i%=2
 #define Len size()
-#define ull unsignd long long
 #define psp(a,b) push_back(make_pair(a,b))
 #define psp2(a,b) push(make_pair(a,b))
 #define cini(a) a; cin >> a
@@ -82,16 +84,27 @@ int dy[] = { 0,-1,0,1 };
 #define infd(a,b) (a * INFinv(b)) % INF
 #define infs(a,b) (a + INF - b) % INF
 #define inf(a) (a) %= INF
-#define inff(a) ((a) % INF)
+#define inff(a) ((a + INF) % INF)
 #define No cout << "No" << endl
 #define Yes cout << "Yes" << endl
 #define NO cout << "NO" << endl
 #define YES cout << "YES" << endl
 #define smal -INF*INF
 #define big INF*INF
+#define frontpop(q) q.front();q.pop()
+#define toppop(q) q.top();q.pop()
+#define arr(a,s) a[s]; all0(a);
+bool chmin(ll& a, ll b) { if (a > b) { a = b; return 1; } return 0; }
 ll INF = 1000000007;
 const int MAX = 2000010;
-
+void cout2(ll val) {
+	if (val == big) {
+		cout << -1 << endl;
+	}
+	else {
+		cout << val << endl;
+	}
+}
 long long fac[MAX], finv[MAX], inv[MAX];
 void COMinit() {
 	fac[0] = fac[1] = 1;
@@ -104,7 +117,7 @@ void COMinit() {
 	}
 }
 
-// �񍀌W���v�Z
+// 二項係数計算
 long long COM(int n, int k) {
 	if (n < k) return 0;
 	if (n < 0 || k < 0) return 0;
@@ -130,9 +143,35 @@ ll getpow(ll b, ll x) {
 
 	return getpow(b, x, INF);
 }
+/// 素数を法とする場合
 ll modinv(ll x) {
 	return getpow(x, INF - 2);
 }
+
+ll extgcd(ll a, ll b, ll& x, ll& y) {
+	ll d = a;
+	if (b != 0) {
+		d = extgcd(b, a % b, y, x);
+		y -= (a / b) * x;
+	}
+	else {
+		x = 1; y = 0;
+	}
+	return d;
+}
+
+/// <summary>
+/// 素数を法としない場合
+/// </summary>
+/// <param name="a"></param>
+/// <param name="m"></param>
+/// <returns></returns>
+ll modinv(ll a, ll m) {
+	ll x, y;
+	extgcd(a, m, x, y);
+	return (m + x % m) % m;
+}
+
 ll gcd(ll a, ll b) {
 	if (b == 0) return a;
 	return gcd(b, a % b);
@@ -199,10 +238,10 @@ public:
 	}
 };
 
-int pr[200010];
-int lank[200010];
-void uini(int n) {
-	for (size_t i = 0; i <= n; i++)
+int pr[500010];
+int lank[500010];
+void uini(int _n) {
+	for (ll i = 0; i <= _n; i++)
 	{
 		pr[i] = i;
 		lank[i] = 1;
@@ -425,17 +464,25 @@ class edge {
 public:
 	int from, to, i;
 	ll val;
+	ll cap, rev;
 	edge() {}
 	edge(ll to) : to(to) {}
 	edge(ll to, ll i) : to(to), i(i) {}
 	edge(ll from, ll to, ll val) : from(from), to(to), val(val) {}
+	void flowEdge(ll _to, ll _cap, ll _rev) {
+		to = _to;
+		cap = _cap;
+		rev = _rev;
+	}
 };
+typedef vector<vector<edge>> vve;
 
 class LCA {
 private:
 	vector<vector<edge>> v;
 	vector<vector<int>> parent;
 	vector<int> depth;
+	ll root;
 	void dfs(int n, int m, int d) {
 		parent[0][n] = m;
 		depth[n] = d;
@@ -446,6 +493,7 @@ private:
 public:
 	LCA(ll N, ll root, vector<vector<edge>>& tree) {
 		v = tree;
+		this->root = root;
 		parent = vector<vector<int>>(21, vector<int>(N + 1, 0));
 		depth = vector<int>(N + 1, 0);
 		dfs(root, -1, 0);
@@ -458,6 +506,8 @@ public:
 	}
 	int lca(int n, int m) {
 		if (depth[n] > depth[m]) swap(n, m);
+		if (n == root)
+			return root;
 		for (int j = 0; j < 20; j++) {
 			if ((depth[m] - depth[n]) >> j & 1) m = parent[j][m];
 		}
@@ -496,8 +546,8 @@ void construct_sa(string S, int* sa) {
 	{
 		sort(sa, sa + n + 1, compare_sa);
 
-		// sa�̓\�[�g��̐ڔ����̕��тɂȂ��Ă���Arank�͌��̈ʒu��index��ێ������܂܁A�X�V����Ă���B
-		// �s���Ƃ��Ȃ���������
+		// saはソート後の接尾辞の並びになっている、rankは元の位置のindexを保持したまま、更新されている。
+		// ピンとこなかった部分
 		temp[sa[0]] = 0;
 		for (size_t i = 1; i <= n; i++)
 		{
@@ -511,7 +561,7 @@ void construct_sa(string S, int* sa) {
 }
 bool contain(string S, int* sa, string T) {
 	int a = 0, b = S.length();
-	// sa �� �ڔ������������ɕ���ł���A�����Ă���̂͂��̈ʒu�̃C���f�b�N�X
+	// sa は 接尾辞が辞書順に並んでいる、入っているのはその位置のインデックス
 	while (b - a > 1) {
 		int c = (a + b) / 2;
 		if (S.compare(sa[c], T.length(), T) < 0) a = c;
@@ -695,7 +745,7 @@ public:
 	const static int DAT_SIZE = (1 << 18) - 1;
 	int N, Q;
 	int A[MAX_N];
-
+	ll MAX=big;
 
 	ll data[DAT_SIZE], datb[DAT_SIZE];
 	void init(int _n) {
@@ -712,6 +762,42 @@ public:
 			datb[i] = iv;
 		}
 	}
+	void initRMQ(int _n) {
+		n = 1;
+		while (n < _n) n *= 2;
+		// 全ての値をbigに
+		rep(i, 2 * n - 1)
+			data[i] = MAX;
+	}
+	void updateRMQ(int k, ll a) {
+		k += n - 1;
+		data[k] = a;
+		while (k > 0) {
+			k = (k - 1) / 2;
+			data[k] = min(data[k * 2 + 1], data[k * 2 + 2]);
+		}
+	}
+	ll RMQ(int a,int b) {
+
+		return queryRMQ(a,b+1,0,0,n);
+	}
+	ll queryRMQ(int a, int b, int k, int l, int r) {
+		if (r <= a || b <= l)
+			return MAX;
+
+		// [a,b)が[l,r)を完全に含んでいれば
+		if (a <= l && r <= b)
+			return data[k];
+		
+		// そうでなければ２つの子の最小値
+		// n=16
+		// 0,16→0,8 8,16
+		// 0,4 4,8 8,12 12,16
+		ll vl = queryRMQ(a, b, k * 2 + 1, l, (l + r) / 2);
+		ll vr = queryRMQ(a, b, k * 2 + 2, (l + r) / 2, r);
+		return min(vl, vr);
+	}
+
 	void add(int a, int b, int x) {
 		add(a, b + 1, x, 0, 0, N);
 	}
@@ -781,9 +867,11 @@ public:
 	bool operator == (const Point& p) const {
 		return fabs(x - p.x) < EPS && fabs(y - p.y) < EPS;
 	}
+	// 内積
 	static double dot(Point a, Point b) {
 		return a.x * b.x + a.y * b.y;
 	}
+	// 外積
 	static double cross(Point a, Point b) {
 		return a.x * b.y - a.y * b.x;
 	}
@@ -809,7 +897,7 @@ public:
 	static const int ONLINE_FRONT = -2;
 	static const int ON_SEGMENT = 0;
 	static int ccw(Point p0, Point p1, Point p2) {
-		// ������p0��p1��p2���ǂ��ɂ��邩��T��
+		// 線分はp0とp1でp2がどこにあるかを探る
 		Point a = p1 - p0;
 		Point b = p2 - p0;
 		if (cross(a, b) > EPS) return COUNTER_CLOCKWISE;
@@ -819,6 +907,7 @@ public:
 		return ON_SEGMENT;
 	}
 
+	// 交差しているか
 	static bool intersect(Point p1, Point p2, Point p3, Point p4) {
 		return (ccw(p1, p2, p3) * ccw(p1, p2, p4) <= 0
 			&& ccw(p3, p4, p1) * ccw(p3, p4, p2) <= 0);
@@ -847,11 +936,11 @@ public:
 		bool x = false;
 		rep(i, n) {
 			Point a = g[i] - p, b = g[(i + 1) % n] - p;
-			// ���̏�ɍڂ��Ă��邩
+			// 線の上に載っているか
 			if (std::abs(cross(a, b)) < EPS && dot(a, b) < EPS) return 1;
 
-			// p���Ƃ��ď㉺�ɂ��邩
-			// �܂��͊O�ς�����?(���ɂ��邩)
+			// pを基準として上下にあるか
+			// または外積が正か?(→にあるか)
 			if (a.y > b.y) swap(a, b);
 			if (a.y < EPS && EPS < b.y && cross(a, b) > EPS) x = !x;
 		}
@@ -918,12 +1007,16 @@ public:
 	}
 };
 
+// 直行
 bool Point::isOrthogonal(Segment s1, Segment s2) {
 	return EQ(dot(s1.p2 - s1.p1, s2.p2 - s2.p1), 0.0);
 }
+
+// 平行
 bool Point::isPalallel(Segment s1, Segment s2) {
 	return EQ(cross(s1.p2 - s1.p1, s2.p2 - s2.p1), 0.0);
 }
+// 交差しているか
 bool Point::intersect(Segment s1, Segment s2) {
 	return intersect(s1.p1, s1.p2, s2.p1, s2.p2);
 }
@@ -974,7 +1067,7 @@ public:
 		cin >> c.x >> c.y >> r;
 	}
 	static pair<Point, Point> getCrossPoints(Circle c1, Circle c2) {
-		double d = (c1.c - c2.c).abs(); // ���S�_�ǂ����̋���
+		double d = (c1.c - c2.c).abs(); // 中心点どうしの距離
 		double a = acos((c1.r * c1.r + d * d - c2.r * c2.r) / (2 * c1.r * d));
 		double t = arg(c2.c - c1.c);
 		return make_pair(c1.c + polar(c1.r, t + a), c1.c + polar(c1.r, t - a));
@@ -1078,47 +1171,181 @@ string decStrNum(string s) {
 	}
 	return s;
 }
-
-<<<<<<< HEAD
-//�@�����܂Ń��C�u����
-// ��������R�[�h
-bool check(char a, char b) {
-	return a == b || a == '?' || b == '?';
+void dateCal(int x) {
+	int lp = x / 7;
+	string date[] = { "月曜日","火曜日","水曜日","木曜日","金曜日","土曜日","日曜日" };
+	rep(i, 7) {
+		int st = i;
+		rep(j, lp) {
+			cout <<"\t"<< date[i] << x << "-" << st << "\t" << "NULL" << "\t" << x<<"\t"<<st<<"\t"<<0 << endl;
+			st += 7;
+		}
+	}
 }
-=======
-//�@�����܂Ń��C�u����
-// ��������R�[�h
+// 行列べき乗計算
+typedef vector<vl> mat;
+mat mul(mat& A, mat& B) {
+	mat C(A.size(), vl(B[0].size()));
+	rep(i, A.size()) {
+		rep(t, B.size()) {
+			rep(j, B[0].size()) {
+				C[i][j] = inff(C[i][j] + A[i][t] * B[t][j]);
+			}
+		}
+	}
+	return C;
+}
 
->>>>>>> ccd10d8d22c237a167a2ba2cdcce4bda46917a5e
+mat pow(mat A, ll x) {
+	mat B(A.size(), vl(A.size()));
+	rep(i, A.size()) {
+		B[i][i] = 1;
+	}
+	while (x>0)
+	{
+		if (x & 1)B = mul(B, A);
+		A = mul(A, A);
+		x >>= 1;
+	}
+	return B;
+}
+
+class dinic {
+public:
+	vve G;
+
+	vl level;
+	vl iter;
+	dinic(int _n) : dinic(vve(_n+1)) {
+		
+	}
+	dinic(vve g) {
+		G = g;
+		level = vl(g.size());
+		iter = vl(g.size());
+	}
+
+	void add_edge(ll from, ll to, ll cap) {
+		auto e1 = edge();
+		auto e2 = edge();
+
+		e1.flowEdge(to, cap, G[to].size());
+		G[from].push_back(e1);
+		e2.flowEdge(from, 0, G[from].size() - 1);
+		G[to].push_back(e2);
+	}
+
+	void bfs(ll s) {
+		fill(all(level), -1);
+		queue<ll> q;
+		level[s] = 0;
+		q.push(s);
+		while (!q.empty())
+		{
+			ll v = frontpop(q);
+			for (auto e : G[v]) {
+				if (e.cap > 0 && level[e.to] < 0) {
+					level[e.to] = level[v] + 1;
+					q.push(e.to);
+				}
+			}
+		}
+	}
+
+	ll dfs(ll v, ll t, ll f) {
+		if (v == t)
+			return f;
+		for (ll& i = iter[v]; i < G[v].size(); i++) {
+			edge& e = G[v][i];
+			if (e.cap > 0 && level[v] < level[e.to]) {
+				ll d = dfs(e.to, t, min(f, e.cap));
+				if (d > 0) {
+					e.cap -= d;
+					G[e.to][e.rev].cap += d;
+					return d;
+				}
+			}
+		}
+		return 0;
+	}
+
+	ll max_flow(ll s, ll t) {
+		ll flow = 0;
+		for (;;) {
+			bfs(s);
+			if (level[t] < 0)
+				return flow;	
+			fill(all(iter), 0);
+			ll f;
+			while ((f=dfs(s,t,big))>0)
+			{
+				flow += f;
+			}
+		}
+	}
+};
+const ull BS = 1000000007;
+// aはbに含まれているか？
+bool rolling_hash(string a, string b) {
+	int al = a.size(),bl =b.size();
+	if (al > bl)
+		return false;
+
+	// BSのal乗を計算
+	ull t = 1;
+	rep(i, al)t *= BS;
+
+	// aとbの最初のal文字に関するハッシュ値を計算
+	ull ah = 0, bh = 0;
+	rep(i, al) ah = ah * BS + a[i];
+	rep(i, al) bh = bh * BS + b[i];
+
+	// bの場所を一つずつ進めながらハッシュ値をチェック
+	for (ll i = 0; i + al <= bl; i++)
+	{
+		if (ah == bh)
+			return true;
+		if (i + al < bl)bh = bh * BS + b[i + al] - b[i] * t;
+	}
+	return false;
+}
+//　ここまでライブラリ
+// ここからコード
+vector<ll> es[400010];
+bool vis[400010];
+bool iscl(ll x, ll f) {
+	if (vis[x])
+		return true;
+	vis[x] = true;
+	for (auto v : es[x]) {
+		if (v == f)
+			continue;
+		if (iscl(v, x))
+			return true;
+	}
+
+	return false;
+}
 void solv() {
 	cin >> n;
-	ll c[200010];
-	rep(i, n) {
-		cin >> c[i];
-	}
-	sort(c, c + n);
-	ll pt[200010]; pt[0] = 1;
-	ll cmb[200010]; cmb[0] = 1;
-	rep2(i,1,n){
-		inf(pt[i] = pt[i - 1] * 2);
-		inf(cmb[i] = inff(cmb[i - 1] * 2) + pt[i - 1]);
+	if (n < 5) {
+		cout << 0 << endl;
+		return;
 	}
 
-	ll r = 0;
-
-	rep(i, n) {
-		inf(r += inff(cmb[n - i - 1] * c[i])*getpow(2,i));
+	double res = 12;
+	rep(i, 5) {
+		res *= (double)(n - i) / (double)(n + 1);
+		res /= (double)(99 - i) / (double)(n + 1);
 	}
-	inf(r *= getpow(2, n));
-	cout << r << endl;
+	put_float(res);
+
 }
+
 
 int main()
 {
 	COMinit();
-
 	solv();
 	return 0;
 }
-
-
