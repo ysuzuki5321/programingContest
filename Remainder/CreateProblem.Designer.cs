@@ -81,7 +81,8 @@ namespace Remainder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2490, 1064);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(2461, 1027);
             this.Controls.Add(this.CreateButton);
             this.Controls.Add(this.AddAnswer);
             this.Controls.Add(this.AnswerText);

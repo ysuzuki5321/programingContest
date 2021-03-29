@@ -745,7 +745,7 @@ public:
 	const static int DAT_SIZE = (1 << 18) - 1;
 	int N, Q;
 	int A[MAX_N];
-	ll MAX=big;
+	ll MAX = big;
 
 	ll data[DAT_SIZE], datb[DAT_SIZE];
 	void init(int _n) {
@@ -777,9 +777,9 @@ public:
 			data[k] = min(data[k * 2 + 1], data[k * 2 + 2]);
 		}
 	}
-	ll RMQ(int a,int b) {
+	ll RMQ(int a, int b) {
 
-		return queryRMQ(a,b+1,0,0,n);
+		return queryRMQ(a, b + 1, 0, 0, n);
 	}
 	ll queryRMQ(int a, int b, int k, int l, int r) {
 		if (r <= a || b <= l)
@@ -788,7 +788,7 @@ public:
 		// [a,b)が[l,r)を完全に含んでいれば
 		if (a <= l && r <= b)
 			return data[k];
-		
+
 		// そうでなければ２つの子の最小値
 		// n=16
 		// 0,16→0,8 8,16
@@ -1177,7 +1177,7 @@ void dateCal(int x) {
 	rep(i, 7) {
 		int st = i;
 		rep(j, lp) {
-			cout <<"\t"<< date[i] << x << "-" << st << "\t" << "NULL" << "\t" << x<<"\t"<<st<<"\t"<<0 << endl;
+			cout << "\t" << date[i] << x << "-" << st << "\t" << "NULL" << "\t" << x << "\t" << st << "\t" << 0 << endl;
 			st += 7;
 		}
 	}
@@ -1201,7 +1201,7 @@ mat pow(mat A, ll x) {
 	rep(i, A.size()) {
 		B[i][i] = 1;
 	}
-	while (x>0)
+	while (x > 0)
 	{
 		if (x & 1)B = mul(B, A);
 		A = mul(A, A);
@@ -1216,8 +1216,8 @@ public:
 
 	vl level;
 	vl iter;
-	dinic(int _n) : dinic(vve(_n+1)) {
-		
+	dinic(int _n) : dinic(vve(_n + 1)) {
+
 	}
 	dinic(vve g) {
 		G = g;
@@ -1274,10 +1274,10 @@ public:
 		for (;;) {
 			bfs(s);
 			if (level[t] < 0)
-				return flow;	
+				return flow;
 			fill(all(iter), 0);
 			ll f;
-			while ((f=dfs(s,t,big))>0)
+			while ((f = dfs(s, t, big)) > 0)
 			{
 				flow += f;
 			}
@@ -1287,7 +1287,7 @@ public:
 const ull BS = 1000000007;
 // aはbに含まれているか？
 bool rolling_hash(string a, string b) {
-	int al = a.size(),bl =b.size();
+	int al = a.size(), bl = b.size();
 	if (al > bl)
 		return false;
 
@@ -1311,35 +1311,9 @@ bool rolling_hash(string a, string b) {
 }
 //　ここまでライブラリ
 // ここからコード
-vector<ll> es[400010];
-bool vis[400010];
-bool iscl(ll x, ll f) {
-	if (vis[x])
-		return true;
-	vis[x] = true;
-	for (auto v : es[x]) {
-		if (v == f)
-			continue;
-		if (iscl(v, x))
-			return true;
-	}
 
-	return false;
-}
 void solv() {
-	cin >> n;
-	if (n < 5) {
-		cout << 0 << endl;
-		return;
-	}
-
-	double res = 12;
-	rep(i, 5) {
-		res *= (double)(n - i) / (double)(n + 1);
-		res /= (double)(99 - i) / (double)(n + 1);
-	}
-	put_float(res);
-
+	
 }
 
 

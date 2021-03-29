@@ -45,6 +45,8 @@ namespace Remainder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(2247, 1020);
             this.Controls.Add(this.ProblemText);
             this.Name = "ProblemBase";

@@ -55,7 +55,8 @@ namespace Remainder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2516, 1123);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(2507, 1114);
             this.Controls.Add(this.Confirm);
             this.Controls.Add(this.AnswersPanel);
             this.Name = "Exam";

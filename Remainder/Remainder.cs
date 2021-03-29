@@ -27,6 +27,7 @@ namespace Remainder
         private void Remainder_Load(object sender, EventArgs e)
         {
             DataBase.Connection.Open();
+            Width = 1000;
             TodayGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             interval = Interval();
