@@ -83,7 +83,10 @@ namespace Remainder
             AnswersPanel.Controls.Clear();
             foreach (var item in Current.Answers)
             {
-                SetTextBox(i++);
+                SetTextBox(i);
+                if (item.Collected)
+                    answerList[i].Item1.Text = item.AnswerText;
+                i++;
             }
 
             return false;
@@ -98,9 +101,9 @@ namespace Remainder
             label.Text = $"({answerIndex + 1})";
             label.Font = new Font(font, FontStyle.Regular);
             label.Location = new Point(10, y);
-            label.Width = 30;
+            label.Width = 40;
             var text = new TextBox();
-            text.Width = 200;
+            text.Width = 210;
             text.Font = new Font(font,FontStyle.Regular); 
             text.Location = new Point(label.Right + 5,y);
             text.AutoCompleteMode = AutoCompleteMode.Suggest;
@@ -135,6 +138,7 @@ namespace Remainder
                 {
                     answerList[i].Item2.Text = "○";
                     answerList[i].Item2.ForeColor = Color.Blue;
+                    Current.Answers[i].Collected = true;
                 }
                 else
                 {

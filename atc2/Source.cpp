@@ -1311,11 +1311,71 @@ bool rolling_hash(string a, string b) {
 }
 //　ここまでライブラリ
 // ここからコード
+ll h, w, r, c;
+vector<string> tb;
+vector<string> pt;
+ll md1 = 1000000, md2 = 2000007;
+vl m1, m2;
+void createmd() {
+	m1.push_back(1);
+	rep2(i, 1, h + 1) {
+		m1.push_back(inff(m1[i - 1] * md1));
+	}
+	m2.push_back(1);
+	rep2(i, 1, w + 1) {
+		m2.push_back(inff(m2[i - 1] * md2));
+	}
 
-void solv() {
-	
+}
+mat createmt(vector<string> v, ll x, ll y) {
+	mat res(x+1, vl(y+1,0));
+
+	rep2(i, 1, x + 1) {
+		rep2(j, 1, y + 1) {
+			res[i][j] =inff( res[i][j - 1] + inff(inff(v[i - 1][j - 1] * m1[i]) * m2[j]));
+		}
+		rep2(j, 1, y + 1) {
+			inf(res[i][j] += res[i - 1][j]);
+		}
+	}
+	return res;
 }
 
+ll clc(mat& v, ll x, ll y) {
+	ll xr = x - r;
+	ll yc = y - c;
+	ll va = v[x][y];
+	va = infs(va, v[xr][y]);
+	va = infs(va, v[x][yc]);
+	inf(va += v[xr][yc]);
+	inf(va *= modinv(m1[xr]));
+	inf(va *= modinv(m2[yc]));
+	return va;
+}
+void solv() { 
+	cin >> h >> w;
+	rep(i, h) {
+		string s; cin >> s;
+		tb.push_back(s);
+	}
+	cin >> r >> c;
+	rep(i, r) {
+		string s; cin >> s;
+		pt.push_back(s);
+	}
+	createmd();
+	auto p1 = createmt(tb, h, w);
+	auto p2 = createmt(pt, r, c);
+	ll pn = p2[r][c];
+	rep2(i, r, h + 1) {
+		rep2(j, c, w + 1) {
+			ll vl = clc(p1, i, j);
+			if (pn == vl) {
+				cout << i - r << " " << j - c << endl;
+			}
+		}
+	}
+}
 
 int main()
 {

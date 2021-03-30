@@ -18,5 +18,7 @@ namespace Remainder.Problems
         public int Seq { get; set; }
 
         public string AnswerText { get; set; }
+
+        public bool Collected { get; set; }
     }
 }
