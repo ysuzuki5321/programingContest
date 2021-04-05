@@ -15,7 +15,19 @@ namespace Remainder
                 set
                     discription = @description,
                     interval = @interval,
+                    url = isnull(@url,url),
                     start = @start
+                where
+                    id = @id
+            ";
+        }
+
+        private string DoneSql()
+        {
+            return @"
+                update schedule
+                set
+                    latestDate = @latestDate
                 where
                     id = @id
             ";

@@ -46,12 +46,16 @@ namespace Remainder
             // 問題削除
             if (Current.Id != -1)
             {
-                DeleteProblem(Current.Id);
+                Current.ProblemText = ProblemText.Text;
+                UpdateProblem(Current);
                 DeleteAnswers(Current.Id);
             }
-            
-            // 問題作成
-            InsertProblem();
+            else
+            {
+
+                // 問題作成
+                InsertProblem();
+            }
 
             // 答え作成
             InsertAnswers();

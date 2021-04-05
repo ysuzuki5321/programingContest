@@ -81,6 +81,7 @@ namespace Remainder
             int i = 0;
             answerList.Clear();
             AnswersPanel.Controls.Clear();
+
             foreach (var item in Current.Answers)
             {
                 SetTextBox(i);

@@ -10,6 +10,19 @@ namespace Remainder
 {
     public partial class CreateProblem
     {
+        private void UpdateProblem(Problem p)
+        {
+            var sql = @"
+                update problem set
+                    problemtext = @text
+                where
+                    id = @id
+            ";
+            var param = new DynamicParameters(new { id = p.Id,
+                text = p.ProblemText});
+            
+            DataBase.Connection.Execute(sql, param);
+        }
 
         private void DeleteProblem(int id)
         {

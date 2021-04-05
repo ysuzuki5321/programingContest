@@ -1000,7 +1000,7 @@ public:
 		return p1 - p2;
 	}
 	double abs() {
-		return std::abs(norm());
+		return (p2-p1).abs();
 	}
 	double norm() {
 		return (p2 - p1).norm();
@@ -1157,6 +1157,59 @@ vl zalgo(string s) {
 	a[0] = s.size();
 	return a;
 }
+// 数値文字列の除算
+string divStrNum(string s, ll v) {
+	ll si = s.size();
+	ll val = 0;
+	string res = "";
+	for (ll i = 0; i < si; i++)
+	{
+		val *= 10;
+		val += s[i] - '0';
+		ll add = val / v;
+		val %= v;
+		if (add == 0 && res == "")
+			continue;
+		res += add + '0';
+	}
+	if (res == "")
+		return "0";
+
+	return res;
+}
+
+// 数値文字列の減算
+string difStrNum(string s,ll v) {
+	ll si = s.size();
+	bool dec = false;
+	for (ll i = si - 1; i >= 0; i--)
+	{
+		if (v == 0)
+			break;
+		ll t = v % 10;
+		v /= 10;
+		ll u = (s[i] - '0') ;
+		if (dec) {
+			if (u == 0) {
+				s[i] = 9 - t;
+				dec = true;
+				continue;
+			}
+			u--;
+		}
+		if (u < t) {
+			s[i] = 10 - (t - u);
+			dec = true;
+		}
+		else {
+			s[i] -= t;
+			dec = false;
+		}
+
+	}
+	return s;
+}
+// 数値文字列を1減らした数
 string decStrNum(string s) {
 	ll si = s.size();
 	for (int i = si - 1; i >= 0; i--)
@@ -1311,70 +1364,88 @@ bool rolling_hash(string a, string b) {
 }
 //　ここまでライブラリ
 // ここからコード
-ll h, w, r, c;
-vector<string> tb;
-vector<string> pt;
-ll md1 = 1000000, md2 = 2000007;
-vl m1, m2;
-void createmd() {
-	m1.push_back(1);
-	rep2(i, 1, h + 1) {
-		m1.push_back(inff(m1[i - 1] * md1));
+bool interval(ll x,ll y1, ll y2) {
+	if (y1 > y2)
+		swap(y1, y2);
+	y1++; y2--;
+	if (y1 > y2)
+		return false;
+	while (x>0)
+	{
+		if (x % 3 == 1) {
+			if (y2 - y1 > 3)
+				return true;
+			for (ll y = y1; y <= y2; y++) {
+				if (y % 3 == 1)
+					return true;
+			}
+		}
+		x /= 3;
+		y1 /= 3;
+		y2 /= 3;
 	}
-	m2.push_back(1);
-	rep2(i, 1, w + 1) {
-		m2.push_back(inff(m2[i - 1] * md2));
-	}
-
+	return false;
 }
-mat createmt(vector<string> v, ll x, ll y) {
-	mat res(x+1, vl(y+1,0));
+ll clc2(ll x1, ll y1, ll x2, ll y2) {
+	ll res = 0;
+	ll d = 1;
+	rep(i, 35) {
+		if (x1 / d == x2 / d && interval(x1 / d, y1 / d, y2 / d)) {
+			ll v = min(min(x1 % d, x2 % d) + 1, d - max(x1 % d, x2 % d));
+			res = max(res, v);
+		}
 
-	rep2(i, 1, x + 1) {
-		rep2(j, 1, y + 1) {
-			res[i][j] =inff( res[i][j - 1] + inff(inff(v[i - 1][j - 1] * m1[i]) * m2[j]));
-		}
-		rep2(j, 1, y + 1) {
-			inf(res[i][j] += res[i - 1][j]);
-		}
+		d *= 3;
 	}
+
 	return res;
 }
-
-ll clc(mat& v, ll x, ll y) {
-	ll xr = x - r;
-	ll yc = y - c;
-	ll va = v[x][y];
-	va = infs(va, v[xr][y]);
-	va = infs(va, v[x][yc]);
-	inf(va += v[xr][yc]);
-	inf(va *= modinv(m1[xr]));
-	inf(va *= modinv(m2[yc]));
-	return va;
+ll clc(ll x1, ll y1, ll x2, ll y2) {
+	return abs(x2 - x1) + abs(y2 - y1) +
+		2LL * max(clc2(x1, y1, x2, y2), clc2(y1, x1, y2, x2));
 }
 void solv() { 
-	cin >> h >> w;
-	rep(i, h) {
-		string s; cin >> s;
-		tb.push_back(s);
+	cin >> n;
+	ll p[500 * 500];
+	rep(i, n*n) {
+		cin >> p[i];
 	}
-	cin >> r >> c;
-	rep(i, r) {
-		string s; cin >> s;
-		pt.push_back(s);
+
+	ll tb[500][500];
+	ll cn[500][500];
+	rep(i, n)rep(j, n) {
+		tb[i][j] = min({ i,j,n - i - 1,n - j - 1 });
+		cn[i][j] = 1;
 	}
-	createmd();
-	auto p1 = createmt(tb, h, w);
-	auto p2 = createmt(pt, r, c);
-	ll pn = p2[r][c];
-	rep2(i, r, h + 1) {
-		rep2(j, c, w + 1) {
-			ll vl = clc(p1, i, j);
-			if (pn == vl) {
-				cout << i - r << " " << j - c << endl;
+
+	ll res = 0;
+	
+	rep(i, n* n) {
+		auto v = p[i] - 1;
+		ll sx = v / n;
+		ll sy = v % n;
+		cn[sx][sy] = 0;
+		res += tb[sx][sy];
+		queue<pll> q;
+		q.push({ sx,sy });
+		while (!q.empty())
+		{
+			auto p = frontpop(q);
+			ll x = p.first;
+			ll y = p.second;
+			rep(j, 4) {
+				ll tx = x + dx[j];
+				ll ty = y + dy[j];
+				if (tx < 0 || ty < 0 || tx >= n || ty >= n)
+					continue;
+				if (chmin(tb[tx][ty], tb[x][y] + cn[x][y])) {
+					q.push({ tx,ty });
+				}
 			}
 		}
 	}
+
+	cout << res << endl;
 }
 
 int main()

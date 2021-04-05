@@ -103,9 +103,13 @@ namespace Remainder
                 from
                     Schedule s
                 where
-                    (((@interval - start) / interval) * interval + start) =@interval
+                    (((@interval - s.start) / s.interval) * s.interval + s.start) =@interval
+                    and (
+                        s.latestDate is null
+                        or s.latestDate < CONVERT(DATE, getdate())
+                    )
                 order by
-                    interval,priority,id
+                    s.interval,s.priority,s.id
                 ";
         }
 
@@ -152,7 +156,14 @@ namespace Remainder
 
             if (TodayGrid.Columns[e.ColumnIndex].Name == "Update")
             {
-                UpdateDescription(TodayGrid.Rows[ e.RowIndex].DataBoundItem as Schedule);
+                var data = TodayGrid.Rows[e.RowIndex].DataBoundItem as Schedule;
+                if (!string.IsNullOrWhiteSpace(UrlText.Text))
+                {
+                    data.Url = UrlText.Text;
+                    UrlText.Text = "";
+                }
+                UpdateSchedule(data);
+                ShowData();
             }
 
             if (TodayGrid.Columns[e.ColumnIndex].Name == "AddProblem")
@@ -201,6 +212,7 @@ namespace Remainder
 
         private void RemoveAt(int i)
         {
+            DoneSchedule(TodayGrid.Rows[i].DataBoundItem as Schedule);
             TodayGrid.Rows.RemoveAt(i);
         }
 

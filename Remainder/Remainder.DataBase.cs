@@ -49,21 +49,37 @@ namespace Remainder
             param.AddDynamicParams(new
             {
                 interval = interval,
-                start = start
+                start = start,
+                url = default(string)
             });
             data.Interval = interval;
             data.Start = start;
             DataBase.Connection.Execute(DataUpdateSql(), param);
         }
 
-        private void UpdateDescription(Schedule data)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        private void UpdateSchedule(Schedule data)
         {
             var param = CreateParam(data);
             param.AddDynamicParams(new
             {
-                description = data.Discription
+                description = data.Discription,
+                url =data.Url
             });
             DataBase.Connection.Execute(DataUpdateSql(), param);
+        }
+
+        private void DoneSchedule(Schedule data)
+        {
+            var param = CreateParam(data);
+            param.AddDynamicParams(new
+            {
+                latestDate = DateTime.Now.Date
+            });
+            DataBase.Connection.Execute(DoneSql(),param);
         }
 
         private DynamicParameters CreateParam(Schedule data)

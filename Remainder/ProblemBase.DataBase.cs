@@ -41,7 +41,8 @@ namespace Remainder
                     {
                         problems.Add(problem);
                     }
-                    problems.Last().Answers.Add(answer);
+                    if (answer != null)     
+                        problems.Last().Answers.Add(answer);
                     return problem;
                 },
                 param, splitOn: "aid");
