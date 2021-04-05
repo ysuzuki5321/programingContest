@@ -57,6 +57,9 @@ namespace Remainder
 
         private int GetLatestProblemId()
         {
+            if (Current.Id != -1)
+                return Current.Id;
+
             var sql = @"
                 select max(id) from problem where scheduleid = @scheduleid
             ";
