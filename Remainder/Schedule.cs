@@ -14,6 +14,8 @@ namespace Remainder
         public int Interval { get; set; }
         public int Start { get; set; }
 
+        public DateTime? LatestDate { get; set; }
+
         public int ProblemCount { get; set; }
     }
 }

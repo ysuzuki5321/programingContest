@@ -741,8 +741,8 @@ bool isPrime(ll v) {
 class SegTree {
 
 public:
-	const static int MAX_N = 100010;
-	const static int DAT_SIZE = (1 << 18) - 1;
+	const static int MAX_N = 1000100;
+	const static int DAT_SIZE = (1 << 20) - 1;
 	int N, Q;
 	int A[MAX_N];
 	ll MAX = big;
@@ -763,14 +763,14 @@ public:
 		}
 	}
 	void initRMQ(int _n) {
-		n = 1;
-		while (n < _n) n *= 2;
+		N = 1;
+		while (N < _n) N *= 2;
 		// 全ての値をbigに
-		rep(i, 2 * n - 1)
+		rep(i, 2 * N - 1)
 			data[i] = MAX;
 	}
 	void updateRMQ(int k, ll a) {
-		k += n - 1;
+		k += N - 1;
 		data[k] = a;
 		while (k > 0) {
 			k = (k - 1) / 2;
@@ -779,7 +779,7 @@ public:
 	}
 	ll RMQ(int a, int b) {
 
-		return queryRMQ(a, b + 1, 0, 0, n);
+		return queryRMQ(a, b + 1, 0, 0, N);
 	}
 	ll queryRMQ(int a, int b, int k, int l, int r) {
 		if (r <= a || b <= l)
@@ -1000,7 +1000,7 @@ public:
 		return p1 - p2;
 	}
 	double abs() {
-		return (p2-p1).abs();
+		return (p2 - p1).abs();
 	}
 	double norm() {
 		return (p2 - p1).norm();
@@ -1179,7 +1179,7 @@ string divStrNum(string s, ll v) {
 }
 
 // 数値文字列の減算
-string difStrNum(string s,ll v) {
+string difStrNum(string s, ll v) {
 	ll si = s.size();
 	bool dec = false;
 	for (ll i = si - 1; i >= 0; i--)
@@ -1188,7 +1188,7 @@ string difStrNum(string s,ll v) {
 			break;
 		ll t = v % 10;
 		v /= 10;
-		ll u = (s[i] - '0') ;
+		ll u = (s[i] - '0');
 		if (dec) {
 			if (u == 0) {
 				s[i] = 9 - t;
@@ -1322,20 +1322,20 @@ public:
 		return 0;
 	}
 
-	ll max_flow(ll s, ll t) {
-		ll flow = 0;
-		for (;;) {
-			bfs(s);
-			if (level[t] < 0)
-				return flow;
-			fill(all(iter), 0);
-			ll f;
-			while ((f = dfs(s, t, big)) > 0)
-			{
-				flow += f;
-			}
+ll max_flow(ll s, ll t) {
+	ll flow = 0;
+	for (;;) {
+		bfs(s);
+		if (level[t] < 0)
+			return flow;
+		fill(all(iter), 0);
+		ll f;
+		while ((f = dfs(s, t, big)) > 0)
+		{
+			flow += f;
 		}
 	}
+}
 };
 const ull BS = 1000000007;
 // aはbに含まれているか？
@@ -1364,88 +1364,24 @@ bool rolling_hash(string a, string b) {
 }
 //　ここまでライブラリ
 // ここからコード
-bool interval(ll x,ll y1, ll y2) {
-	if (y1 > y2)
-		swap(y1, y2);
-	y1++; y2--;
-	if (y1 > y2)
-		return false;
-	while (x>0)
-	{
-		if (x % 3 == 1) {
-			if (y2 - y1 > 3)
-				return true;
-			for (ll y = y1; y <= y2; y++) {
-				if (y % 3 == 1)
-					return true;
-			}
-		}
-		x /= 3;
-		y1 /= 3;
-		y2 /= 3;
+
+bool check(ll r1, ll c1, ll r2, ll c2) {
+	if (r1 + c1 == r2 + c2
+		|| r1 - c1 == r2 - c2) {
+		return true;
 	}
 	return false;
 }
-ll clc2(ll x1, ll y1, ll x2, ll y2) {
-	ll res = 0;
-	ll d = 1;
-	rep(i, 35) {
-		if (x1 / d == x2 / d && interval(x1 / d, y1 / d, y2 / d)) {
-			ll v = min(min(x1 % d, x2 % d) + 1, d - max(x1 % d, x2 % d));
-			res = max(res, v);
-		}
+void solv() {
 
-		d *= 3;
+	cin >> n >> m;
+	dinic d(n);
+	rep(i, m) {
+		ll a, b, c; cin >> a >> b >> c;
+		d.add_edge(a, b, c);
 	}
 
-	return res;
-}
-ll clc(ll x1, ll y1, ll x2, ll y2) {
-	return abs(x2 - x1) + abs(y2 - y1) +
-		2LL * max(clc2(x1, y1, x2, y2), clc2(y1, x1, y2, x2));
-}
-void solv() { 
-	cin >> n;
-	ll p[500 * 500];
-	rep(i, n*n) {
-		cin >> p[i];
-	}
-
-	ll tb[500][500];
-	ll cn[500][500];
-	rep(i, n)rep(j, n) {
-		tb[i][j] = min({ i,j,n - i - 1,n - j - 1 });
-		cn[i][j] = 1;
-	}
-
-	ll res = 0;
-	
-	rep(i, n* n) {
-		auto v = p[i] - 1;
-		ll sx = v / n;
-		ll sy = v % n;
-		cn[sx][sy] = 0;
-		res += tb[sx][sy];
-		queue<pll> q;
-		q.push({ sx,sy });
-		while (!q.empty())
-		{
-			auto p = frontpop(q);
-			ll x = p.first;
-			ll y = p.second;
-			rep(j, 4) {
-				ll tx = x + dx[j];
-				ll ty = y + dy[j];
-				if (tx < 0 || ty < 0 || tx >= n || ty >= n)
-					continue;
-				if (chmin(tb[tx][ty], tb[x][y] + cn[x][y])) {
-					q.push({ tx,ty });
-				}
-			}
-		}
-	}
-
-	cout << res << endl;
+	cout << d.max_flow(0, n - 1) << endl;
 }
 
 int main()

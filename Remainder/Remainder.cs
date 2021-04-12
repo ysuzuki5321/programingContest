@@ -17,6 +17,8 @@ namespace Remainder
     public partial class Remainder : Form
     {
         private BindingList<Schedule> Data;
+        private List<Schedule> list;
+
         public Remainder()
         {
             InitializeComponent();
@@ -24,6 +26,7 @@ namespace Remainder
         int offsetWidth = 40;
         int offsetHeight = 120;
         int interval;
+        bool all = false;
         private void Remainder_Load(object sender, EventArgs e)
         {
             DataBase.Connection.Open();
@@ -41,6 +44,7 @@ namespace Remainder
             Data.AllowNew = false;
             ShowData();
             SetGridSize();
+            AllButton.BackColor = Color.DarkGray;
         }
 
         private void ShowData()
@@ -49,17 +53,9 @@ namespace Remainder
             var param = new DynamicParameters();
             param.AddDynamicParams(new { interval = interval });
             Data.Clear();
-            DataBase.Connection.Query<Schedule>(sql, param).ToList().ForEach(x => Data.Add(x));
-            TodayGrid.DataSource = Data;
-            TodayGrid.Columns["ProblemCount"].Visible = false;
-            for (int i = 0; i < TodayGrid.Rows.Count; i++)
-            {
-                if(Data[i].ProblemCount > 0)
-                {
-                    TodayGrid.Rows[i].Cells["Exam"].Style.BackColor = Color.Blue;
-                }
-            }
-
+            list = DataBase.Connection.Query<Schedule>(sql, param).ToList();
+            
+            ShowList();
         }
 
         private void SetUpColumn()
@@ -104,10 +100,6 @@ namespace Remainder
                     Schedule s
                 where
                     (((@interval - s.start) / s.interval) * s.interval + s.start) =@interval
-                    and (
-                        s.latestDate is null
-                        or s.latestDate < CONVERT(DATE, getdate())
-                    )
                 order by
                     s.interval,s.priority,s.id
                 ";
@@ -212,8 +204,10 @@ namespace Remainder
 
         private void RemoveAt(int i)
         {
-            DoneSchedule(TodayGrid.Rows[i].DataBoundItem as Schedule);
-            TodayGrid.Rows.RemoveAt(i);
+            var data = TodayGrid.Rows[i].DataBoundItem as Schedule;
+            DoneSchedule(data);
+            data.LatestDate = DateTime.Now.Date;
+            ShowData();
         }
 
         private void RegistButton_Click(object sender, EventArgs e)
@@ -238,6 +232,42 @@ namespace Remainder
             NoteText.Text = "";
             UrlText.Text = "";
             ShowData();
+        }
+
+        private void AllButton_Click(object sender, EventArgs e)
+        {
+            if (all)
+            {
+                all = false;
+                AllButton.BackColor = Color.DarkGray;
+            }
+            else
+            {
+                all = true;
+                AllButton.BackColor = Color.White;
+            }
+
+            ShowList();
+        }
+
+        private void ShowList()
+        {
+            Data.Clear();
+            list.Where(x => all || !x.LatestDate.HasValue || x.LatestDate.Value < DateTime.Now.Date)
+                .ToList().ForEach(x => Data.Add(x));
+
+            TodayGrid.DataSource = Data;
+            TodayGrid.Columns["ProblemCount"].Visible = false;
+            TodayGrid.Columns["LatestDate"].Visible = false;
+
+
+            for (int i = 0; i < TodayGrid.Rows.Count; i++)
+            {
+                if (Data[i].ProblemCount > 0)
+                {
+                    TodayGrid.Rows[i].Cells["Exam"].Style.BackColor = Color.Blue;
+                }
+            }
         }
     }
 }
