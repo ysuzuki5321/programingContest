@@ -37,6 +37,7 @@ namespace Remainder
 
             SetUpColumn();
             TodayGrid.Columns[nameof(Schedule.Discription)].ReadOnly = false;
+            TodayGrid.Columns[nameof(Schedule.Interval)].ReadOnly = false;
             TodayGrid.Columns["Expand"].DefaultCellStyle.BackColor = Color.Red;
             TodayGrid.Columns["Update"].DefaultCellStyle.BackColor = Color.Brown;
             TodayGrid.Columns["AddProblem"].DefaultCellStyle.ForeColor = Color.Red;

@@ -94,6 +94,7 @@ int dy[] = { 0,-1,0,1 };
 #define frontpop(q) q.front();q.pop()
 #define toppop(q) q.top();q.pop()
 #define arr(a,s) a[s]; all0(a);
+#define nx(cu) (cu+1) % 2 
 bool chmin(ll& a, ll b) { if (a > b) { a = b; return 1; } return 0; }
 ll INF = 1000000007;
 const int MAX = 2000010;
@@ -270,6 +271,44 @@ bool unit(int x, int y) {
 	else {
 		pr[px] = py;
 		lank[py] += lank[px];
+	}
+	return true;
+}
+ll wit[500010];
+map<ll, ll> mp[100010];
+ll parent2(ll x) {
+	if (x == pr[x]) return x;
+	// 元々の親から変わっている時、wit[pr[x]]には親からの距離が入っている
+	// 同じところを二度通らないので大丈夫なはず
+	ll o = pr[x];
+	pr[x] = parent2(o);
+	wit[x] += wit[o]; // 親の重みを足す
+	return pr[x];
+}
+int same2(int x, int y) {
+	return parent2(x) == parent2(y);
+}
+bool relate(int x, int y, int v) {
+
+	auto px = parent2(x);
+	auto py = parent2(y);
+	// 自分の距離が取れる
+	ll xd = wit[x];
+	ll yd = wit[y];
+	// ↑のydにvを足した値とxdを比較する
+	// yd+v> xdであれば、pyが親となる
+	// yの直接の親はxとしてしまう?
+	// wit[y] = v;
+	if (px == py)
+		return false;
+	if (xd + v > yd) {
+		pr[py] = px;
+
+		wit[py] = xd + v - yd; // 親同士の距離を入れておく
+	}
+	else {
+		pr[px] = py;
+		wit[px] = yd - (xd + v);
 	}
 	return true;
 }
@@ -536,7 +575,7 @@ bool compare_sa(int i, int j) {
 void construct_sa(string S, int* sa) {
 	n = S.length();
 
-	for (size_t i = 0; i <= n; i++)
+	for (ll i = 0; i <= n; i++)
 	{
 		sa[i] = i;
 		_rank[i] = i < n ? S[i] : -1;
@@ -549,11 +588,11 @@ void construct_sa(string S, int* sa) {
 		// saはソート後の接尾辞の並びになっている、rankは元の位置のindexを保持したまま、更新されている。
 		// ピンとこなかった部分
 		temp[sa[0]] = 0;
-		for (size_t i = 1; i <= n; i++)
+		for (ll i = 1; i <= n; i++)
 		{
 			temp[sa[i]] = temp[sa[i - 1]] + (compare_sa(sa[i - 1], sa[i]) ? 1 : 0);
 		}
-		for (size_t i = 0; i <= n; i++)
+		for (ll i = 0; i <= n; i++)
 		{
 			_rank[i] = temp[i];
 		}
@@ -622,7 +661,6 @@ struct UnionFind {
 vector<ll> getp(ll n) {
 
 	vector<ll> res;
-	ll a = 2;
 	if (n % 2 == 0) {
 		res.push_back(2);
 		while (n % 2 == 0)n /= 2;
@@ -659,7 +697,6 @@ vector<ll> getp2(ll n) {
 }
 vector<pll> getp3(ll n) {
 	vector<pll> res;
-	ll a = 2;
 	int si = 0;
 	if (n % 2 == 0) {
 
@@ -683,7 +720,6 @@ vector<pll> getp3(ll n) {
 vector<ll> getDivisors(ll n) {
 
 	vector<ll> res;
-	ll a = 2;
 	res.push_back(1);
 	for (ll i = 2; i * i <= n; i++)
 	{
@@ -713,18 +749,39 @@ public:
 };
 
 vector<bool> elas(ll n) {
-	vector<bool> r(n);
-	fill(r.begin(), r.end(), 1);
+	n++;
+	vector<bool> r(n, 1);
 	r[0] = 0;
 	r[1] = 0;
-	for (ll i = 2; i * i < n; i++)
+	ll tw = 4;
+	while (tw < n) {
+		r[tw] = false;
+		tw += 2;
+	}
+	ll th = 6;
+	while (th < n) {
+		r[th] = false;
+		th += 3;
+	}
+	for (ll i = 6; i * i < n; i += 6)
 	{
-		if (!r[i]) continue;
-		ll ti = i * 2;
-		while (ti < n)
-		{
-			r[ti] = false;
-			ti += i;
+		ll bf = i - 1;
+		if (r[bf]) {
+			ll ti = bf * 2;
+			while (ti < n)
+			{
+				r[ti] = false;
+				ti += bf;
+			}
+		}
+		ll nx = i + 1;
+		if (r[nx]) {
+			ll ti = nx * 2;
+			while (ti < n)
+			{
+				r[ti] = false;
+				ti += nx;
+			}
 		}
 	}
 	return r;
@@ -1079,6 +1136,8 @@ pair<Point, Point> Point::crossPoints(Circle c, Segment s) {
 	auto pp = project(s, c.c);
 	auto f = (pp - c.c).norm();
 	auto mu = sqrt(c.r * c.r - f);
+
+	// 単位ベクトル
 	auto e = s.p1tp2() / s.p1tp2().abs();
 	return make_pair(pp + e * mu, pp - e * mu);
 
@@ -1291,18 +1350,18 @@ public:
 	void bfs(ll s) {
 		fill(all(level), -1);
 		queue<ll> q;
-		level[s] = 0;
-		q.push(s);
-		while (!q.empty())
-		{
-			ll v = frontpop(q);
-			for (auto e : G[v]) {
-				if (e.cap > 0 && level[e.to] < 0) {
-					level[e.to] = level[v] + 1;
-					q.push(e.to);
-				}
-			}
+level[s] = 0;
+q.push(s);
+while (!q.empty())
+{
+	ll v = frontpop(q);
+	for (auto e : G[v]) {
+		if (e.cap > 0 && level[e.to] < 0) {
+			level[e.to] = level[v] + 1;
+			q.push(e.to);
 		}
+	}
+}
 	}
 
 	ll dfs(ll v, ll t, ll f) {
@@ -1322,20 +1381,20 @@ public:
 		return 0;
 	}
 
-ll max_flow(ll s, ll t) {
-	ll flow = 0;
-	for (;;) {
-		bfs(s);
-		if (level[t] < 0)
-			return flow;
-		fill(all(iter), 0);
-		ll f;
-		while ((f = dfs(s, t, big)) > 0)
-		{
-			flow += f;
+	ll max_flow(ll s, ll t) {
+		ll flow = 0;
+		for (;;) {
+			bfs(s);
+			if (level[t] < 0)
+				return flow;
+			fill(all(iter), 0);
+			ll f;
+			while ((f = dfs(s, t, big)) > 0)
+			{
+				flow += f;
+			}
 		}
 	}
-}
 };
 const ull BS = 1000000007;
 // aはbに含まれているか？
@@ -1365,23 +1424,84 @@ bool rolling_hash(string a, string b) {
 //　ここまでライブラリ
 // ここからコード
 
-bool check(ll r1, ll c1, ll r2, ll c2) {
-	if (r1 + c1 == r2 + c2
-		|| r1 - c1 == r2 - c2) {
-		return true;
+ll r, c;
+mat a, b;
+vector<mat> d;
+void dij() {
+	tuple4q<ll, ll, ll,ll> q;
+	q.push({ 0,0,0,0 });
+	while (!q.empty())
+	{
+		auto p = toppop(q);
+		auto cs = get<0>(p);
+		auto di = get<1>(p);
+		auto x = get<2>(p);
+		auto y = get<3>(p);
+		if (d[di][x][y] <= cs)
+			continue;
+		d[di][x][y] = cs;
+		ll tx = x - 1;
+		ll ty = y;
+		if (tx >= 0) {
+			if (di == 0) {
+				if (d[0][tx][y] > cs+1)
+					q.push({ cs + 1,0,tx,y });
+			}
+			else {
+				if (d[0][tx][y] > cs + 2)
+					q.push({ cs + 2,0,tx,y });
+			}
+		}
+		tx = x + 1;
+		if (tx <= r - 1) {
+			if (d[1][tx][y] > cs + b[x][y]) {
+				q.push({ cs + b[x][y],1,tx,y });
+			}
+		}
+		ty = y - 1;
+		if (ty >= 0) {
+			if (d[2][x][ty] > cs + a[x][ty]) {
+				q.push({ cs + a[x][ty],2,x,ty });
+			}
+		}
+		ty = y + 1;
+		if (ty <= c - 1) {
+			if (d[3][x][ty] > cs + a[x][y]) {
+				q.push({ cs + a[x][y],3,x,ty });
+			}
+		}
 	}
-	return false;
 }
 void solv() {
+	ll p;
+	cin >> n >> p;
+	string s;
+	cin >> s;
+	if (p == 2 || p == 5) {
+		ll res = 0;
+		rep(i, n) {
+			if ((s[i] - '0') % p == 0) {
+				res += i + 1;
+			}
+		}
 
-	cin >> n >> m;
-	dinic d(n);
-	rep(i, m) {
-		ll a, b, c; cin >> a >> b >> c;
-		d.add_edge(a, b, c);
+		cout << res << endl;
+		return;
 	}
+	reverse(all(s));
 
-	cout << d.max_flow(0, n - 1) << endl;
+	vl t(p, 0);
+	ll v = 0;
+	ll d = 1;
+	INF = p;
+	ll r = 0;
+	rep(i, n) {
+		t[v]++;
+		inf(v += inff(d * (s[i] - '0')));
+		r += t[v];
+		inf(d *= 10);
+	}
+	cout << r << endl;
 }
 
 int main()
