@@ -82,7 +82,7 @@ int dy[] = { 0,-1,0,1 };
 #define infa(a,b) (a + b) % INF
 #define infm(a,b) (a * b) % INF
 #define infd(a,b) (a * INFinv(b)) % INF
-#define infs(a,b) (a + INF - b) % INF
+#define infs(a,b) (a + INF - inff(b)) % INF
 #define inf(a) (a) %= INF
 #define inff(a) ((a + INF) % INF)
 #define No cout << "No" << endl
@@ -1423,85 +1423,58 @@ bool rolling_hash(string a, string b) {
 }
 //　ここまでライブラリ
 // ここからコード
-
-ll r, c;
-mat a, b;
-vector<mat> d;
-void dij() {
-	tuple4q<ll, ll, ll,ll> q;
-	q.push({ 0,0,0,0 });
-	while (!q.empty())
-	{
-		auto p = toppop(q);
-		auto cs = get<0>(p);
-		auto di = get<1>(p);
-		auto x = get<2>(p);
-		auto y = get<3>(p);
-		if (d[di][x][y] <= cs)
-			continue;
-		d[di][x][y] = cs;
-		ll tx = x - 1;
-		ll ty = y;
-		if (tx >= 0) {
-			if (di == 0) {
-				if (d[0][tx][y] > cs+1)
-					q.push({ cs + 1,0,tx,y });
+map<pair<string, string>, ll> create(string s) {
+	map<pair<string, string>, ll > res;
+	ll si = s.size();
+	rep(i, 1 << si) {
+		string s1 = "", s2 = "";
+		rep(j, si) {
+			if (ion(i, j)) {
+				s1 += s[j];
 			}
 			else {
-				if (d[0][tx][y] > cs + 2)
-					q.push({ cs + 2,0,tx,y });
+				s2 += s[j];
 			}
 		}
-		tx = x + 1;
-		if (tx <= r - 1) {
-			if (d[1][tx][y] > cs + b[x][y]) {
-				q.push({ cs + b[x][y],1,tx,y });
-			}
-		}
-		ty = y - 1;
-		if (ty >= 0) {
-			if (d[2][x][ty] > cs + a[x][ty]) {
-				q.push({ cs + a[x][ty],2,x,ty });
-			}
-		}
-		ty = y + 1;
-		if (ty <= c - 1) {
-			if (d[3][x][ty] > cs + a[x][y]) {
-				q.push({ cs + a[x][y],3,x,ty });
-			}
-		}
+
+		res[{s1, s2}]++;
 	}
+	return res;
+
 }
+
 void solv() {
-	ll p;
-	cin >> n >> p;
-	string s;
-	cin >> s;
-	if (p == 2 || p == 5) {
-		ll res = 0;
-		rep(i, n) {
-			if ((s[i] - '0') % p == 0) {
-				res += i + 1;
+	cin >> n;
+	mat tb(n, vl(n));
+	rep(i, n) {
+		rep(j, n) {
+			cin >> tb[i][j];
+		}
+	}
+
+	vl gp(1 << n,0);
+	rep(i, 1 << n) {
+		vl e;
+		rep(j, n) {
+			if (ion(i, j)) {
+				e.push_back(j);
 			}
 		}
-
-		cout << res << endl;
-		return;
+		rep(j, e.size()) {
+			rep2(t,j+1, e.size()) {
+				gp[i] += tb[e[j]][e[t]];
+			}
+		}
 	}
-	reverse(all(s));
 
-	vl t(p, 0);
-	ll v = 0;
-	ll d = 1;
-	INF = p;
-	ll r = 0;
-	rep(i, n) {
-		t[v]++;
-		inf(v += inff(d * (s[i] - '0')));
-		r += t[v];
-		inf(d *= 10);
+	rep(i,1<< n) {
+		ll t = i;
+		do {
+			t = (t - 1) & i;
+			gp[i] = max(gp[i], gp[i ^ t] + gp[t]);
+		} while (t != i);
 	}
-	cout << r << endl;
+	cout << gp[(1 << n) - 1] << endl;
 }
 
 int main()
